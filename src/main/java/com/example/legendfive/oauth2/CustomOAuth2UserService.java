@@ -104,6 +104,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         log.info("user email {}", user.getEmail());
         log.info("user authProvider {}", user.getProvider());
 
-        return new CustomOAuth2User(user.getId().toString(), user.getEmail(), oAuth2User.getAttributes());
+        return new CustomOAuth2User(user.getUserId().toString(), user.getEmail(), oAuth2User.getAttributes());
     }
 }

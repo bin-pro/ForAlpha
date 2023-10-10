@@ -25,10 +25,11 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final KafkaUserInfoProducerService kafkaUserInfoProducerService;
     public UserDto.SignInResponseDto signIn(UserDto.SignInRequestDto signInRequestDto) {
         //이미 존재하는 회원
         userRepository.save(User.builder()
+                .userId(UUID.randomUUID())
                 .email(signInRequestDto.getEmail())
                 .password(passwordEncoder.encode(signInRequestDto.getPassword()))
                 .nickname(signInRequestDto.getNickname())
@@ -37,9 +38,16 @@ public class UserServiceImpl implements UserService{
 
         Optional<User> user = userRepository.findByEmail(signInRequestDto.getEmail());
 
+        UserDto.UserInfoDto userInfoDto = UserDto.UserInfoDto.builder()
+        		.userId(user.get().getUserId())
+        		.nickname(signInRequestDto.getNickname())
+        		.build();
+
+        kafkaUserInfoProducerService.createUser(userInfoDto);
+
         log.info("회원가입 성공");
         return UserDto.SignInResponseDto.builder()
-                .userId(user.get().getId())
+                .userId(user.get().getUserId())
                 .createdAt(user.get().getCreatedAt())
                 .build();
 
@@ -52,13 +60,13 @@ public class UserServiceImpl implements UserService{
 
         JwtDto.JwtRequestDto jwtRequestDto = JwtDto.JwtRequestDto.builder()
                 .email(loginRequestDto.getEmail())
-                .userId(user.getId())
+                .userId(user.getUserId())
                 .build();
 
         String jwt = jwtTokenProvider.createAccessToken(jwtRequestDto);
 
         return UserDto.LoginResponseDto.builder()
-                .userId(user.getId())
+                .userId(user.getUserId())
                 .createdAt(LocalDateTime.now())
                 .accessToken(jwt)
                 .build();
@@ -81,7 +89,7 @@ public class UserServiceImpl implements UserService{
         userRepository.save(updatedUser);
 
         return UserDto.UpdatePasswordResponseDto.builder()
-                .userId(updatedUser.getId())
+                .userId(updatedUser.getUserId())
                 .updatedAt(updatedUser.getUpdatedAt())
                 .build();
     }

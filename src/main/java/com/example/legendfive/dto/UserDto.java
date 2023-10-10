@@ -65,4 +65,13 @@ public class UserDto {
         private UUID userId;
         private LocalDateTime updatedAt;
     }
+
+
+    @Getter
+    @Builder @NoArgsConstructor @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class UserInfoDto{
+        private UUID userId;
+        private String nickname;
+    }
 }

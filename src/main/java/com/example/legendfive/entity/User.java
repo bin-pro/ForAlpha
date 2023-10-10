@@ -17,10 +17,13 @@ import java.util.UUID;
 @Table(name = "users")
 @NoArgsConstructor @AllArgsConstructor @Getter @Builder(toBuilder = true)
 public class User {
-    @Id
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @GeneratedValue(generator = "uuid2")
     @Type(type = "uuid-char")
-    private UUID id;
+    private UUID userId;
 
     @Column(name = "email", nullable = false, length = 50)
     private String email;
@@ -47,4 +50,5 @@ public class User {
     public void setProvider(String authProvider) {
         this.provider = authProvider;
     }
+
 }

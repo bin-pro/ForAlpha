@@ -41,7 +41,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     public UUID getId() {
-        return user.getId();
+        return user.getUserId();
     }
 
     @Override

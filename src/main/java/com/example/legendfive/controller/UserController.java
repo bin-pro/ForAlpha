@@ -3,9 +3,8 @@ package com.example.legendfive.controller;
 import com.example.legendfive.dto.MailDto;
 import com.example.legendfive.dto.ResponseDto;
 import com.example.legendfive.dto.UserDto;
-import com.example.legendfive.entity.User;
 import com.example.legendfive.exception.UserErrorResult;
-import com.example.legendfive.oauth2.UserPrincipal;
+import com.example.legendfive.service.KafkaUserInfoProducerService;
 import com.example.legendfive.service.MailService;
 import com.example.legendfive.service.UserService;
 import com.example.legendfive.service.VerificationService;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
