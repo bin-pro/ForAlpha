@@ -2,12 +2,13 @@ version: '3'
 services:
   zookeeper:
     hostname: zookeeper
+    platform: linux/amd64
     image: wurstmeister/zookeeper
     restart: always
     ports:
       - "2181:2181"
     networks:
-      - travel-v-commerce-net
+      - for-alpha-net
   kafka:
     hostname: kafka
     image: wurstmeister/kafka
@@ -15,7 +16,7 @@ services:
     ports:
       - "9092:9092"
     networks:
-      - travel-v-commerce-net
+      - for-alpha-net
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -27,12 +28,13 @@ services:
 
   kafdrop:
     hostname: kafdrop
+    platform: linux/amd64
     image: obsidiandynamics/kafdrop
     restart: always
     ports:
       - "9000:9000"
     networks:
-      - travel-v-commerce-net
+      - for-alpha-net
     environment:
       KAFKA_BROKERCONNECT: "kafka:9092"
       JVM_OPTS: "-Xms32M -Xmx64M"
@@ -48,7 +50,7 @@ services:
       - MYSQL_ROOT_PASSWORD=Legend5!
       - MYSQL_DATABASE=test
     networks:
-      - my-network
+      - for-alpha-net
 
   redis:
     image: redis:latest
@@ -56,10 +58,10 @@ services:
     ports:
       - "6371:6379"
     networks:
-      - my-network
+      - for-alpha-net
 
   spring-app:
-    image: lsb8375/test-user-service:3.0
+    image: lsb8375/test-user-service:3.4
     container_name: spring-app
     ports:
       - "8001:8001"
@@ -74,7 +76,7 @@ services:
       - SPRING_REDIS_PORT=6379
     restart: always
     networks:
-      - my-network
+      - for-alpha-net
 
 networks:
-  my-network:
+  for-alpha-net:
