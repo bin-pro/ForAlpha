@@ -44,6 +44,7 @@ services:
   mysql:
     image: mysql:latest
     container_name: my-mysql-container
+    restart: always
     ports:
       - "3301:3306"
     environment:
@@ -55,17 +56,40 @@ services:
   redis:
     image: redis:latest
     container_name: my-redis-container
+    restart: always
     ports:
       - "6371:6379"
     networks:
       - for-alpha-net
 
-  spring-app:
-    image: lsb8375/test-user-service:3.4
-    container_name: spring-app
+  discovery-service:
+    image: lsb8375/test-discovery-service:2.0
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - for-alpha-net
+
+  gateway-service:
+    image: lsb8375/test-gateway-service:2.0
+    container_name: gateway-service
+    ports:
+      - "8000:8000"
+    depends_on:
+      - discovery-service
+    restart: always
+    networks:
+      - for-alpha-net
+
+  user-service:
+    image: lsb8375/test-user-service:3.7
+    container_name: user-service
     ports:
       - "8001:8001"
     depends_on:
+      - discovery-service
+      - gateway-service
       - mysql
       - redis
     environment:
@@ -77,6 +101,6 @@ services:
     restart: always
     networks:
       - for-alpha-net
-
+  # foralpha-service: ports:8002:8002
 networks:
   for-alpha-net:
