@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Slf4j
-@RequestMapping("/users")
+@RequestMapping("/user-service")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -262,5 +262,10 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
         }
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "Test";
     }
 }
