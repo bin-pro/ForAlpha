@@ -1,5 +1,5 @@
 package com.example.legendfive.overall.controller;
-
+/*
 import com.example.legendfive.common.response.ResponseDto;
 import com.example.legendfive.overall.Service.QuizService;
 import com.example.legendfive.overall.Service.UserService;
@@ -92,7 +92,7 @@ public class QuizController {
             payload.put("quizHistory", quizHistory);
 
             ResponseDto successResponse = ResponseDto.builder()
-                    .payload(payload)
+                    .payload((Map<String, ?>) quizHistory)
                     .build();
 
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
@@ -105,4 +105,4 @@ public class QuizController {
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-}
+}*/

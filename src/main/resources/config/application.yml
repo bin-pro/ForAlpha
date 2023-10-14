@@ -1,12 +1,12 @@
 server:
   port: 8002
-
 spring:
+  application:
+    name: foralpha-service
   config:
     import:
       - classpath:/config/openApi.yml
       - classpath:/config/data.yml
-
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
@@ -14,8 +14,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        show_sql: false
-        format_sql: false
+        format_sql: true
         default_batch_fetch_size: 100
     show-sql: true
 
