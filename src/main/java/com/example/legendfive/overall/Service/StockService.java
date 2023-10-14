@@ -1,8 +1,11 @@
 package com.example.legendfive.overall.Service;
 
 import com.example.legendfive.overall.Entity.Stock;
+import com.example.legendfive.overall.dto.StockDto;
 import com.example.legendfive.overall.repository.stock.StockRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +16,21 @@ import java.util.stream.Collectors;
 public class StockService {
     private final StockRepository stockRepository;
 
-    public List<Stock> findByStocks(String brand) {
+    public Page<StockDto.SearchStockBrandResponseDto> searchStockByBrandName(String brandName, Pageable pageable) {
+        Page<Stock> searchResults = stockRepository.findByStockNameContainingIgnoreCase(brandName, pageable);
 
-        return stockRepository.findByStockName(brand);
+        // Page를 DTO로 변환
+        return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .StockName(stockEntity.getStockName())
+                .build());
     }
 
-    public List<Stock> findBybrands(String theme) {
-        return stockRepository.findByThemeName(theme);
+    public Page<StockDto.SearchStockBrandResponseDto> searchStockByThemeName(String themeName, Pageable pageable) {
+        Page<Stock> searchResults = stockRepository.findByThemeNameContainingIgnoreCase(themeName, pageable);
+
+        // Page를 DTO로 변환
+        return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .StockName(stockEntity.getStockName())
+                .build());
     }
 }

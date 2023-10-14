@@ -25,7 +25,7 @@ public class QuizController {
     private final ObjectMapper objectMapper;
 
 
-    @GetMapping("/quiz")
+    @GetMapping("/point/quiz")
     public ResponseEntity<ResponseDto> getRandomQuiz() {
         System.out.println("Random quiz");
         try{
@@ -44,7 +44,7 @@ public class QuizController {
         }
     }
 
-    @PostMapping("/quiz") // 랜덤 퀴즈에 대한 답을 제출받음
+    @PostMapping("/point/quiz") // 랜덤 퀴즈에 대한 답을 제출받음
     public ResponseEntity<ResponseDto> recordQuiz(@RequestParam("quiz_id") UUID quizId,
                                                   @RequestParam("user_id") UUID userId,
                                                   @RequestParam boolean quizAnswer) {
@@ -65,7 +65,7 @@ public class QuizController {
     }
 
 
-    @GetMapping("/quiz/answer") // 제출받은 답에 대한 결과를 반환
+    @GetMapping("/point/quiz/answer") // 제출받은 답에 대한 결과를 반환
     public ResponseEntity<ResponseDto> getQuizById(@RequestParam UUID quiz_uuid) {
         try {
 
@@ -82,7 +82,7 @@ public class QuizController {
         }
     }
 
-    @GetMapping("/history/quiz")
+    @GetMapping("/profile/history/quiz")
     public ResponseEntity<ResponseDto> getQuizHistory(@RequestParam("user-uuid") UUID userUuid) {
         try {
             List<QuizDto.QuizHistoryResponseDto> quizHistory = quizService.getQuizHistory(userUuid);
