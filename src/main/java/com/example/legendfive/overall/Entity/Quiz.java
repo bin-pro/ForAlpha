@@ -27,7 +27,7 @@ public class Quiz extends Time{
     @GeneratedValue(generator = "uuid2")
     @Column(name = "quiz_uuid")
     @Type(type = "uuid-char")
-    private UUID quizUuId;;
+    private UUID quizUuId;
 
     @Column(name = "quiz_point")
     private int quizPoint;
@@ -36,7 +36,7 @@ public class Quiz extends Time{
     private String quizQuestion;
 
     @Column(name = "quiz_answer")
-    private String quizAnswer;
+    private boolean quizAnswer;
 
     @Column(name = "quiz_explanation")
     private String quizExplanation;

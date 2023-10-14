@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -23,8 +24,8 @@ public class QuizRecord extends Time {
     private Long id;
 
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name="quiz_record_uuid",columnDefinition =  "VARCHAR(45)")
+    @Type(type = "uuid-char")
+    @Column(name="quiz_record_uuid")
     private UUID quizRecordUuid;
 
     @Column(name = "is_won")

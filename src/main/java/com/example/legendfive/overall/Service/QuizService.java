@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.UUID;
@@ -49,12 +51,12 @@ public class QuizService {
 
 
     public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID user, UUID quiz, boolean quizAnswer){
-        log.info("user: {}, quiz: {}, quizAnswer: {}", user, quiz, quizAnswer);
-        //User findUser = userRepository.findByUserUuid(user).orElseThrow();
-        //Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow();
-        User findUser = userRepository.findByUserUuid(user).orElseThrow(); // -> QuizRecord.getUser(findUser)
-        Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow(); // -> QuizRecord.getQuiz(findQuiz)
-        // quizRecordRepository.save(quizRecord) -> 없어도 됌?
+
+        System.out.println("user: " + user + ", quiz: " + quiz + ", quizAnswer: " + quizAnswer);
+
+        User findUser = userRepository.findByUserUuid(user).orElseThrow();
+        Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow();
+
         QuizRecord quizRecord = QuizRecord.builder()
                 .user(findUser)
                 .quiz(findQuiz)
@@ -71,18 +73,29 @@ public class QuizService {
     }
 
 
-    public QuizDto.QuizAnswerResponseDto getQuizAnswerResponse(Long quiz_id) {
-
-        Quiz findQuiz = quizRepository.findById(quiz_id).orElseThrow();
+    public QuizDto.QuizAnswerResponseDto getQuizAnswerResponse(UUID quiz_uuid) {
+        Quiz findQuiz = quizRepository.findByQuizUuId(quiz_uuid).orElseThrow();
 
         QuizDto.QuizAnswerResponseDto responseDto = QuizDto.QuizAnswerResponseDto.builder()
                 .quizPoint(findQuiz.getQuizPoint())
-                .isQuizCorrected(findQuiz.getQuizAnswer())
+                .quizQuestion(findQuiz.getQuizQuestion())
+                .quizAnswer(findQuiz.isQuizAnswer())
                 .quizExplanation(findQuiz.getQuizExplanation())
-                .createdAt(findQuiz.getCreatedAt())
                 .build();
 
         return responseDto;
+
+    }
+
+
+//    public List<QuizDto.QuizHistoryResponseDto> getQuizHistory(UUID userUuid) {
+//        List<QuizDto.QuizHistoryEntity> quizHistoryEntities = quizHistoryRepository.findByUserUuid(userUuid);
+//
+//
+//    }
+
+    public List<QuizDto.QuizHistoryResponseDto> getQuizHistory(UUID userUuid) {
+        User user = userRepository.findByUserUuid(userUuid).orElseThrow();
 
     }
 }

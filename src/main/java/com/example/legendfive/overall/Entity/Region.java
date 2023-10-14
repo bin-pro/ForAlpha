@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,8 +26,8 @@ public class Region extends Time {
     private Long id;
 
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name="region_uuid",columnDefinition = "BINARY(16)")
+    @Type(type = "uuid-char")
+    @Column(name="region_uuid")
     private UUID regionUuid;
 
     @Column(name = "region_name")

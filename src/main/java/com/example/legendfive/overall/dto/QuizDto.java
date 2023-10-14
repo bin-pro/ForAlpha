@@ -44,9 +44,9 @@ public class QuizDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class QuizAnswerResponseDto{
         private int quizPoint;
-        private String isQuizCorrected;
+        private String quizQuestion;
+        private boolean quizAnswer;
         private String quizExplanation;
-        private LocalDateTime createdAt;
     }
 
     @Getter
@@ -54,5 +54,15 @@ public class QuizDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class QuizRecordResponseDto{
         private String message;
+    }
+
+    @Getter
+    @Builder @NoArgsConstructor @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class QuizHistoryResponseDto{
+        private LocalDateTime createdAt;
+        private int quizPoint;
+        private String quizQuestion;
+        private boolean quizAnswer;
     }
 }

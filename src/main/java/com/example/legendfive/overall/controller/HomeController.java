@@ -1,8 +1,6 @@
 package com.example.legendfive.overall.controller;
 
-import com.example.legendfive.common.response.Response;
-import com.example.legendfive.overall.Service.HomeService;
-import com.example.legendfive.overall.dto.HomeDto;
+//import com.example.legendfive.overall.Service.HomeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,7 @@ import java.util.List;
 @RequestMapping("/home")
 public class HomeController {
 
-    private final HomeService homeService;
+//    private final HomeService homeService;
 
 //    @GetMapping("/trading-volumes")
 //    public Response<List<HomeDto.volumeListDto>> tradingVolume(){
