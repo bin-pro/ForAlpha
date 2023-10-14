@@ -16,7 +16,7 @@ import java.util.UUID;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class User extends Time {
 
     @Id

@@ -48,28 +48,59 @@ public class QuizService {
         return min + (long) (Math.random() * (max - min + 1));
     }
 
+    @Transactional
+    public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID userUuid, UUID quizUuid, boolean quizAnswer) {
+        User user = userRepository.findByUserUuid(userUuid)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Quiz quiz = quizRepository.findByQuizUuId(quizUuid)
+                .orElseThrow(() -> new RuntimeException("퀴즈를 찾을 수 없습니다."));
 
-    public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID user, UUID quiz, boolean quizAnswer){
-
-        System.out.println("user: " + user + ", quiz: " + quiz + ", quizAnswer: " + quizAnswer);
-
-        User findUser = userRepository.findByUserUuid(user).orElseThrow();
-        Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow();
-
+        // 퀴즈 기록 생성
         QuizRecord quizRecord = QuizRecord.builder()
-                .user(findUser)
-                .quiz(findQuiz)
+                .user(user)
+                .quiz(quiz)
                 .isWon(quizAnswer)
                 .build();
 
         quizRecordRepository.save(quizRecord);
 
-        QuizDto.QuizRecordResponseDto quizRecordResponseDto = QuizDto.QuizRecordResponseDto.builder()
-                .message("Quiz response recorded successfully.")
+        // 사용자의 포인트 업데이트  --> 이거 추가됨
+        int quizPoint = quiz.getQuizPoint();
+        User updatedUser = user.toBuilder()
+                .userPoint(user.getUserPoint() + (quizAnswer ? quizPoint : 0))
                 .build();
 
-        return quizRecordResponseDto;
+        // 포인트 업데이트된 사용자 정보 저장
+        userRepository.save(updatedUser);
+
+        // 응답 DTO 생성
+        return QuizDto.QuizRecordResponseDto.builder()
+                .message("Quiz response recorded successfully.")
+                .build();
     }
+
+
+
+//    public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID user, UUID quiz, boolean quizAnswer){
+//
+//        User findUser = userRepository.findByUserUuid(user).orElseThrow();
+//        Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow();
+//
+//        QuizRecord quizRecord = QuizRecord.builder()
+//                .user(findUser)
+//                .quiz(findQuiz)
+//                .isWon(quizAnswer)
+//                .build();
+//
+//        quizRecordRepository.save(quizRecord);
+//
+//        QuizDto.QuizRecordResponseDto quizRecordResponseDto = QuizDto.QuizRecordResponseDto.builder()
+//                .message("Quiz response recorded successfully.")
+//                .build();
+//
+//        return quizRecordResponseDto;
+//    }
+
 
 
     public QuizDto.QuizAnswerResponseDto getQuizAnswerResponse(UUID quiz_uuid) {
@@ -91,7 +122,8 @@ public class QuizService {
     public List<QuizDto.QuizHistoryResponseDto> getQuizHistory(UUID userUuid) {
         // 퀴즈 내역을 담을 리스트
         List<QuizDto.QuizHistoryResponseDto> quizHistoryList = new ArrayList<>();
-        Long userId = userRepository.findIdByUserUuid(userUuid).orElseThrow();
+        Long userId = userRepository.findIdByUserUuid(userUuid)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         // 사용자의 퀴즈 기록 가져오기
         List<QuizRecord> quizRecords = quizRecordRepository.findByUserId(userId);
