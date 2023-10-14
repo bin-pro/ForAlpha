@@ -26,7 +26,7 @@ public class FriendController {
     private final FriendService friendService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("feed/friends")
+    @PostMapping("/feed/friends/search")
     public ResponseEntity<ResponseDto> addFriend(@RequestBody FriendDto.AddFriendRequsetDto addFriendRequestDto) {
         try {
             UUID userUuid = addFriendRequestDto.getUserUuId();
@@ -48,8 +48,8 @@ public class FriendController {
         }
     }
 
-    @GetMapping("user/{user-id}/my_porfile/friends")
-    public ResponseEntity<ResponseDto> getFriendList(@PathVariable("user-id") UUID userUuid) {
+    @GetMapping("/my_porfile/friends")
+    public ResponseEntity<ResponseDto> getFriendList(@RequestParam("user-uuid") UUID userUuid) {
         try {
             List<FriendDto.FriendListResponseDto> friendList = friendService.getFriendList(userUuid);
 
@@ -70,9 +70,9 @@ public class FriendController {
         }
     }
 
-    @GetMapping("/search/{friend-nickname}")
+    @GetMapping("/feed/friends/search")
     public ResponseEntity<ResponseDto> searchFriends(
-            @PathVariable("friend-nickname") String friendNickname,
+            @RequestParam("friend-nickname") String friendNickname,
             @RequestParam("user-uuid") UUID userUuid) {
         try {
             List<FriendDto.SearchFriendResponseDto> searchResults = friendService.searchFriends(userUuid, friendNickname);

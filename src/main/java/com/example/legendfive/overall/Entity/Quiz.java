@@ -36,7 +36,7 @@ public class Quiz extends Time{
     private String quizQuestion;
 
     @Column(name = "quiz_answer")
-    private String quizAnswer;
+    private boolean quizAnswer;
 
     @Column(name = "quiz_explanation")
     private String quizExplanation;

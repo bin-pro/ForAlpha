@@ -19,6 +19,15 @@ public class FriendDto {
         private String friendNickname;
     }
 
+//    @Getter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+//    public static class FriendListRequestDto{
+//        private String friendNickname;
+//    }
+
     @Getter
     @Builder
     @NoArgsConstructor

@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     //Optional<Quiz> findByQuizId(UUID quizId);
     Optional<Quiz> findByQuizUuId(UUID quizUuId);
+
 }
