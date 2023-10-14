@@ -2,6 +2,7 @@ package com.example.legendfive.overall.Entity;
 
 import com.example.legendfive.common.Time;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -32,19 +33,17 @@ public class User extends Time {
     @Column(name = "nickname")
     private String nickname;
 
+    @ColumnDefault("100")
     @Column(name = "user_point")
     private int userPoint;
-
-    @Column(name = "region_count")
-    private int regionCount;
-
-    @Column(name = "represented_badge_id")
-    private String represented_badge_id;
 
     @OneToMany(mappedBy = "user")
     private List<PredictionRecord> predictionRecord = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<QuizRecord> quizRecord = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ThemeCard> themeCard = new ArrayList<>();
 
 }

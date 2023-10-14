@@ -1,5 +1,5 @@
 package com.example.legendfive.overall.controller;
-
+/*
 import com.example.legendfive.common.response.ResponseDto;
 import com.example.legendfive.overall.Service.QuizService;
 import com.example.legendfive.overall.Service.UserService;
@@ -98,4 +98,4 @@ public class QuizController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
-}
+}*/

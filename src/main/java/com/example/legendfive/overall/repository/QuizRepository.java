@@ -7,9 +7,12 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
+/*
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     //Optional<Quiz> findByQuizId(UUID quizId);
     Optional<Quiz> findByQuizUuId(UUID quizUuId);
 
 }
+
+ */

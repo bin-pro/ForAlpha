@@ -7,34 +7,31 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "friends")
+@Table(name = "theme_cards")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Friends {
+public class ThemeCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "friends_id")
+    @Column(name = "theme_card_id")
     private Long id;
 
-    @Column(name = "user1_id")
-    @NotNull
-    private Long user1Id;
-
-    @Column(name = "user2_id")
-    @NotNull
-    private Long user2Id;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "friends_fk_user_id"))
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "theme_card_fk_user_id"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @Column(name = "created_at")
+    @Column(name = "theme_name")
+    private String themeName;
+
+    @Column(name = "theme_count")
+    private Long themeCount;
+
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 }

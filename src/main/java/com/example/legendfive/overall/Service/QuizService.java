@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.UUID;
-
+/*
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -98,4 +98,4 @@ public class QuizService {
         User user = userRepository.findByUserUuid(userUuid).orElseThrow();
 
     }
-}
+}*/
