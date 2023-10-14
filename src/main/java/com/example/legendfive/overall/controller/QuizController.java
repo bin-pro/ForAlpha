@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/quiz")
 @RequiredArgsConstructor
 @Slf4j
 public class QuizController {
@@ -26,7 +25,7 @@ public class QuizController {
     private final ObjectMapper objectMapper;
 
 
-    @GetMapping
+    @GetMapping("/quiz")
     public ResponseEntity<ResponseDto> getRandomQuiz() {
         System.out.println("Random quiz");
         try{
@@ -45,7 +44,7 @@ public class QuizController {
         }
     }
 
-    @PostMapping // 랜덤 퀴즈에 대한 답을 제출받음
+    @PostMapping("/quiz") // 랜덤 퀴즈에 대한 답을 제출받음
     public ResponseEntity<ResponseDto> recordQuiz(@RequestParam("quiz_id") UUID quizId,
                                                   @RequestParam("user_id") UUID userId,
                                                   @RequestParam boolean quizAnswer) {
@@ -66,7 +65,7 @@ public class QuizController {
     }
 
 
-    @GetMapping("/answer") // 제출받은 답에 대한 결과를 반환
+    @GetMapping("/quiz/answer") // 제출받은 답에 대한 결과를 반환
     public ResponseEntity<ResponseDto> getQuizById(@RequestParam UUID quiz_uuid) {
         try {
 
@@ -87,15 +86,23 @@ public class QuizController {
     public ResponseEntity<ResponseDto> getQuizHistory(@RequestParam("user-uuid") UUID userUuid) {
         try {
             List<QuizDto.QuizHistoryResponseDto> quizHistory = quizService.getQuizHistory(userUuid);
+
+            // 정상적인 응답 생성
+            Map<String, List<QuizDto.QuizHistoryResponseDto>> payload = new HashMap<>();
+            payload.put("quizHistory", quizHistory);
+
             ResponseDto successResponse = ResponseDto.builder()
-                    .payload(quizHistory)
+                    .payload(payload)
                     .build();
+
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
+            // 예외 발생 시 에러 응답
             ResponseDto errorResponse = ResponseDto.builder()
                     .error(e.getMessage())
                     .build();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

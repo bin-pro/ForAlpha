@@ -14,11 +14,10 @@ import org.springframework.stereotype.Service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -88,14 +87,35 @@ public class QuizService {
     }
 
 
-//    public List<QuizDto.QuizHistoryResponseDto> getQuizHistory(UUID userUuid) {
-//        List<QuizDto.QuizHistoryEntity> quizHistoryEntities = quizHistoryRepository.findByUserUuid(userUuid);
-//
-//
-//    }
-
+    @Transactional(readOnly = true)
     public List<QuizDto.QuizHistoryResponseDto> getQuizHistory(UUID userUuid) {
-        User user = userRepository.findByUserUuid(userUuid).orElseThrow();
+        // 퀴즈 내역을 담을 리스트
+        List<QuizDto.QuizHistoryResponseDto> quizHistoryList = new ArrayList<>();
+        Long userId = userRepository.findIdByUserUuid(userUuid).orElseThrow();
 
+        // 사용자의 퀴즈 기록 가져오기
+        List<QuizRecord> quizRecords = quizRecordRepository.findByUserId(userId);
+
+        // 각 퀴즈 기록에 대한 정보 추출
+        for (QuizRecord quizRecord : quizRecords) {
+            Long quizId = quizRecord.getQuiz().getId();
+            String quizQuestion = quizRecord.getQuiz().getQuizQuestion();
+            boolean quizAnswer = quizRecord.getQuiz().isQuizAnswer();
+            int quizPoint = quizRecord.isWon() ? quizRecord.getQuiz().getQuizPoint() : 0;
+            LocalDateTime createdAt = quizRecord.getCreatedAt();
+
+            // DTO에 정보 추가
+            QuizDto.QuizHistoryResponseDto quizHistoryResponseDto = QuizDto.QuizHistoryResponseDto.builder()
+                    .createdAt(createdAt)
+                    .quizPoint(quizPoint)
+                    .quizQuestion(quizQuestion)
+                    .quizAnswer(quizAnswer)
+                    .build();
+
+            // 리스트에 추가
+            quizHistoryList.add(quizHistoryResponseDto);
+        }
+
+        return quizHistoryList;
     }
 }
