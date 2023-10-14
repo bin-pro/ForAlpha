@@ -28,7 +28,7 @@ public class HomeService {
 
     private String accessToken;
 
-    @Scheduled(cron = "*/3 * * * * ?")
+//    @Scheduled(cron = "*/3 * * * * ?")
     public void getTradingVolumes() {
 
         getToken();
@@ -36,8 +36,8 @@ public class HomeService {
         System.out.println(block);
     }
 
-    @Scheduled(cron = "* * 8 * * ?")// Scheduled to run every day at 7:00 AM
-    @PostConstruct
+//    @Scheduled(cron = "* * 8 * * ?")// Scheduled to run every day at 7:00 AM
+//    @PostConstruct
     public void getToken() {
         try {
             accessToken = getAccessToken();

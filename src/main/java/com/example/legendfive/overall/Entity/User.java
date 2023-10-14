@@ -41,9 +41,6 @@ public class User extends Time {
     @Column(name = "represented_badge_id")
     private String represented_badge_id;
 
-    @Column(name="is_predict")
-    private boolean isPredict;
-
     @OneToMany(mappedBy = "user")
     private List<PredictionRecord> predictionRecord = new ArrayList<>();
 
