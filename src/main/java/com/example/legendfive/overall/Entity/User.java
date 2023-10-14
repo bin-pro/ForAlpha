@@ -38,9 +38,6 @@ public class User extends Time {
     @Column(name = "region_count")
     private int regionCount;
 
-    @Column(name = "represented_badge_id")
-    private String represented_badge_id;
-
     @Column(name="is_predict")
     private boolean isPredict;
 

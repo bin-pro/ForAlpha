@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,17 +24,17 @@ public class Friends {
     private Long id;
 
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "friends_uuid",columnDefinition = "BINARY(16)")
+    @Type(type = "uuid-char")
+    @Column(name = "friends_uuid")
     private UUID friendsUuid;
 
     @Column(name = "user1_id")
     @NotNull
-    private String user1Id;
+    private Long user1Id;
 
     @Column(name = "user2_id")
     @NotNull
-    private String user2Id;
+    private Long user2Id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

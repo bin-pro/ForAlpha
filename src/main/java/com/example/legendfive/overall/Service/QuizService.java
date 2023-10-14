@@ -49,12 +49,12 @@ public class QuizService {
 
 
     public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID user, UUID quiz, boolean quizAnswer){
-        log.info("user: {}, quiz: {}, quizAnswer: {}", user, quiz, quizAnswer);
-        //User findUser = userRepository.findByUserUuid(user).orElseThrow();
-        //Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow();
-        User findUser = userRepository.findByUserUuid(user).orElseThrow(); // -> QuizRecord.getUser(findUser)
-        Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow(); // -> QuizRecord.getQuiz(findQuiz)
-        // quizRecordRepository.save(quizRecord) -> 없어도 됌?
+
+        System.out.println("user: " + user + ", quiz: " + quiz + ", quizAnswer: " + quizAnswer);
+
+        User findUser = userRepository.findByUserUuid(user).orElseThrow();
+        Quiz findQuiz = quizRepository.findByQuizUuId(quiz).orElseThrow();
+
         QuizRecord quizRecord = QuizRecord.builder()
                 .user(findUser)
                 .quiz(findQuiz)

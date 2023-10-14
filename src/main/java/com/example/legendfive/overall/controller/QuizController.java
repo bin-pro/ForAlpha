@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/quizzes")
+@RequestMapping("/quizes")
 @RequiredArgsConstructor
 @Slf4j
 public class QuizController {
@@ -48,6 +48,7 @@ public class QuizController {
                                                   @PathVariable("user_id") UUID userId,
                                                   @RequestParam boolean quizAnswer) {
         try {
+            System.out.println("quizId: " + quizId + ", userId: " + userId + ", quizAnswer: " + quizAnswer);
             QuizDto.QuizRecordResponseDto quizRecordResponseDto = quizService.recordQuizResponse(userId, quizId, quizAnswer);
 
             ResponseDto responseDto2 = ResponseDto.builder()
