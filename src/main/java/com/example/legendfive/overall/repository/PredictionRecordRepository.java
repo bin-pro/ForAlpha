@@ -1,0 +1,20 @@
+package com.example.legendfive.overall.repository;
+
+import com.example.legendfive.overall.Entity.PredictionRecord;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface PredictionRecordRepository extends JpaRepository<PredictionRecord, Long> {
+
+    //List<Long> findTopStockIdsOrderByCountDesc();
+
+    @Query("SELECT p.stock.id " +
+            "FROM PredictionRecord p " +
+            "JOIN p.stock s " +
+            "GROUP BY p.stock.id, s.stockCode " +
+            "ORDER BY COUNT(p.stockCode) DESC ")
+    List<Long> findStockIdsOrderByCountDesc();
+
+}

@@ -26,7 +26,7 @@ public class PredictionRecord extends Time {
     private Long id;
 
     @Column(name="stock_code")
-    private Long stockCode;
+    private String stockCode;
 
     @Column(name = "stock_present_price")
     private int stock_present_price;
