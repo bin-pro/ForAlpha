@@ -3,11 +3,15 @@ server:
 spring:
   application:
     name: foralpha-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   config:
     import:
       - classpath:/config/openApiS3.yml
-      - classpath:/config/data.yml
-      -
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
 
@@ -50,3 +54,5 @@ eureka:
     hostname: ${INSTANCE_HOST}
 
 
+chatgpt:
+  api-key: ${CHATGPT_API_KEY}
