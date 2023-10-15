@@ -25,7 +25,7 @@ public class QuizDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class RandomQuizResponseDto{
         private UUID quizId;//->안썻음
-        private Long id;//
+        private long id;//
         private String quizQuestion;
 
     }
@@ -45,7 +45,7 @@ public class QuizDto {
     public static class QuizAnswerResponseDto{
         private int quizPoint;
         private String quizQuestion;
-        private boolean quizAnswer;
+        private String quizAnswer;
         private String quizExplanation;
     }
 
@@ -63,6 +63,6 @@ public class QuizDto {
         private LocalDateTime createdAt;
         private int quizPoint;
         private String quizQuestion;
-        private boolean quizAnswer;
+        private String quizAnswer;
     }
 }

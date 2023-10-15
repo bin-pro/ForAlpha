@@ -1,10 +1,11 @@
 server:
   port: 8002
-
 spring:
+  application:
+    name: foralpha-service
   config:
     import:
-      - classpath:/config/openApi.yml
+      - classpath:/config/openApiS3.yml
       - classpath:/config/data.yml
       -
   profiles:
@@ -24,8 +25,7 @@ spring:
       ddl-auto: ${SPRING_DATASOURCE_DDL-AUTO}
     properties:
       hibernate:
-        show_sql: false
-        format_sql: false
+        format_sql: true
         default_batch_fetch_size: 100
     show-sql: true
 

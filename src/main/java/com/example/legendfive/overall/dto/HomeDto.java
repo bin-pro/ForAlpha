@@ -11,12 +11,8 @@ public class HomeDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class volumeListDto{
+    public static class popularStockResponseDto{
         private String stockName;
-        private String stockCode;
-        private String dataLank;
-        private String volume;
-        private String stockPresentPrice;
-        private String StockDodPercentage;
+        private int predictCount;
     }
 }

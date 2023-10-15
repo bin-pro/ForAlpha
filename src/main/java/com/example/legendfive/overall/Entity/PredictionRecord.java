@@ -27,19 +27,11 @@ public class PredictionRecord extends Time {
 
     @GeneratedValue(generator = "uuid2")
     @Type(type = "uuid-char")
-    @Column(name = "prediction_record_uuid")
-    private UUID predictionRecordUuId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id")
-    private Stock stock;
+    @Column(name="prediction_record_uuid")
+    private UUID predictionRecordUuid;
 
     @Column(name="stock_code")
-    private Long stockCode;
+    private String stockCode;
 
     @Column(name = "stock_present_price")
     private int stock_present_price;
@@ -47,7 +39,15 @@ public class PredictionRecord extends Time {
     @Column(name="end_day")
     private LocalDateTime endDay; // 예측 종료일
 
-    @Column(name="earning_point")
-    private int earnedPoint;
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User user;
 
+    @JoinColumn(name = "feed_id", foreignKey = @ForeignKey(name = "prediction_record_fk_feed_id"))
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Feed feed;
+
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "prediction_record_fk_stock_id"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Stock stock;
 }

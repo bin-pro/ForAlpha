@@ -1,0 +1,16 @@
+openapi:
+  appkey: ${api_appkey}
+  appsecretkey: ${api_appsecret}
+  accesstoken: ${api_accesstoken}
+cloud:
+  aws:
+    credentials:
+      access-key: ${aws_accesskey}
+      secret-key: ${aws_secretkey}
+    region:
+      static: ${region}
+    s3:
+      bucket: ${bucket}
+    stack:
+      auto: false
+

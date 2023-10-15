@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "feed")
+@Table(name = "feeds")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,17 +26,18 @@ public class Feed extends Time {
     @Column(name = "feed_id")
     private Long id;
 
-    @GeneratedValue(generator = "uuid2")
-    @Type(type = "uuid-char")
-    @Column(name = "prediction_record_uuid")
-    private UUID predictionRecordUuid;
-
     @Column(name = "buying_price")
-    private int buytingPrice;
+    private int buyingPrice;
+
     @Column(name = "selling_price")
     private int sellingPirce;
-    @Column(name = "is_public")
-    private int isPublic;
+
+    @ColumnDefault("true")
+    @Column(name = "is_public", columnDefinition = "TINYINT(1)")
+    private boolean isPublic;
+
+    @Column(name="earning_point")
+    private int earnedPoint;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prediction_record_id")

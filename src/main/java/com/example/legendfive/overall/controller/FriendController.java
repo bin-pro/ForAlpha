@@ -21,24 +21,25 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j @RequestMapping("/friends")
 public class FriendController {
     private final FriendService friendService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("/feed/friends/search")
+    @PostMapping
     public ResponseEntity<ResponseDto> addFriend(@RequestBody FriendDto.AddFriendRequsetDto addFriendRequestDto) {
         try {
-            UUID userUuid = addFriendRequestDto.getUserUuId();
-            String friendNickname = addFriendRequestDto.getFriendNickname();
 
-            FriendDto.AddFriendResponseDto responseDto = friendService.addFriend(userUuid, friendNickname);
+            UUID userId = addFriendRequestDto.getUserId();
+            UUID friendId = addFriendRequestDto.getFriendId();
 
-            ResponseDto responseBody = ResponseDto.builder()
-                    .payload(objectMapper.convertValue(responseDto, Map.class))
+            FriendDto.AddFriendResponseDto addFriendResponseDto = friendService.addFriend(userId, friendId);
+
+            ResponseDto responseDto = ResponseDto.builder()
+                    .payload(objectMapper.convertValue(addFriendResponseDto, Map.class))
                     .build();
 
-            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
         } catch (RuntimeException e) {
             ResponseDto errorResponse = ResponseDto.builder()
                     .error(e.getMessage())
@@ -48,16 +49,14 @@ public class FriendController {
         }
     }
 
-    @GetMapping("/my_porfile/friends")
-    public ResponseEntity<ResponseDto> getFriendList(@RequestParam("user-uuid") UUID userUuid) {
+    @GetMapping
+    public ResponseEntity<ResponseDto> getFriendList(@RequestParam("user-id") UUID userId) {
         try {
-            List<FriendDto.FriendListResponseDto> friendList = friendService.getFriendList(userUuid);
 
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("friendList", friendList);
+            FriendDto.GetFriendsResponseDto getFriendsResponseDto = friendService.getFriendList(userId);
 
             ResponseDto responseBody = ResponseDto.builder()
-                    .payload(payload)
+                    .payload(objectMapper.convertValue(getFriendsResponseDto, Map.class))
                     .build();
 
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
@@ -70,24 +69,26 @@ public class FriendController {
         }
     }
 
-    @GetMapping("/feed/friends/search")
-    public ResponseEntity<ResponseDto> searchFriends(
-            @RequestParam("friend-nickname") String friendNickname,
-            @RequestParam("user-uuid") UUID userUuid) {
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto> searchUsers(
+            @RequestParam("nickname") String nickname,
+            @RequestParam("user-id") UUID userId) {
         try {
-            List<FriendDto.SearchFriendResponseDto> searchResults = friendService.searchFriends(userUuid, friendNickname);
-//            ResponseDto successResponse = ResponseDto.builder()
-//                    .payload(searchResults)
-//                    .build();
 
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("searchResults", searchResults);
-
-            ResponseDto responseBody = ResponseDto.builder()
-                    .payload(payload)
+            FriendDto.SearchUserRequestDto searchUserRequestDto = FriendDto.SearchUserRequestDto.builder()
+                    .nickname(nickname)
+                    .userId(userId)
                     .build();
 
-            return new ResponseEntity<>(responseBody, HttpStatus.OK);
+            FriendDto.SearchUserResponseDto searchUserResponseDto = friendService.searchUsers(searchUserRequestDto);
+
+
+            ResponseDto responseBody = ResponseDto.builder()
+                    .payload(objectMapper.convertValue(searchUserResponseDto, Map.class))
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+
         } catch (RuntimeException e) {
             ResponseDto errorResponse = ResponseDto.builder()
                     .error(e.getMessage())
