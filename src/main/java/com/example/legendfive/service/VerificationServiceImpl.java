@@ -21,6 +21,8 @@ public class VerificationServiceImpl implements VerificationService{
     }
     //5분의 인증코드
     public void saveVerificationCode(String key, String verificationCode) {
+        log.info("key: " + key + " verificationCode: " + verificationCode);
+        log.info("redisTemplate: " + redisTemplate);
         redisTemplate.opsForValue().set(key, verificationCode, 5, TimeUnit.MINUTES);
     }
 

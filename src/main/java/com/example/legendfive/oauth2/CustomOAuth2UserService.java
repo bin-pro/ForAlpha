@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Service @Transactional
@@ -47,10 +48,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         switch (authProvider.toLowerCase()) {
             case "google":
-                log.info("Auth provider: {}", authProvider);
-                email = (String) oAuth2User.getAttributes().get("email");
-                break;
-            case "facebook":
                 log.info("Auth provider: {}", authProvider);
                 email = (String) oAuth2User.getAttributes().get("email");
                 break;
@@ -83,6 +80,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 user.setProvider(authProvider);
             }else{
                 user = User.builder()
+                        .userId(UUID.randomUUID())
                         .email(email)
                         .role(Role.USER)
                         .provider(authProvider)

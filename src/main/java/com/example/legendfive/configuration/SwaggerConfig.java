@@ -1,8 +1,6 @@
 package com.example.legendfive.configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,10 +25,11 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 public class SwaggerConfig {
     private static final String API_NAME = "포알파 User Service API";
     private static final String API_VERSION = "1.0.0";
-    private static final String API_DESCRIPTION = "포알파 API 명세서입니다.";
+    private static final String API_DESCRIPTION = "포알파 User Service API 명세서입니다.";
     @Profile({"test || dev"})
     @Bean
     public Docket api() {
+
         Parameter parameterBuilder = new ParameterBuilder()
                 .name(HttpHeaders.AUTHORIZATION)
                 .description("Access Tocken")
@@ -87,4 +86,5 @@ public class SwaggerConfig {
     public Docket disable() {
         return new Docket(DocumentationType.OAS_30).enable(false);
     }
+
 }

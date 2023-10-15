@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService{
     private final JwtTokenProvider jwtTokenProvider;
     private final KafkaUserInfoProducerService kafkaUserInfoProducerService;
     public UserDto.SignInResponseDto signIn(UserDto.SignInRequestDto signInRequestDto) {
+
         //이미 존재하는 회원
         userRepository.save(User.builder()
                 .userId(UUID.randomUUID())

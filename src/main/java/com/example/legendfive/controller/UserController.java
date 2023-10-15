@@ -4,7 +4,6 @@ import com.example.legendfive.dto.MailDto;
 import com.example.legendfive.dto.ResponseDto;
 import com.example.legendfive.dto.UserDto;
 import com.example.legendfive.exception.UserErrorResult;
-import com.example.legendfive.service.KafkaUserInfoProducerService;
 import com.example.legendfive.service.MailService;
 import com.example.legendfive.service.UserService;
 import com.example.legendfive.service.VerificationService;
@@ -171,6 +170,7 @@ public class UserController {
                     .title("포알파 이메일 인증코드입니다.")
                     .content("인증번호는 [" + verificationCode + "]입니다.")
                     .build();
+
             mailService.sendMail(mailSendDto);
 
             verificationService.saveVerificationCode(email, verificationCode);
