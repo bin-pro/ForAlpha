@@ -3,10 +3,12 @@ package com.example.legendfive.overall.Entity;
 import com.example.legendfive.common.Time;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +16,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -28,7 +30,7 @@ public class User extends Time {
     @GeneratedValue(generator = "uuid2")
     @Column(name = "user_uuid")
     @Type(type = "uuid-char")
-    private UUID userUuid;
+    private UUID userId;
 
     @Column(name = "nickname")
     private String nickname;
@@ -37,13 +39,20 @@ public class User extends Time {
     @Column(name = "user_point")
     private int userPoint;
 
+    @CreationTimestamp
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "user")
     private List<PredictionRecord> predictionRecord = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<QuizRecord> quizRecord = new ArrayList<>();
 
+    public void updateUserPoint(int userPoint){
+        this.userPoint = userPoint;
+    }
+
     @OneToMany(mappedBy = "user")
     private List<ThemeCard> themeCard = new ArrayList<>();
-
 }

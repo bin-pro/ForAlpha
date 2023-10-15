@@ -25,6 +25,11 @@ public class PredictionRecord extends Time {
     @Column(name = "prediction_record_id")
     private Long id;
 
+    @GeneratedValue(generator = "uuid2")
+    @Type(type = "uuid-char")
+    @Column(name="prediction_record_uuid")
+    private UUID predictionRecordUuid;
+
     @Column(name="stock_code")
     private String stockCode;
 

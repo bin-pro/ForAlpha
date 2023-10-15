@@ -5,8 +5,18 @@ spring:
     name: foralpha-service
   config:
     import:
-      - classpath:/config/openApi.yml
+      - classpath:/config/openApiS3.yml
       - classpath:/config/data.yml
+
+  redis:
+    lettuce:
+      pool:
+        max-active: 5
+        max-idle: 5
+        min-idle: 2
+    host: localhost
+    port: 6379
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
@@ -24,3 +34,6 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
     org.springframework.jdbc.core.JdbcTemplate: DEBUG
     org.springframework.transaction: DEBUG
+
+profiles:
+  active: dev

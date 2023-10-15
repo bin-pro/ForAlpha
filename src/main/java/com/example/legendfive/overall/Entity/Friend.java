@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,19 +19,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Friends {
+public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "friends_id")
+    @Column(name = "friend_id")
     private Long id;
 
-    @Column(name = "user1_id")
     @NotNull
-    private Long user1Id;
+    @Column(name = "user1_uuid")
+    @Type(type = "uuid-char")
+    private UUID user1Id;
 
-    @Column(name = "user2_id")
     @NotNull
-    private Long user2Id;
+    @Column(name = "user2_uuid")
+    @Type(type = "uuid-char")
+    private UUID user2Id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "friends_fk_user_id"))
