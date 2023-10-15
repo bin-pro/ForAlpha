@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j @RequestMapping("/friends")
+@Slf4j @RequestMapping("/foralpha-service/friends")
 public class FriendController {
     private final FriendService friendService;
     private final ObjectMapper objectMapper;

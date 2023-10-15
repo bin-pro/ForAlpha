@@ -23,7 +23,7 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/stocks")
+@RequestMapping("/foralpha-service/stocks")
 public class StockController {
 
     private final ObjectMapper objectMapper;

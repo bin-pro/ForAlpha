@@ -2,18 +2,14 @@ package com.example.legendfive.overall.Service;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import com.example.legendfive.overall.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +23,6 @@ public class HomeService {
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
-
     @Value("${openapi.accesstoken}")
     private String accessToken;
 
@@ -36,12 +31,11 @@ public class HomeService {
      */
     @Scheduled(cron = "*/3 * * * * ?")
     public void getTradingVolumesSaveRedis() {
-        getToken();
+        //getToken();
         Object block = stockApiRequest(accessToken).block();
 
         ValueOperations<String, String> vop = redisTemplate.opsForValue();
 
-        System.out.println(block);
     }
 
     /**
@@ -50,6 +44,8 @@ public class HomeService {
     public void getTraindVolumesGetRedis() {
         // redis cash에서 값을 가져오기
     }
+
+    /*
 
     @Scheduled(cron = "0 0 8 * * ?")// Scheduled to run every day at 7:00 AM
     public void getToken() {
@@ -82,6 +78,8 @@ public class HomeService {
             return null;
         }
     }
+
+     */
 
     public Mono<Object> stockApiRequest(String token) {
 

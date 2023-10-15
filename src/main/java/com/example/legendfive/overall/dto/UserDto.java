@@ -25,12 +25,4 @@ public class UserDto {
     public static class GetUserByIdRequestDto {
         private Long id;
     }
-
-    @Getter
-    @Builder @NoArgsConstructor @AllArgsConstructor
-    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class UserInfoConsumerDto{
-        private UUID userId;
-        private String nickname;
-    }
 }

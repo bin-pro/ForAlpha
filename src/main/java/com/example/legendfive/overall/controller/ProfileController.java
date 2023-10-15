@@ -20,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/foralpha-service/profiles")
 public class ProfileController {
     private final ProfileService profileService;
 
