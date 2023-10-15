@@ -17,28 +17,20 @@ public class FriendDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class FriendListResponseDto{
-        private String friendNickname;
-        private String friendUuId;
+    public static class SearchUserRequestDto{
+        private UUID userId;
+        private String nickname;
     }
-
-//    @Getter
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-//    public static class FriendListRequestDto{
-//        private String friendNickname;
-//    }
-
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class SearchFriendResponseDto{
-        private String friendNickname;
+    public static class SearchUserResponseDto{
+        private UUID userId;
+        private List<Map<String, String>> userList;
     }
+
     @Getter
     @Builder
     @NoArgsConstructor
@@ -64,7 +56,7 @@ public class FriendDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class GetFriendsResponseDto{
-        private UUID userUuid;
+        private UUID userId;
         private List<Map<String,String>> friendList;
     }
 }

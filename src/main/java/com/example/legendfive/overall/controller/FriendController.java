@@ -30,10 +30,10 @@ public class FriendController {
     public ResponseEntity<ResponseDto> addFriend(@RequestBody FriendDto.AddFriendRequsetDto addFriendRequestDto) {
         try {
 
-            UUID userUuid = addFriendRequestDto.getUserId();
-            UUID friendUuid = addFriendRequestDto.getFriendId();
+            UUID userId = addFriendRequestDto.getUserId();
+            UUID friendId = addFriendRequestDto.getFriendId();
 
-            FriendDto.AddFriendResponseDto addFriendResponseDto = friendService.addFriend(userUuid, friendUuid);
+            FriendDto.AddFriendResponseDto addFriendResponseDto = friendService.addFriend(userId, friendId);
 
             ResponseDto responseDto = ResponseDto.builder()
                     .payload(objectMapper.convertValue(addFriendResponseDto, Map.class))
@@ -50,10 +50,10 @@ public class FriendController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDto> getFriendList(@RequestParam("user-uuid") UUID userUuid) {
+    public ResponseEntity<ResponseDto> getFriendList(@RequestParam("user-id") UUID userId) {
         try {
 
-            FriendDto.GetFriendsResponseDto getFriendsResponseDto = friendService.getFriendList(userUuid);
+            FriendDto.GetFriendsResponseDto getFriendsResponseDto = friendService.getFriendList(userId);
 
             ResponseDto responseBody = ResponseDto.builder()
                     .payload(objectMapper.convertValue(getFriendsResponseDto, Map.class))
@@ -71,22 +71,24 @@ public class FriendController {
 
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> searchUsers(
-            @RequestParam("friend-nickname") String friendNickname,
-            @RequestParam("user-uuid") UUID userUuid) {
+            @RequestParam("nickname") String nickname,
+            @RequestParam("user-id") UUID userId) {
         try {
-            List<FriendDto.SearchFriendResponseDto> searchResults = friendService.searchFriend(userUuid, friendNickname);
-//            ResponseDto successResponse = ResponseDto.builder()
-//                    .payload(searchResults)
-//                    .build();
 
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("searchResults", searchResults);
-
-            ResponseDto responseBody = ResponseDto.builder()
-                    .payload(payload)
+            FriendDto.SearchUserRequestDto searchUserRequestDto = FriendDto.SearchUserRequestDto.builder()
+                    .nickname(nickname)
+                    .userId(userId)
                     .build();
 
-            return new ResponseEntity<>(responseBody, HttpStatus.OK);
+            FriendDto.SearchUserResponseDto searchUserResponseDto = friendService.searchUsers(searchUserRequestDto);
+
+
+            ResponseDto responseBody = ResponseDto.builder()
+                    .payload(objectMapper.convertValue(searchUserResponseDto, Map.class))
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+
         } catch (RuntimeException e) {
             ResponseDto errorResponse = ResponseDto.builder()
                     .error(e.getMessage())

@@ -14,7 +14,6 @@ import java.util.UUID;
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     List<Friend> findAllByUser1Id(UUID user1Id);
-
     boolean existsByUser1IdAndUser2Id(UUID user1Id, UUID user2Id);
     int countFriendsByUser1Id(UUID user1Id);
 }
