@@ -27,6 +27,8 @@ public class HomeService {
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
+
+    @Value("${openapi.accesstoken}")
     private String accessToken;
 
     /**

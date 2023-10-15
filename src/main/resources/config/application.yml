@@ -14,7 +14,7 @@ spring:
         max-active: 5
         max-idle: 5
         min-idle: 2
-    host: localhost
+    host: 127.0.0.1
     port: 6379
 
   jpa:
