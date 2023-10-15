@@ -131,7 +131,7 @@ public class StockService {
                 .stock_present_price(Integer.parseInt(stockPredictionRequsetDto.getStock_present_price()))
                 .predictionRecordUuid(UUID.randomUUID())
                 .endDay(end_day)
-                .stockCode(Long.parseLong(stock.getStockCode())).build();
+                .stockCode(String.valueOf(Long.parseLong(stock.getStockCode()))).build();
 
         predictionRecordRepository.save(predictionRecord);
 
