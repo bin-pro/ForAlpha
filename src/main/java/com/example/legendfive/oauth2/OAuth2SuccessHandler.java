@@ -59,6 +59,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setStatus(HttpServletResponse.SC_OK);
 
         //클라이언트단에서 sign-in이 true면 로그인, false면 회원가입하도록
-        response.sendRedirect(REDIRECT_URI + "/social-login?userId=" + userId + "&sign-in=" + String.valueOf(userSignInStatus) + "&access-token=" + accessToken);
+        response.sendRedirect(REDIRECT_URI + "/social-login?userId=" + userId + "&sign-in=" + String.valueOf(userSignInStatus) + "&email=" + email);
     }
 }
