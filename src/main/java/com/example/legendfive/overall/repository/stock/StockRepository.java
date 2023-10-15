@@ -1,17 +1,18 @@
 package com.example.legendfive.overall.repository.stock;
 
 import com.example.legendfive.overall.Entity.Stock;
-import io.netty.util.internal.ObjectPool;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface StockRepository extends JpaRepository<Stock, Long>, StockRepositoryCustom
+public interface StockRepository extends JpaRepository<Stock, Long>
 {
-
-    List<Stock> findByStockName(String brand);
-    List<Stock> findByThemeName(String theme);
     Optional<Stock> findByStockUuid(UUID stockUuid);
+
+    Page<Stock> findByStockNameContainingIgnoreCase(String brandName, Pageable pageable);
+    Page<Stock> findByThemeNameContainingIgnoreCase(String themeName, Pageable pageable);
 }

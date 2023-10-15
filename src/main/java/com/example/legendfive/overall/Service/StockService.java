@@ -14,14 +14,14 @@ import com.example.legendfive.overall.repository.stock.StockRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -91,9 +91,9 @@ public class StockService {
                         int ratePlusPoint = earningRate * 200;
 
                         user.updateUserPoint(user.getUserPoint() + 100 + ratePlusPoint);
-                                predictionRecord.updateEarningPoint(100 + ratePlusPoint);
+
                     } else {
-                        predictionRecord.updateEarningPoint(-100);
+                        user.updateUserPoint(user.getUserPoint() - 100);
                     }
                 }
             }
@@ -129,7 +129,7 @@ public class StockService {
                 .stock(stock)
                 .user(user)
                 .stock_present_price(Integer.parseInt(stockPredictionRequsetDto.getStock_present_price()))
-                .predictionRecordUuId(UUID.randomUUID())
+                .predictionRecordUuid(UUID.randomUUID())
                 .endDay(end_day)
                 .stockCode(Long.parseLong(stock.getStockCode())).build();
 
@@ -138,5 +138,24 @@ public class StockService {
         return StockDto.stockPredictionResponseDto.builder()
                 .message("주식 예측 기록 저장 완료")
                 .build();
+
+    }
+
+    public Page<StockDto.SearchStockBrandResponseDto> searchStockByBrandName(String brandName, Pageable pageable) {
+        Page<Stock> searchResults = stockRepository.findByStockNameContainingIgnoreCase(brandName, pageable);
+
+        // Page를 DTO로 변환
+        return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .StockName(stockEntity.getStockName())
+                .build());
+    }
+
+    public Page<StockDto.SearchStockBrandResponseDto> searchStockByThemeName(String themeName, Pageable pageable) {
+        Page<Stock> searchResults = stockRepository.findByThemeNameContainingIgnoreCase(themeName, pageable);
+
+        // Page를 DTO로 변환
+        return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .StockName(stockEntity.getStockName())
+                .build());
     }
 }

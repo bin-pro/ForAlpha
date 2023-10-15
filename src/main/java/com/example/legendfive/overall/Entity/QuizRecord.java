@@ -5,14 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "quiz_record")
+@Table(name = "quiz_records")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,19 +25,18 @@ public class QuizRecord extends Time {
     private Long id;
 
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name="quiz_record_uuid",columnDefinition =  "VARCHAR(45)")
+    @Type(type = "uuid-char")
+    @Column(name="quiz_record_uuid")
     private UUID quizRecordUuid;
 
-    @Column(name = "is_won")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "quiz_record_fk_user_id"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User user;
+
+    @Column(name = "is_public", columnDefinition = "TINYINT(1)", nullable = false)
     private boolean isWon;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quiz_id")
+    @Enumerated(EnumType.STRING)
     private Quiz quiz;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
 }

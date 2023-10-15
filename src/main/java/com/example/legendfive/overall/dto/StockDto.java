@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 public class StockDto {
 
-
     @Getter @Builder @NoArgsConstructor @AllArgsConstructor
     public static class StockListDto{
         private String email;
@@ -68,13 +67,21 @@ public class StockDto {
         private String message;
     }
 
-    public static class stockSearchResponesDto{
-        private String name;
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class SearchStockBrandResponseDto{
+        private String StockName;
     }
 
-    @Getter @Builder @NoArgsConstructor @AllArgsConstructor
-    public static class StockSearchRequestDto{
-        private String name;
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class SearchStockThemeResponseDto{
+        private String StockName;
     }
-
 }

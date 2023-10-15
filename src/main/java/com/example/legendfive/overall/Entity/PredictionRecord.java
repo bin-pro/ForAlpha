@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,17 +26,9 @@ public class PredictionRecord extends Time {
     private Long id;
 
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "prediction_record_uuid",columnDefinition = "BINARY(16)")
-    private UUID predictionRecordUuId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id")
-    private Stock stock;
+    @Type(type = "uuid-char")
+    @Column(name="prediction_record_uuid")
+    private UUID predictionRecordUuid;
 
     @Column(name="stock_code")
     private Long stockCode;
@@ -46,11 +39,15 @@ public class PredictionRecord extends Time {
     @Column(name="end_day")
     private LocalDateTime endDay; // 예측 종료일
 
-    @Column(name="earning_point")
-    private int earnedPoint;
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User user;
 
-    public void updateEarningPoint(int earnedPoint){
-        this.earnedPoint = earnedPoint;
-    }
+    @JoinColumn(name = "feed_id", foreignKey = @ForeignKey(name = "prediction_record_fk_feed_id"))
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Feed feed;
 
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "prediction_record_fk_stock_id"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Stock stock;
 }
