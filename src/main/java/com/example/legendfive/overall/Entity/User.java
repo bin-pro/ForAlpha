@@ -47,4 +47,8 @@ public class User extends Time {
     @OneToMany(mappedBy = "user")
     private List<QuizRecord> quizRecord = new ArrayList<>();
 
+    public void updateUserPoint(int userPoint){
+        this.userPoint = userPoint;
+    }
+
 }

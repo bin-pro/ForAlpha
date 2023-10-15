@@ -49,4 +49,8 @@ public class PredictionRecord extends Time {
     @Column(name="earning_point")
     private int earnedPoint;
 
+    public void updateEarningPoint(int earnedPoint){
+        this.earnedPoint = earnedPoint;
+    }
+
 }

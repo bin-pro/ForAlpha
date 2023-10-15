@@ -25,9 +25,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
@@ -35,12 +32,11 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
     compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java:8.0.32'

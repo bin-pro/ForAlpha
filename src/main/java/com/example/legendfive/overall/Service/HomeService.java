@@ -1,6 +1,7 @@
 package com.example.legendfive.overall.Service;
 
-import com.example.legendfive.overall.dto.HomeDto;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import com.example.legendfive.overall.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,24 +21,35 @@ import javax.annotation.PostConstruct;
 public class HomeService {
 
     private final WebClient webClient;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${openapi.appkey}")
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
-
     private String accessToken;
 
-//    @Scheduled(cron = "*/3 * * * * ?")
-    public void getTradingVolumes() {
-
+    /**
+     * 3초에 한 번씩 주식의 거래량 정보들을 받아오기, 받은 값들은 redis cash에 저장
+     */
+    @Scheduled(cron = "*/3 * * * * ?")
+    public void getTradingVolumesSaveRedis() {
         getToken();
         Object block = stockApiRequest(accessToken).block();
+
+        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+
         System.out.println(block);
     }
 
-//    @Scheduled(cron = "* * 8 * * ?")// Scheduled to run every day at 7:00 AM
-//    @PostConstruct
+    /**
+     * controller가 호출할 때마다 redis cash에 저장된 값을 가져오기
+     * */
+    public void getTraindVolumesGetRedis() {
+        // redis cash에서 값을 가져오기
+    }
+
+    @Scheduled(cron = "0 0 8 * * ?")// Scheduled to run every day at 7:00 AM
     public void getToken() {
         try {
             accessToken = getAccessToken();
@@ -46,8 +58,6 @@ public class HomeService {
             throw new RuntimeException("Can't get accessToken");
         }
     }
-
-
 
     public String getAccessToken() {
         try {
@@ -71,9 +81,6 @@ public class HomeService {
         }
     }
 
-    /**
-     * 주식 코드를 보내서 주식의 거래량 정보들을 받아오기
-     */
     public Mono<Object> stockApiRequest(String token) {
 
            return webClient.get()
@@ -93,11 +100,10 @@ public class HomeService {
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)  // 올바른 헤더 이름을 사용
-                .header("appkey", "PSCjadYrwNhF5oaDn8A4g9Gof1o0qBvo6V5M")  // 다른 사용자 지정 헤더
-                .header("appsecret", "ptqAmWD9Kk+9SEQ2ZEF0acHmJOVETOOoHyL3JMVM59/h316Hbxt87OHCl85ym9XEw9G/jbEbmrqrEaynutSpHfMzWoEPtRxys/l4SouokdDemOaJvBQLhzyLZunmW7cX7n9JyvlcneFE4XPFX/OV0oE7CrM3G7U6P6G24SwuLBsvGQxGw7M=")  // 다른 사용자 지정 헤더
+                .header("appkey", prodAppKey)  // 다른 사용자 지정 헤더
+                .header("appsecret", prodAppSecret)  // 다른 사용자 지정 헤더
                 .header("tr_id", "FHPST01710000")
                 .retrieve()
                 .bodyToMono(Object.class);
-
     }
 }
