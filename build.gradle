@@ -70,6 +70,9 @@ dependencies {
 	//kafka
 	implementation 'org.springframework.kafka:spring-kafka'
 
+	//kafka-client
+	implementation 'org.apache.kafka:kafka-clients:3.1.0'
+
 	//eureka
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
