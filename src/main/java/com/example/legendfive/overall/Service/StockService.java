@@ -131,11 +131,10 @@ public class StockService {
                     //계산된 포인트
                     int calculatedTotalPrice = calculateTotalPrice(investmentPeriod, earningRate);
 
-                    if(user.getUserPoint()-calculatedTotalPrice < 0){
+                    if (user.getUserPoint() + calculatedTotalPrice < 0) {
                         user.updateUserPoint(0);
-                    }
-                    else{
-                        user.updateUserPoint(user.getUserPoint() - calculatedTotalPrice);
+                    } else {
+                        user.updateUserPoint(user.getUserPoint() + calculatedTotalPrice);
                     }
                     predictionRecord.updateStockEndPriceIncreateRate(Integer.parseInt(stockEndPriceFromS3), String.valueOf(earningRate), String.valueOf(calculatedTotalPrice));
                 }
@@ -146,8 +145,8 @@ public class StockService {
 
     /**
      * 포인트 계산 로직
-     * **/
-    public int calculateTotalPrice(int investmentPeriod, double earningRate){
+     **/
+    public int calculateTotalPrice(int investmentPeriod, double earningRate) {
 
         int basePoint = 100;
         double additionalPercentage = 0;
@@ -168,11 +167,11 @@ public class StockService {
 
         // 수익률이 양수인 경우
         if (earningRate > 0) {
-            totalPoint = basePoint + (int)(earningRate * additionalPercentage);
+            totalPoint = basePoint + (int) (earningRate * additionalPercentage);
         }
         // 수익률이 음수인 경우
         else if (earningRate < 0) {
-            totalPoint = -basePoint + (int)(earningRate * additionalPercentage);
+            totalPoint = -basePoint + (int) (earningRate * additionalPercentage);
         }
 
         return totalPoint;

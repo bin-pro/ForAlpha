@@ -32,7 +32,7 @@ public class HomeService {
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
-    @Value("${openapi.access_token}")
+    @Value("${openapi.accesstoken}")
     private String accessToken;
 
     /**
@@ -147,7 +147,7 @@ public class HomeService {
 
     public Mono<Object> getVolumeRank(String accessToken) {
 
-           return webClient.get()
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/uapi/domestic-stock/v1/quotations/volume-rank")
                         .queryParam("FID_COND_MRKT_DIV_CODE", "J")
@@ -170,6 +170,4 @@ public class HomeService {
                 .retrieve()
                 .bodyToMono(Object.class);
     }
-
-
 }

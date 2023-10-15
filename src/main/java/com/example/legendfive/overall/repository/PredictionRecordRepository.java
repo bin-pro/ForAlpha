@@ -4,6 +4,7 @@ import com.example.legendfive.overall.Entity.PredictionRecord;
 import com.example.legendfive.overall.Entity.Stock;
 import com.example.legendfive.overall.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,4 +16,11 @@ public interface PredictionRecordRepository extends JpaRepository<PredictionReco
     List<PredictionRecord> findByUser(User user);
 
     Optional<PredictionRecord> findByStockAndUserAndCreatedAt(Stock stock, User user, LocalDate now);
+    @Query("SELECT p.stock.id " +
+            "FROM PredictionRecord p " +
+            "JOIN p.stock s " +
+            "GROUP BY p.stock.id, s.stockCode " +
+            "ORDER BY COUNT(p.stockCode) DESC ")
+    List<Long> findStockIdsOrderByCountDesc();
+
 }

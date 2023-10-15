@@ -18,11 +18,15 @@ public class HomeDto {
     }
 
     @Data
-    public static class volumeDto{
+    public static class volumeDto {
         private String stock_name;
         private String data_rank;
         private String stock_present_price;
         private String stock_dod_percentage;
         private String volumeIncreaseRate;
+    }
+    public static class popularStockResponseDto{
+        private String stockName;
+        private int predictCount;
     }
 }
