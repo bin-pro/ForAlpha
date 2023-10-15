@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,5 +24,13 @@ public class UserDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class GetUserByIdRequestDto {
         private Long id;
+    }
+
+    @Getter
+    @Builder @NoArgsConstructor @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class UserInfoConsumerDto{
+        private UUID userId;
+        private String nickname;
     }
 }
