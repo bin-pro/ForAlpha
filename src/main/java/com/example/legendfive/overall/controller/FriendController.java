@@ -21,24 +21,25 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j @RequestMapping("/friends")
 public class FriendController {
     private final FriendService friendService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("/feed/friends/search")
+    @PostMapping
     public ResponseEntity<ResponseDto> addFriend(@RequestBody FriendDto.AddFriendRequsetDto addFriendRequestDto) {
         try {
-            UUID userUuid = addFriendRequestDto.getUserUuId();
-            String friendNickname = addFriendRequestDto.getFriendNickname();
 
-            FriendDto.AddFriendResponseDto responseDto = friendService.addFriend(userUuid, friendNickname);
+            UUID userUuid = addFriendRequestDto.getUserId();
+            UUID friendUuid = addFriendRequestDto.getFriendId();
 
-            ResponseDto responseBody = ResponseDto.builder()
-                    .payload(objectMapper.convertValue(responseDto, Map.class))
+            FriendDto.AddFriendResponseDto addFriendResponseDto = friendService.addFriend(userUuid, friendUuid);
+
+            ResponseDto responseDto = ResponseDto.builder()
+                    .payload(objectMapper.convertValue(addFriendResponseDto, Map.class))
                     .build();
 
-            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
         } catch (RuntimeException e) {
             ResponseDto errorResponse = ResponseDto.builder()
                     .error(e.getMessage())
@@ -48,16 +49,14 @@ public class FriendController {
         }
     }
 
-    @GetMapping("/my_porfile/friends")
+    @GetMapping
     public ResponseEntity<ResponseDto> getFriendList(@RequestParam("user-uuid") UUID userUuid) {
         try {
-            List<FriendDto.FriendListResponseDto> friendList = friendService.getFriendList(userUuid);
 
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("friendList", friendList);
+            FriendDto.GetFriendsResponseDto getFriendsResponseDto = friendService.getFriendList(userUuid);
 
             ResponseDto responseBody = ResponseDto.builder()
-                    .payload(payload)
+                    .payload(objectMapper.convertValue(getFriendsResponseDto, Map.class))
                     .build();
 
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
@@ -70,12 +69,12 @@ public class FriendController {
         }
     }
 
-    @GetMapping("/feed/friends/search")
-    public ResponseEntity<ResponseDto> searchFriends(
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto> searchUsers(
             @RequestParam("friend-nickname") String friendNickname,
             @RequestParam("user-uuid") UUID userUuid) {
         try {
-            List<FriendDto.SearchFriendResponseDto> searchResults = friendService.searchFriends(userUuid, friendNickname);
+            List<FriendDto.SearchFriendResponseDto> searchResults = friendService.searchFriend(userUuid, friendNickname);
 //            ResponseDto successResponse = ResponseDto.builder()
 //                    .payload(searchResults)
 //                    .build();

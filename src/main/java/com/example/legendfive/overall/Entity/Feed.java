@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "feed")
+@Table(name = "feeds")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

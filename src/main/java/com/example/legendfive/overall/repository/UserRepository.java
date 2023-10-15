@@ -9,6 +9,8 @@ import java.util.UUID;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query("SELECT u FROM User u WHERE u.userUuid = :userUuid")
     Optional<User> findByUserUuid(final UUID userUuid);
     Optional<User> findByNickname(final String nickname);
 

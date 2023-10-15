@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class FriendDto {
@@ -17,6 +19,7 @@ public class FriendDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class FriendListResponseDto{
         private String friendNickname;
+        private String friendUuId;
     }
 
 //    @Getter
@@ -42,8 +45,8 @@ public class FriendDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class AddFriendRequsetDto{
-        private String friendNickname;
-        private UUID userUuId;
+        private UUID userId;
+        private UUID friendId;
     }
 
     @Getter
@@ -55,4 +58,13 @@ public class FriendDto {
         private String message;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class GetFriendsResponseDto{
+        private UUID userUuid;
+        private List<Map<String,String>> friendList;
+    }
 }

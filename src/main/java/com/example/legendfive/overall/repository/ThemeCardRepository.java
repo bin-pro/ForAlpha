@@ -1,6 +1,6 @@
 package com.example.legendfive.overall.repository;
 
-import com.example.legendfive.overall.Entity.Friends;
+import com.example.legendfive.overall.Entity.Friend;
 import com.example.legendfive.overall.Entity.ThemeCard;
 import org.springframework.data.jpa.repository.JpaRepository;
 

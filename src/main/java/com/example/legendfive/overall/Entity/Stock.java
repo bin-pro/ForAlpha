@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "stock")
+@Table(name = "stocks")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
