@@ -3,8 +3,6 @@ package com.example.legendfive.overall.controller;
 import com.example.legendfive.common.response.ResponseDto;
 import com.example.legendfive.overall.Entity.Quiz;
 import com.example.legendfive.overall.Service.QuizService;
-import com.example.legendfive.overall.Service.UserService;
-import com.example.legendfive.overall.dto.FriendDto;
 import com.example.legendfive.overall.dto.QuizDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

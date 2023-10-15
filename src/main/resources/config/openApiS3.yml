@@ -1,6 +1,8 @@
 openapi:
   appkey: ${api_appkey}
   appsecretkey: ${api_appsecret}
+  access_token: ${access_token}
+
 cloud:
   aws:
     credentials:

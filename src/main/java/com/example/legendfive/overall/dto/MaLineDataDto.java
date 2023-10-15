@@ -1,9 +1,6 @@
 package com.example.legendfive.overall.dto;
 
 import lombok.Data;
-
-
-
 @Data
 public class MaLineDataDto {
 

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +28,17 @@ public class StockController {
     private final ObjectMapper objectMapper;
     private final StockService stockService;
 
+    @GetMapping("/checkPredict")
+    public void checkPredict(){
+        stockService.checkIsStockUp();
+    }
+
 
     /**
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      */
     @GetMapping("/{stock_id}")
-    public ResponseEntity<ResponseDto> getStockDetails(@PathVariable("stock_id") String stockId) {
+    public ResponseEntity<ResponseDto> getStockDetails(@PathVariable("stock_id") UUID stockId) {
 
         try {
             StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetails(stockId);

@@ -1,9 +1,12 @@
 package com.example.legendfive.overall.Service;
 
 import com.example.legendfive.overall.dto.HomeDto;
-import com.example.legendfive.overall.dto.StockDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import com.example.legendfive.overall.dto.TokenResponse;
@@ -29,6 +32,7 @@ public class HomeService {
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
+    @Value("${openapi.access_token}")
     private String accessToken;
 
     /**
@@ -37,9 +41,9 @@ public class HomeService {
     @Scheduled(cron = "*/3 * * * * ?")
     public void getTradingVolumesSaveRedis() {
 
-        if (accessToken == null) {
-            accessToken = getAccessToken();
-        }
+//        if (accessToken == null) {
+//            accessToken = getAccessToken();
+//        }
 
         Mono<Object> mono = getVolumeRank(accessToken);
 
@@ -54,9 +58,14 @@ public class HomeService {
             }
         }).subscribe(
                 dataJson -> {
-                    ValueOperations<String, String> vop = redisTemplate.opsForValue();
-                    vop.set("tradingVolumes", dataJson);
-                    System.out.println(dataJson);
+                    try {
+                        JSONObject reformattedJson = jsonReformat(dataJson);
+                        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+                        vop.set("tradingVolumes", reformattedJson.toJSONString());
+
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
                 },
                 error -> {
                     log.error("데이터 가져오기 오류", error);
@@ -72,42 +81,69 @@ public class HomeService {
         ValueOperations<String, String> vop = redisTemplate.opsForValue();
         String tradingVolumes = vop.get("tradingVolumes");
 
+        //mapper로 변환
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.readValue(tradingVolumes , HomeDto.volumeReseponseDto.class);
     }
 
-    @Scheduled(cron = "0 0 8 * * ?")// Scheduled to run every day at 7:00 AM
-    public void getToken() {
-        try {
-            accessToken = getAccessToken();
-        } catch (Exception e) {
-            log.error("accessTokenError", e);
-            throw new RuntimeException("Can't get accessToken");
+    public JSONObject jsonReformat(String dataJson) throws ParseException {
+
+        JSONParser parser = new JSONParser();
+        JSONObject originalJsonObject = (JSONObject) parser.parse(dataJson);
+        JSONArray outputArray = (JSONArray) originalJsonObject.get("output");
+
+        JSONArray dataVolumes = new JSONArray();
+        JSONObject newJsonObject = new JSONObject();
+
+        for (Object item : outputArray) {
+            JSONObject outputItem = (JSONObject) item;
+            JSONObject priceDataItem = new JSONObject();
+
+            priceDataItem.put("stock_name", outputItem.get("hts_kor_isnm"));
+            priceDataItem.put("data_rank", outputItem.get("data_rank"));
+            priceDataItem.put("stock_present_price", outputItem.get("stck_prpr"));
+            priceDataItem.put("stock_dod_percentage", outputItem.get("prdy_ctrt"));
+            priceDataItem.put("volumeIncreaseRate", outputItem.get("vol_inrt"));
+
+            dataVolumes.add(priceDataItem);
         }
+        newJsonObject.put("trading_volumes", dataVolumes);
+
+        return newJsonObject;
     }
 
-    public String getAccessToken() {
-        try {
-            TokenResponse tokenResponse = webClient.post()
-                    .uri("/oauth2/tokenP")
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .bodyValue("{\"grant_type\":\"client_credentials\",\"appkey\":\"" + prodAppKey + "\",\"appsecret\":\"" + prodAppSecret + "\"}")
-                    .retrieve()
-                    .bodyToMono(TokenResponse.class)
-                    .block();
-
-            if (tokenResponse != null) {
-                return tokenResponse.getAccess_token();
-            } else {
-                log.error("Failed to retrieve access token: TokenResponse is null");
-                return null;
-            }
-        } catch (Exception e) {
-            log.error("Failed to retrieve access token: " + e.getMessage(), e);
-            return null;
-        }
-    }
+//    @Scheduled(cron = "0 0 8 * * ?")
+//    public void getToken() {
+//        try {
+//            accessToken = getAccessToken();
+//        } catch (Exception e) {
+//            log.error("accessTokenError", e);
+//            throw new RuntimeException("Can't get accessToken");
+//        }
+//    }
+//
+//    public String getAccessToken() {
+//        try {
+//            TokenResponse tokenResponse = webClient.post()
+//                    .uri("/oauth2/tokenP")
+//                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+//                    .bodyValue("{\"grant_type\":\"client_credentials\",\"appkey\":\"" + prodAppKey + "\",\"appsecret\":\"" + prodAppSecret + "\"}")
+//                    .retrieve()
+//                    .bodyToMono(TokenResponse.class)
+//                    .block();
+//
+//            if (tokenResponse != null) {
+//                return tokenResponse.getAccess_token();
+//            } else {
+//                log.error("Failed to retrieve access token: TokenResponse is null");
+//                return null;
+//            }
+//        } catch (Exception e) {
+//            log.error("Failed to retrieve access token: " + e.getMessage(), e);
+//            return null;
+//        }
+//    }
 
     public Mono<Object> getVolumeRank(String accessToken) {
 
@@ -118,7 +154,7 @@ public class HomeService {
                         .queryParam("FID_COND_SCR_DIV_CODE", "20171")
                         .queryParam("FID_INPUT_ISCD", "0002")
                         .queryParam("FID_DIV_CLS_CODE", "0")
-                        .queryParam("FID_BLNG_CLS_CODE", "0")
+                        .queryParam("FID_BLNG_CLS_CODE", "1")
                         .queryParam("FID_TRGT_CLS_CODE", "111111111")
                         .queryParam("FID_TRGT_EXLS_CLS_CODE", "000000")
                         .queryParam("FID_INPUT_PRICE_1", "0")

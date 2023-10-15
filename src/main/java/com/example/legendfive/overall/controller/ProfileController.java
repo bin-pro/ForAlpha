@@ -4,13 +4,10 @@ package com.example.legendfive.overall.controller;
 import com.example.legendfive.overall.Service.ProfileService;
 import com.example.legendfive.overall.dto.ProfileDto;
 import com.example.legendfive.overall.dto.ResponseDto;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 

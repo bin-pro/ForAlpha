@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 
@@ -31,23 +31,42 @@ public class PredictionRecord extends Time {
     private UUID predictionRecordUuid;
 
     @Column(name="stock_code")
-    private Long stockCode;
+    private String stockCode;
 
     @Column(name = "stock_present_price")
-    private int stock_present_price;
+    private int stockPresentPrice;
+
+    @Column(name="stock_end_price")
+    private int stockEndPrice;
 
     @Column(name="end_day")
-    private LocalDateTime endDay; // 예측 종료일
+    private LocalDate endDay;
+
+    @ColumnDefault("true")
+    @Column(name = "is_public", columnDefinition = "TINYINT(1)")
+    private boolean isPublic;
+
+    //포인트
+    @ColumnDefault("0")
+    @Column(name="stock_earned_point")
+    private String stockEarnedPoint;
+
+    //수익률
+    @ColumnDefault("0")
+    @Column(name="stock_increase_rate")
+    private String stockIncreaseRate;
 
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @JoinColumn(name = "feed_id", foreignKey = @ForeignKey(name = "prediction_record_fk_feed_id"))
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Feed feed;
-
     @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "prediction_record_fk_stock_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Stock stock;
+
+    public void updateStockEndPriceIncreateRate(int stockEndPrice, String stockIncreaseRate, String stockEarnedPoint){
+        this.stockEndPrice = stockEndPrice;
+        this.stockIncreaseRate = stockIncreaseRate;
+        this.stockEarnedPoint = stockEarnedPoint;
+    }
 }

@@ -22,7 +22,7 @@ public class ThemeCardService {
     private final UserRepository userRepository;
 
     public List<ThemeDto.ThemeCardListResponseDto> getThemeCardList(UUID userUuid) {
-        User user = userRepository.findByUserUuid(userUuid)
+        User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         List<ThemeCard> themeCards = themeCardRepository.findByUserId(user.getId());
