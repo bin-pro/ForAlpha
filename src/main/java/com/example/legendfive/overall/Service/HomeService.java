@@ -1,5 +1,9 @@
 package com.example.legendfive.overall.Service;
 
+import com.example.legendfive.overall.dto.HomeDto;
+import com.example.legendfive.overall.dto.StockDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import com.example.legendfive.overall.dto.TokenResponse;
@@ -12,8 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
@@ -34,19 +36,45 @@ public class HomeService {
      */
     @Scheduled(cron = "*/3 * * * * ?")
     public void getTradingVolumesSaveRedis() {
-        getToken();
-        Object block = stockApiRequest(accessToken).block();
 
-        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+        if (accessToken == null) {
+            accessToken = getAccessToken();
+        }
 
-        System.out.println(block);
+        Mono<Object> mono = getVolumeRank(accessToken);
+
+        mono.flatMap(data -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String dataJson = objectMapper.writeValueAsString(data);
+                return Mono.just(dataJson);
+            } catch (JsonProcessingException e) {
+                log.error("데이터 JSON 변환 오류", e);
+                return Mono.empty();
+            }
+        }).subscribe(
+                dataJson -> {
+                    ValueOperations<String, String> vop = redisTemplate.opsForValue();
+                    vop.set("tradingVolumes", dataJson);
+                    System.out.println(dataJson);
+                },
+                error -> {
+                    log.error("데이터 가져오기 오류", error);
+                }
+        );
     }
 
     /**
      * controller가 호출할 때마다 redis cash에 저장된 값을 가져오기
      * */
-    public void getTraindVolumesGetRedis() {
-        // redis cash에서 값을 가져오기
+    public HomeDto.volumeReseponseDto getTradingFromRedis() throws JsonProcessingException {
+
+        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+        String tradingVolumes = vop.get("tradingVolumes");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.readValue(tradingVolumes , HomeDto.volumeReseponseDto.class);
     }
 
     @Scheduled(cron = "0 0 8 * * ?")// Scheduled to run every day at 7:00 AM
@@ -81,7 +109,7 @@ public class HomeService {
         }
     }
 
-    public Mono<Object> stockApiRequest(String token) {
+    public Mono<Object> getVolumeRank(String accessToken) {
 
            return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -99,11 +127,13 @@ public class HomeService {
                         .queryParam("FID_INPUT_DATE_1", "0")
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)  // 올바른 헤더 이름을 사용
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)  // 올바른 헤더 이름을 사용
                 .header("appkey", prodAppKey)  // 다른 사용자 지정 헤더
                 .header("appsecret", prodAppSecret)  // 다른 사용자 지정 헤더
                 .header("tr_id", "FHPST01710000")
                 .retrieve()
                 .bodyToMono(Object.class);
     }
+
+
 }

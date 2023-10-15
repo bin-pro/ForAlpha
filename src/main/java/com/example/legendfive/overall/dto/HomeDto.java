@@ -1,17 +1,27 @@
 package com.example.legendfive.overall.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class HomeDto {
+
 
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class volumeListDto{
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class volumeReseponseDto{
+        private List<volumeDto> volumeDto;
+    }
+
+    @Data
+    public static class volumeDto{
         private String stockName;
         private String stockCode;
         private String dataLank;
