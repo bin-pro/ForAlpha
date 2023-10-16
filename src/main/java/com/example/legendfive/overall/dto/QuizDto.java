@@ -44,7 +44,7 @@ public class QuizDto {
     public static class QuizAnswerResponseDto{
         private int quizPoint;
         private String quizQuestion;
-        private String quizAnswer;
+        private boolean quizAnswer;
         private String quizExplanation;
     }
 
@@ -62,6 +62,6 @@ public class QuizDto {
         private LocalDate createdAt;
         private int quizPoint;
         private String quizQuestion;
-        private String quizAnswer;
+        private boolean quizAnswer;
     }
 }
