@@ -51,8 +51,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         JwtDto.JwtRequestDto jwtRequestDto = JwtDto.JwtRequestDto
                 .builder()
-                .email(email)
                 .userId(UUID.fromString(userId))
+                .email(email)
                 .build();
 
         String accessToken = jwtTokenProvider.createAccessToken(jwtRequestDto);
@@ -62,6 +62,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         verificationService.saveCompletionCode(email, true);
 
         //클라이언트단에서 sign-in이 true면 로그인, false면 회원가입하도록
-        response.sendRedirect(REDIRECT_URI + "/social-login?userId=" + userId + "&sign-in=" + String.valueOf(userSignInStatus) + "&email=" + email);
+        response.sendRedirect(REDIRECT_URI + "/social-login?userId=" + userId + "&accessToken=" + accessToken + "&sign-in=" + String.valueOf(userSignInStatus) + "&email=" + email);
     }
 }

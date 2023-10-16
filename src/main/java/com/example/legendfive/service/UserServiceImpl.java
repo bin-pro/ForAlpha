@@ -60,13 +60,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(socialSignInRequestDto.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
-        user.toBuilder()
+        user = user.toBuilder()
                 .nickname(socialSignInRequestDto.getNickname())
                 .password(passwordEncoder.encode(socialSignInRequestDto.getPassword()))
                 .build();
 
-        userRepository.save(user);
+        log.info("user: {}", user);
+        log.info("user.getUserId(): {}", user.getUserId());
+        log.info("user.getEmail(): {}", user.getEmail());
+        log.info("user.getPassword(): {}", user.getPassword());
+        log.info("user.getNickname(): {}", user.getNickname());
 
+        userRepository.save(user);
 
         UserDto.UserInfoDto userInfoDto = UserDto.UserInfoDto.builder()
                 .userId(user.getUserId())
@@ -75,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
         kafkaUserInfoProducerService.createUser(userInfoDto);
 
-        log.info("회원가입 성공");
+        log.info("소셜 로그인 후 회원가입 성공");
         return UserDto.SocialSignInResponseDto.builder()
                 .userId(user.getUserId())
                 .createdAt(user.getCreatedAt())

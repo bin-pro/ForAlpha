@@ -142,6 +142,8 @@ public class UserController {
                 return ResponseEntity.status(userErrorResult.getHttpStatus()).body(responseDto);
             }
 
+            log.info("UserHasProvider: " + userHasProvider);
+
             if (!userHasProvider) {
                 UserDto.SignInResponseDto signInResponseDto = userService.signIn(signInRequestDto);
 
@@ -150,7 +152,9 @@ public class UserController {
                         .build();
 
                 return ResponseEntity.status(HttpStatus.CREATED).body(responseDto); //201
+
             } else if (userHasProvider) {
+
                 UserDto.SocialSignInResponseDto socialSignInResponseDto = userService.socialSignIn(signInRequestDto);
 
                 ResponseDto responseDto = ResponseDto.builder()
