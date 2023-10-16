@@ -32,7 +32,7 @@ public class QuizRecord extends Time {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @Column(name = "is_public", columnDefinition = "TINYINT(1)", nullable = false)
+    @Column(name = "is_won", columnDefinition = "TINYINT(1)", nullable = false)
     private boolean isWon;
 
     @Enumerated(EnumType.STRING)
