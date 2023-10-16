@@ -52,9 +52,9 @@ public class StockDto {
     public static class stockPredictionRequsetDto{
 
         @NotNull
-        private String stockName;
+        private String stockCode;
         @NotNull
-        private UUID userUUID;
+        private UUID userId;
         @NotNull
         private String investment_period;
         @NotNull
@@ -75,7 +75,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockBrandResponseDto{
-        private UUID stockUuid;
+        private String stockCode;
         private String StockName;
     }
 
@@ -85,7 +85,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockThemeResponseDto{
-        private UUID stockUuid;
+        private String stockCode;
         private String StockName;
     }
 }

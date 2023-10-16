@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.text.DecimalFormat;
@@ -109,12 +108,12 @@ public class StockService {
                     String formattedEarningRate = decimalFormat.format(earningRate * 100);
 
                     //계산된 포인트
-                    int calculatedTotalPrice = calculateTotalPrice(investmentPeriod, earningRate);
+                    int calculatedTotalPoint = calculateTotalPoint(investmentPeriod, earningRate);
 
-                    if (user.getUserPoint() + calculatedTotalPrice < 0) {
+                    if (user.getUserPoint() + calculatedTotalPoint < 0) {
                         user.updateUserPoint(0);
                     } else {
-                        user.updateUserPoint(user.getUserPoint() + calculatedTotalPrice);
+                        user.updateUserPoint(user.getUserPoint() + calculatedTotalPoint);
                     }
 
                     //예측하기 성공시, 테마 카드 저장
@@ -131,7 +130,7 @@ public class StockService {
                         themeCardRepository.save(newThemeCard);
                     }
 
-                    predictionRecord.updateStockEndPriceIncreateRate(Integer.parseInt(stockEndPriceFromS3), formattedEarningRate, String.valueOf(calculatedTotalPrice));
+                    predictionRecord.updatePriceRatePoint(Integer.parseInt(stockEndPriceFromS3), String.valueOf(formattedEarningRate), calculatedTotalPoint);
                 }
             }
         }
@@ -141,7 +140,7 @@ public class StockService {
     /**
      * 포인트 계산 로직
      **/
-    public int calculateTotalPrice(int investmentPeriod, double earningRate) {
+    public int calculateTotalPoint(int investmentPeriod, double earningRate) {
 
         int basePoint = 100;
         double additionalPercentage = 100;
@@ -178,11 +177,11 @@ public class StockService {
     @Transactional
     public StockDto.stockPredictionResponseDto predictStock(StockDto.stockPredictionRequsetDto stockPredictionRequsetDto) {
 
-        Stock stock = stockRepository.findByStockName(stockPredictionRequsetDto.getStockName()).orElseThrow(
+        Stock stock = stockRepository.findByStockCode(stockPredictionRequsetDto.getStockCode()).orElseThrow(
                 () -> new IllegalArgumentException("해당 주식이 존재하지 않습니다.")
         );
 
-        User user = userRepository.findByUserId(stockPredictionRequsetDto.getUserUUID()).orElseThrow(
+        User user = userRepository.findByUserId(stockPredictionRequsetDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
         PredictionRecord existingPrediction = predictionRecordRepository.findByStockAndUserAndCreatedAt(stock, user, LocalDate.now()).orElse(null);
@@ -211,7 +210,7 @@ public class StockService {
                 .predictionRecordUuid(UUID.randomUUID())
                 .endDay(end_day)
                 .isPublic(true)
-                .stockEarnedPoint("0")
+                .earnedPoint(0)
                 .stockIncreaseRate("0")
                 .stockCode(stock.getStockCode()).build();
 
@@ -231,7 +230,7 @@ public class StockService {
 
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
-                .stockUuid(stockEntity.getStockUuid())
+                .stockCode(stockEntity.getStockCode())
                 .StockName(stockEntity.getStockName())
                 .build());
     }
@@ -241,7 +240,7 @@ public class StockService {
 
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
-                .stockUuid(stockEntity.getStockUuid())
+                .stockCode(stockEntity.getStockCode())
                 .StockName(stockEntity.getStockName())
                 .build());
     }

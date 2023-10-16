@@ -14,11 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.nickname LIKE %:nickname% AND u.userId <> :userId")
     List<User> findByNickname(final String nickname, final UUID userId);
 
-    @Query("SELECT u.id FROM User u WHERE u.userId= :userUuid")
-    Optional<Long> findIdByUserUuid(UUID userUuid);
+    @Query("SELECT u.id FROM User u WHERE u.userId= :userId")
+    Optional<Long> findIdByUserUuid(UUID userId);
 
-    Optional<Long> findIdByUserId(UUID userId);
-
-    Optional<User> findByUserId(UUID userUUID);
-
+    Optional<User> findByUserId(UUID userId);
 }

@@ -60,7 +60,7 @@ public class StockController {
     /**
      * 개별 주식 예측하기를 눌렀을 때, DB에 저장
      * **/
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ResponseDto> recordPredict(@RequestBody StockDto.stockPredictionRequsetDto stockPredictionRequsetDto) {
         try {
             StockDto.stockPredictionResponseDto stockPredictionResponseDto = stockService.predictStock(stockPredictionRequsetDto);

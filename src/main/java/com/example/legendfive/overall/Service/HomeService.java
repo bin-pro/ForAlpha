@@ -32,7 +32,7 @@ public class HomeService {
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
-    private static String accessToken;
+    private static String accessToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjcyOWM1MGNhLTcyZjAtNDEyOS04YzQxLTA0NDViNjliNDcxYSIsImlzcyI6InVub2d3IiwiZXhwIjoxNjk3NTE5MzA2LCJpYXQiOjE2OTc0MzI5MDYsImp0aSI6IlBTS1liY3ZubFNUbnhXU1AxWnN0WXI2SDByemc1WVAzQXNKRiJ9.O0HbA99AhpE_GF6An9mekJSk4TXwPk5B2dHHuQXmeApkEOoforuxHRq4hBpTQBoBF77H-2o89d3EvD52NJi_nA";
 
     /**
      * 3초에 한 번씩 주식의 거래량 정보들을 받아오기, 받은 값들은 redis cash에 저장
