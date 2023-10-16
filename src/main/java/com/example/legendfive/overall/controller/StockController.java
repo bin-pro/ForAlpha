@@ -37,11 +37,11 @@ public class StockController {
     /**
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      */
-    @GetMapping("/{stock_id}")
-    public ResponseEntity<ResponseDto> getStockDetails(@PathVariable("stock_id") String stockCode) {
+    @GetMapping("")
+    public ResponseEntity<ResponseDto> getStockDetails(@RequestParam("stockName") String stockName) {
 
         try {
-            StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetails(stockCode);
+            StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetails(stockName);
 
             ResponseDto responseDto2 = ResponseDto.builder()
                     .payload(objectMapper.convertValue(stockDetailResponseDto, Map.class))
