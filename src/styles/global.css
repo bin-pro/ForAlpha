@@ -1,0 +1,28 @@
+body {
+    font-family: "Pretendard Variable";
+    letter-spacing: -0.1px;
+  }
+
+.layout{
+  max-width: 390px;
+  background-color: white;
+  margin: 0 auto;
+  min-height:100vh;
+}
+
+.warning-text {
+    font-size: x-large;
+    font-weight: bolder;
+    color: var(--highlightdarkest);
+    text-align: center;
+    padding: 10px;
+    display: none;
+    margin: 20px;
+}
+
+/* 화면 크기가 768px 이상인 경우에만 표시 */
+@media (min-width: 768px) {
+    .warning-text {
+        display: block;
+    }
+}
