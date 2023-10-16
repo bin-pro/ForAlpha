@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/home")
+@RequestMapping("/foralpha-service/home")
 public class HomeController {
 
     private final HomeService homeService;

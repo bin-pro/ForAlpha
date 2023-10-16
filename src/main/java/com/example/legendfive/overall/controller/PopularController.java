@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/foralpha-service")
 public class PopularController {
 
     private final PopularService popularService;

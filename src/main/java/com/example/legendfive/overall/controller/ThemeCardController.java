@@ -19,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/foralpha-service")
 public class ThemeCardController {
 
     private final ThemeCardService themeCardService;

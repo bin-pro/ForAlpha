@@ -22,7 +22,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/history")
+@RequestMapping("/foralpha-service/history")
 public class HistoryController {
     private final HistoryService historyService;
     @GetMapping
