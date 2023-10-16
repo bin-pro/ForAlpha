@@ -264,6 +264,36 @@ public class UserController {
         }
     }
 
+    @GetMapping("/sign-in/email/verification")
+    public ResponseEntity<ResponseDto> isVerified(@RequestBody String email) {
+        try {
+            if (!email.matches(emailRegex)) {
+                log.info("유효하지 않은 이메일");
+                UserErrorResult userErrorResult = UserErrorResult.INVALID_EMAIL;
+                ResponseDto responseDto = ResponseDto.builder().error(userErrorResult.getMessage()).build();
+
+                return ResponseEntity.status(userErrorResult.getHttpStatus()).body(responseDto);
+            }
+            boolean isVerified = verificationService.isVerified(email);
+            if (isVerified) {
+                log.info("인증된 이메일");
+            } else {
+                log.info("인증되지 않은 이메일");
+            }
+            ResponseDto responseDto = ResponseDto.builder()
+                    .payload(objectMapper.convertValue(isVerified, Map.class))
+                    .build();
+            log.info("email: " + String.valueOf(isVerified));
+
+            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        } catch (Exception e) {
+            log.info("이메일 인증 여부 확인 실패");
+            ResponseDto responseDto = ResponseDto.builder().error(e.getMessage()).build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+    }
+
     @GetMapping("/test")
     public String test(){
         return "Test";

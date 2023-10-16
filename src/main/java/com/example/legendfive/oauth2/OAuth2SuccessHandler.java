@@ -7,6 +7,7 @@ import com.example.legendfive.exception.UserErrorResult;
 import com.example.legendfive.exception.UserException;
 import com.example.legendfive.repository.UserRepository;
 import com.example.legendfive.security.JwtTokenProvider;
+import com.example.legendfive.service.VerificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final VerificationService verificationService;
 
     @Value("${spring.security.oauth2.redirect-uri}")
     private String REDIRECT_URI;
@@ -57,6 +59,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String accessToken = jwtTokenProvider.createAccessToken(jwtRequestDto);
 
         response.setStatus(HttpServletResponse.SC_OK);
+
+        verificationService.saveCompletionCode(email, true);
 
         //클라이언트단에서 sign-in이 true면 로그인, false면 회원가입하도록
         response.sendRedirect(REDIRECT_URI + "/social-login?userId=" + userId + "&sign-in=" + String.valueOf(userSignInStatus) + "&email=" + email);
