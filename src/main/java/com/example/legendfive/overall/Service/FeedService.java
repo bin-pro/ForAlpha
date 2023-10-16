@@ -33,13 +33,13 @@ public class FeedService {
 
             for (PredictionRecord record : friendRecords) {
 
-                if (record.getStock_end_price() != 0 && record.isPublic()) {
+                if (record.getStockEndPrice() != 0 && record.isPublic()) {
                     FeedDto.FriendFeedListResponseDto friendFeed = FeedDto.FriendFeedListResponseDto.builder()
                             .friendNickname(friendInfo.get("friend_nickname"))
                             .stockName(record.getStock().getStockName())
                             .stockReturns(record.getStockIncreaseRate())
-                            .beforePrice(record.getStock_present_price())
-                            .afterPrice(record.getStock_end_price())
+                            .beforePrice(record.getStockPresentPrice())
+                            .afterPrice(record.getStockEndPrice())
                             .build();
 
                     friendPredictions.add(friendFeed);

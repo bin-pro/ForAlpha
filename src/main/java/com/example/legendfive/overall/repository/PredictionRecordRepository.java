@@ -26,4 +26,6 @@ public interface PredictionRecordRepository extends JpaRepository<PredictionReco
 
     List<PredictionRecord> findAllByUserUserId(UUID userId);
     List<Long> findAllById(Long userId);
+
+    Optional<PredictionRecord> findByStockAndUserAndCreatedAt(Stock stock, User user, LocalDate now);
 }

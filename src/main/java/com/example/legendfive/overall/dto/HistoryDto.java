@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class HistoryDto {
@@ -17,8 +18,8 @@ public class HistoryDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class PredictionHistoryResponseDto{
         private String stockName;
-        private LocalDateTime createdAt;
-        private LocalDateTime endDay;
+        private LocalDate createdAt;
+        private LocalDate endDay;
         private int earnedPoint;
         private String stockReturns;
     }
