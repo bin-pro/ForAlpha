@@ -46,19 +46,14 @@ public class PredictionRecord extends Time {
     @Column(name = "is_public", columnDefinition = "TINYINT(1)")
     private boolean isPublic;
 
-    //포인트
-    @ColumnDefault("0")
-    @Column(name="stock_earned_point")
-    private String stockEarnedPoint;
-
     //수익률
     @ColumnDefault("0")
     @Column(name="stock_increase_rate")
     private String stockIncreaseRate;
 
-
+    @ColumnDefault("0")
     @Column(name="earned_point")
-    private int earnedPoint;//-----------------------------------------------
+    private int earnedPoint;
 
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -68,9 +63,9 @@ public class PredictionRecord extends Time {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Stock stock;
 
-    public void updateStockEndPriceIncreateRate(int stockEndPrice, String stockIncreaseRate, String stockEarnedPoint){
+    public void updatePriceRatePoint(int stockEndPrice, String stockIncreaseRate, int stockEarnedPoint){
         this.stockEndPrice = stockEndPrice;
         this.stockIncreaseRate = stockIncreaseRate;
-        this.stockEarnedPoint = stockEarnedPoint;
+        this.earnedPoint = stockEarnedPoint;
     }
 }

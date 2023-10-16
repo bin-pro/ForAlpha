@@ -23,10 +23,9 @@ public class QuizDto {
     @Builder @NoArgsConstructor @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class RandomQuizResponseDto{
-        private UUID quizId;//->안썻음
-        private long id;//
-        private String quizQuestion;
 
+        private long id;
+        private String quizQuestion;
     }
 
     @Getter
