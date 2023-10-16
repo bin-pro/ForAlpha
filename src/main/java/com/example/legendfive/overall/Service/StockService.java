@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.text.DecimalFormat;
@@ -49,9 +50,9 @@ public class StockService {
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      * S3에 저장된 오늘 날짜의 주식 정보를 가져오는 메소드 -> 아침마다 예측에 사용
      */
-    public StockDto.stockDetailResponseDto getStockDetails(String stockCode) {
+    public StockDto.stockDetailResponseDto getStockDetails(String stockName) {
 
-        Stock stock = stockRepository.findByStockCode(stockCode).orElseThrow(
+        Stock stock = stockRepository.findByStockName(stockName).orElseThrow(
                 () -> {
                     throw new RuntimeException("해당 주식이 없습니다.");
                 }
@@ -59,7 +60,7 @@ public class StockService {
 
         try {
 
-            S3Object s3Object = amazonS3.getObject(S3_BUCKET_NAME, S3_FILE_PATH + stockCode + ".json");
+            S3Object s3Object = amazonS3.getObject(S3_BUCKET_NAME, S3_FILE_PATH + stock.getStockCode() + ".json");
             System.out.println(s3Object);
             S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
 
