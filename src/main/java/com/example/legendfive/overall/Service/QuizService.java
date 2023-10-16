@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import java.util.*;
 import java.util.List;
 import java.util.Random;
@@ -49,34 +52,50 @@ public class QuizService {
         User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // 퀴즈 기록 생성
-        QuizRecord quizRecord = QuizRecord.builder()
-                .user(user)
-                .quiz(quiz)
-                .isWon(quizAnswer)
-                .build();
+        // 오늘 날짜
+        LocalDate today = LocalDate.now();
 
-        quizRecordRepository.save(quizRecord);
+        // 하루에 풀 수 있는 최대 퀴즈 수
+        int maxQuizzesPerDay = 2;
 
-        // 사용자의 포인트 업데이트
-        int quizPoint = quiz.getPoint();
-        User updatedUser = user.toBuilder()
-                .userPoint(user.getUserPoint() + (quizAnswer ? quizPoint : 0))
-                .build();
+        // 오늘 푼 퀴즈 수 확인
+        int todayQuizCount = quizRecordRepository.countByUserIdAndQuizDate(user.getId(), today);
 
-        // 포인트 업데이트된 사용자 정보 저장
-        userRepository.save(updatedUser);
+        // 중복 기록 확인
+        if (todayQuizCount <= maxQuizzesPerDay) {
+            // 퀴즈 기록 생성
+            QuizRecord quizRecord = QuizRecord.builder()
+                    .user(user)
+                    .quiz(quiz)
+                    .isWon(quizAnswer)
+                    .quizDate(today)
+                    .build();
 
-        // 응답 DTO 생성
-        return QuizDto.QuizRecordResponseDto.builder()
-                .message("Quiz response recorded successfully.")
-                .build();
+            quizRecordRepository.save(quizRecord);
+
+            // 사용자의 포인트 업데이트
+            int quizPoint = quiz.getPoint();
+            User updatedUser = user.toBuilder()
+                    .userPoint(user.getUserPoint() + (quizAnswer ? quizPoint : 0))
+                    .build();
+
+            // 포인트 업데이트된 사용자 정보 저장
+            userRepository.save(updatedUser);
+
+            // 응답 DTO 생성
+            return QuizDto.QuizRecordResponseDto.builder()
+                    .message("Quiz response recorded successfully.")
+                    .build();
+        } else {
+            // 이미 기록된 경우 응답 생성
+            return QuizDto.QuizRecordResponseDto.builder()
+                    .message("You can't solve more than 3 quizzes per day.")
+                    .build();
+        }
     }
-
 
     public QuizDto.QuizAnswerResponseDto getQuizAnswerResponse(int quizId) {
         Quiz quiz = getQuizById(quizId);
-
         return QuizDto.QuizAnswerResponseDto.builder()
                 .quizPoint(quiz.getPoint())
                 .quizQuestion(quiz.getQuestion())
@@ -84,6 +103,7 @@ public class QuizService {
                 .quizExplanation(quiz.getExplanation())
                 .build();
     }
+
 
     private Quiz getQuizById(int quizId) {
         for (Quiz quiz : Quiz.values()) {

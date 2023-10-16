@@ -233,6 +233,7 @@ public class StockService {
 
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .stockUuid(stockEntity.getStockUuid())
                 .StockName(stockEntity.getStockName())
                 .build());
     }
@@ -242,6 +243,7 @@ public class StockService {
 
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .stockUuid(stockEntity.getStockUuid())
                 .StockName(stockEntity.getStockName())
                 .build());
     }

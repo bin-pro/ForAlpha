@@ -56,6 +56,10 @@ public class PredictionRecord extends Time {
     @Column(name="stock_increase_rate")
     private String stockIncreaseRate;
 
+
+    @Column(name="earned_point")
+    private int earnedPoint;//-----------------------------------------------
+
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;

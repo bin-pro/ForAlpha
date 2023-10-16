@@ -25,6 +25,12 @@ public class HomeDto {
         private String stock_dod_percentage;
         private String volumeIncreaseRate;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class popularStockResponseDto{
         private String stockName;
         private int predictCount;

@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
+
 public class StockDto {
 
     @Getter @Builder @NoArgsConstructor @AllArgsConstructor
@@ -69,6 +71,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockBrandResponseDto{
+        private UUID stockUuid;
         private String StockName;
     }
 
@@ -78,6 +81,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockThemeResponseDto{
+        private UUID stockUuid;
         private String StockName;
     }
 }
