@@ -7,15 +7,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import com.example.legendfive.overall.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -23,67 +18,39 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class HomeService {
+public class VolumesTestService {
 
     private final WebClient webClient;
-    private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${openapi.appkey}")
     private String prodAppKey;
     @Value("${openapi.appsecretkey}")
     private String prodAppSecret;
 
-    private static String accessToken;
+    private static String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjcyOWM1MGNhLTcyZjAtNDEyOS04YzQxLTA0NDViNjliNDcxYSIsImlzcyI6InVub2d3IiwiZXhwIjoxNjk3NTE5MzA2LCJpYXQiOjE2OTc0MzI5MDYsImp0aSI6IlBTS1liY3ZubFNUbnhXU1AxWnN0WXI2SDByemc1WVAzQXNKRiJ9.O0HbA99AhpE_GF6An9mekJSk4TXwPk5B2dHHuQXmeApkEOoforuxHRq4hBpTQBoBF77H-2o89d3EvD52NJi_nA";
+    //private static String accessToken;
 
     /**
-     * 3초에 한 번씩 주식의 거래량 정보들을 받아오기, 받은 값들은 redis cash에 저장
+     * 주식의 거래량 정보들을 받아오기
      */
-    @Scheduled(cron = "*/3 * * * * ?")
-    public void getTradingVolumesSaveRedis() {
-
-        if (accessToken == null) {
-            accessToken = getAccessToken();
-        }
-
-        Mono<Object> mono = getVolumeRank(accessToken);
-
-        mono.flatMap(data -> {
-            ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                String dataJson = objectMapper.writeValueAsString(data);
-                return Mono.just(dataJson);
-            } catch (JsonProcessingException e) {
-                log.error("데이터 JSON 변환 오류", e);
-                return Mono.empty();
-            }
-        }).subscribe(
-                dataJson -> {
+    public Mono<HomeDto.volumeReseponseDto> getTradingVolumesFromOpenApi() {
+        return getVolumeRank(accessToken)
+                .flatMap(data -> {
+                    ObjectMapper objectMapper = new ObjectMapper();
                     try {
+                        String dataJson = objectMapper.writeValueAsString(data);
                         JSONObject reformattedJson = jsonReformat(dataJson);
-                        ValueOperations<String, String> vop = redisTemplate.opsForValue();
-                        vop.set("tradingVolumes", reformattedJson.toJSONString());
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
+                        String tradingVolumes = reformattedJson.toJSONString();
+
+                        objectMapper = new ObjectMapper();
+                        HomeDto.volumeReseponseDto volumeReseponseDto = objectMapper.readValue(tradingVolumes, HomeDto.volumeReseponseDto.class);
+
+                        return Mono.just(volumeReseponseDto);
+                    } catch (JsonProcessingException | ParseException e) {
+                        return Mono.error(e);
                     }
-                },
-                error -> {
-                    log.error("데이터 가져오기 오류", error);
-                }
-        );
-    }
-
-    /**
-     * controller가 호출할 때마다 redis cash에 저장된 값을 가져오기
-     */
-    public HomeDto.volumeReseponseDto getTradingFromRedis() throws JsonProcessingException {
-
-        ValueOperations<String, String> vop = redisTemplate.opsForValue();
-        String tradingVolumes = vop.get("tradingVolumes");
-
-        //mapper로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper.readValue(tradingVolumes, HomeDto.volumeReseponseDto.class);
+                })
+                .doOnError(error -> log.error("데이터 가져오기 오류", error));
     }
 
     public JSONObject jsonReformat(String dataJson) throws ParseException {
@@ -136,39 +103,6 @@ public class HomeService {
                 .header("tr_id", "FHPST01710000")
                 .retrieve()
                 .bodyToMono(Object.class);
-    }
-
-
-    @Scheduled(cron = "0 0 8 * * ?")
-    public void getToken() {
-        try {
-            accessToken = getAccessToken();
-        } catch (Exception e) {
-            log.error("accessTokenError", e);
-            throw new RuntimeException("Can't get accessToken");
-        }
-    }
-
-    public String getAccessToken() {
-        try {
-            TokenResponse tokenResponse = webClient.post()
-                    .uri("/oauth2/tokenP")
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .bodyValue("{\"grant_type\":\"client_credentials\",\"appkey\":\"" + prodAppKey + "\",\"appsecret\":\"" + prodAppSecret + "\"}")
-                    .retrieve()
-                    .bodyToMono(TokenResponse.class)
-                    .block();
-
-            if (tokenResponse != null) {
-                return tokenResponse.getAccess_token();
-            } else {
-                log.error("Failed to retrieve access token: TokenResponse is null");
-                return null;
-            }
-        } catch (Exception e) {
-            log.error("Failed to retrieve access token: " + e.getMessage(), e);
-            return null;
-        }
     }
 }
 
