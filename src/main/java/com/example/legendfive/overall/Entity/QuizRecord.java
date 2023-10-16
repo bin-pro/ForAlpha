@@ -38,7 +38,7 @@ public class QuizRecord extends Time {
     @Enumerated(EnumType.STRING)
     private Quiz quiz;
 
-    @Column(name = "quiz_date")
-    private LocalDate quizDate; // LocalDate 타입의 필드 추가
+//    @Column(name = "quiz_date")
+//    private LocalDate quizDate; // LocalDate 타입의 필드 추가
 
 }

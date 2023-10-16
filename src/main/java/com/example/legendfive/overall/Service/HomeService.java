@@ -41,6 +41,10 @@ public class HomeService {
     @Scheduled(cron = "*/3 * * * * ?")
     public void getTradingVolumesSaveRedis() {
 
+        if(accessToken != null){
+            System.out.println("accessToken is not null");
+        }
+
 //        if (accessToken == null) {
 //            accessToken = getAccessToken();
 //        }

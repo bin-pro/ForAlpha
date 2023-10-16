@@ -59,7 +59,7 @@ public class QuizService {
         int maxQuizzesPerDay = 2;
 
         // 오늘 푼 퀴즈 수 확인
-        int todayQuizCount = quizRecordRepository.countByUserIdAndQuizDate(user.getId(), today);
+        int todayQuizCount = quizRecordRepository.countByUserIdAndCreatedAt(user.getId(), today);
 
         // 중복 기록 확인
         if (todayQuizCount <= maxQuizzesPerDay) {
@@ -68,7 +68,6 @@ public class QuizService {
                     .user(user)
                     .quiz(quiz)
                     .isWon(quizAnswer)
-                    .quizDate(today)
                     .build();
 
             quizRecordRepository.save(quizRecord);
