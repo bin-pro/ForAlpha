@@ -43,7 +43,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.info("userId {}", userId);
         log.info("email {}", email);
 
-
         //이메일로 회원 찾은 뒤 해당 회원의 password가 null이면 userSignInStatus를 false로 설정, null이 아니면 true로 설정
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));

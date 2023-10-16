@@ -20,15 +20,16 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final KafkaUserInfoProducerService kafkaUserInfoProducerService;
+
     public UserDto.SignInResponseDto signIn(UserDto.SignInRequestDto signInRequestDto) {
 
-        //이미 존재하는 회원
+        //social login: provider
         userRepository.save(User.builder()
                 .userId(UUID.randomUUID())
                 .email(signInRequestDto.getEmail())
@@ -40,9 +41,9 @@ public class UserServiceImpl implements UserService{
         Optional<User> user = userRepository.findByEmail(signInRequestDto.getEmail());
 
         UserDto.UserInfoDto userInfoDto = UserDto.UserInfoDto.builder()
-        		.userId(user.get().getUserId())
-        		.nickname(signInRequestDto.getNickname())
-        		.build();
+                .userId(user.get().getUserId())
+                .nickname(signInRequestDto.getNickname())
+                .build();
 
         kafkaUserInfoProducerService.createUser(userInfoDto);
 
@@ -53,6 +54,35 @@ public class UserServiceImpl implements UserService{
                 .build();
 
     }
+    @Override
+    public UserDto.SocialSignInResponseDto socialSignIn(UserDto.SignInRequestDto socialSignInRequestDto) {
+
+        User user = userRepository.findByEmail(socialSignInRequestDto.getEmail())
+                .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+
+        user.toBuilder()
+                .nickname(socialSignInRequestDto.getNickname())
+                .password(passwordEncoder.encode(socialSignInRequestDto.getPassword()))
+                .build();
+
+        userRepository.save(user);
+
+
+        UserDto.UserInfoDto userInfoDto = UserDto.UserInfoDto.builder()
+                .userId(user.getUserId())
+                .nickname(socialSignInRequestDto.getNickname())
+                .build();
+
+        kafkaUserInfoProducerService.createUser(userInfoDto);
+
+        log.info("회원가입 성공");
+        return UserDto.SocialSignInResponseDto.builder()
+                .userId(user.getUserId())
+                .createdAt(user.getCreatedAt())
+                .build();
+
+    }
+
 
     public UserDto.LoginResponseDto login(UserDto.LoginRequestDto loginRequestDto) {
 
@@ -113,6 +143,20 @@ public class UserServiceImpl implements UserService{
         }
 
         return false; // 인증 실패
+    }
+
+    @Override
+    public boolean userHasProvider(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            if (user.getProvider() != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

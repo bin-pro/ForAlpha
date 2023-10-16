@@ -74,4 +74,12 @@ public class UserDto {
         private UUID userId;
         private String nickname;
     }
+
+    @Getter
+    @Builder @NoArgsConstructor @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class SocialSignInResponseDto{
+        private UUID userId;
+        private LocalDateTime createdAt;
+    }
 }
