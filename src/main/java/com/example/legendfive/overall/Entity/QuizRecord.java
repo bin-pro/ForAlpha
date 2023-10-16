@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -31,10 +32,13 @@ public class QuizRecord extends Time {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @Column(name = "is_public", columnDefinition = "TINYINT(1)", nullable = false)
+    @Column(name = "is_won", columnDefinition = "TINYINT(1)", nullable = false)
     private boolean isWon;
 
     @Enumerated(EnumType.STRING)
     private Quiz quiz;
+
+//    @Column(name = "quiz_date")
+//    private LocalDate quizDate; // LocalDate 타입의 필드 추가
 
 }

@@ -196,8 +196,8 @@ public class StockService {
                     .build();
         }
 
-        //포인트가 있는지 확인 -> 예측하기 하려면 100포인트가 필요
-        if (user.getUserPoint() <= 0 || user.getUserPoint() - 100 < 0) {
+        //포인트가 있는지 확인 -> 예측하기 하려면 50 포인트가 필요
+        if (user.getUserPoint() <= 0 || user.getUserPoint() - 50 < 0) {
             return StockDto.stockPredictionResponseDto.builder()
                     .message("포인트가 부족합니다.")
                     .build();
@@ -221,7 +221,7 @@ public class StockService {
         predictionRecordRepository.save(predictionRecord);
 
         //user에서 포인트 차감 로직
-        user.updateUserPoint(user.getUserPoint() - 100);
+        user.updateUserPoint(user.getUserPoint() - 50);
 
         return StockDto.stockPredictionResponseDto.builder()
                 .message("주식 예측 기록 저장 완료")
@@ -234,6 +234,7 @@ public class StockService {
 
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .stockUuid(stockEntity.getStockUuid())
                 .StockName(stockEntity.getStockName())
                 .build());
     }
@@ -243,6 +244,7 @@ public class StockService {
 
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+                .stockUuid(stockEntity.getStockUuid())
                 .StockName(stockEntity.getStockName())
                 .build());
     }
