@@ -13,6 +13,7 @@ import "./style.css";
 export const Quiz = () => {
   const [question, setQuestion] = useState("");
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [quizId, setQuizId] = useState(null);
 
   useEffect(() => {
     fetchQuestion();
@@ -21,9 +22,11 @@ export const Quiz = () => {
   const fetchQuestion = async () => {
     try {
       const response = await axios.get("http://test2.shinhan.site:8002/foralpha-service/point/quiz");
-      const questionText = response.data.question;
+      const questionText = response.data.quiz_question;
+      const questionId = response.data.id;
       setQuestion(questionText);
-      console.log("get");
+      setQuizId(quizId);
+      console.log("Quiz question loaded");
     } catch (error) {
       console.error("Failed to fetch question:", error);
     }
@@ -33,8 +36,16 @@ export const Quiz = () => {
     setSelectedAnswer(choice);
 
     try {
+      const answerResponse = await axios.get(`http://test2.shinhan.site:8002/foralpha-service/point/quiz/answer?quiz-uuid=${questionId}`);
+      const answer = answerResponse.data.quiz_answer;
+      const explain = answerResponse.data.quiz_explanation;
+
+      const isCorrect = choice === answer;
+
       await axios.post("http://test2.shinhan.site:8002/foralpha-service/point/quiz", {
-        choice,
+        quizId,
+        userId: "user-id",
+        selectedAnswer: choice,
       });
       
       // 다음 질문을 가져올 수 있도록 fetchQuestion 함수 호출
