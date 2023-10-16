@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavBar } from "../../components/NavBar";
 import { TabBarItem } from "../../components/TabBarItem";
 import { ButtonPrimary } from "../../components/ButtonPrimary";
@@ -7,9 +7,43 @@ import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
 import { Icon10 } from "../../icons/Icon10";
 import { LeftButton } from "../../icons/LeftButton";
+import axios from "axios";
 import "./style.css";
 
 export const Quiz = () => {
+  const [question, setQuestion] = useState("");
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+  useEffect(() => {
+    fetchQuestion();
+  }, []);
+
+  const fetchQuestion = async () => {
+    try {
+      const response = await axios.get("http://test2.shinhan.site:8002/foralpha-service/point/quiz");
+      const questionText = response.data.question;
+      setQuestion(questionText);
+      console.log("get");
+    } catch (error) {
+      console.error("Failed to fetch question:", error);
+    }
+  };
+
+  const handleButtonClick = async (choice) => {
+    setSelectedAnswer(choice);
+
+    try {
+      await axios.post("http://test2.shinhan.site:8002/foralpha-service/point/quiz", {
+        choice,
+      });
+      
+      // 다음 질문을 가져올 수 있도록 fetchQuestion 함수 호출
+      fetchQuestion();
+    } catch (error) {
+      console.error("Failed to send user choice:", error);
+    }
+  };
+
   return (
     <div className="quiz">
     <div className="div-2">
@@ -21,8 +55,8 @@ export const Quiz = () => {
                 <div className="frame" />
                 <div className="content">
                   <div className="title">
-                    <p className="subtitle">
-                      전월세뿐 아니라 매매 시세까지 파악하는 것은 전세 사기를 방지하는 방법이다.
+                    <p className="question">
+                      {question}
                     </p>
                   </div>
                 </div>
@@ -35,11 +69,13 @@ export const Quiz = () => {
                 className="button-primary-instance"
                 divClassName="design-component-instance-node"
                 text="O"
+                onClick={() => handleButtonClick("O")}
               />
               <ButtonPrimary
-                className="button-primary-instance"
+                className="button-primary-instance-2"
                 divClassName="design-component-instance-node"
                 text="X"
+                onClick={() => handleButtonClick("X")}
               />
             </div>
           </div>
@@ -58,7 +94,8 @@ export const Quiz = () => {
         leftControl="icon"
         pageTitle="OX퀴즈"
         rightButtonClassName="nav-bar-2"
-        rightControl="icon"
+        rightControl="none"
+        leftLink="/point-home"
       />
     </div>
   </div>

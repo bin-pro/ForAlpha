@@ -16,6 +16,7 @@ import { Image6 } from "../../icons/Image6";
 import { Image7 } from "../../icons/Image7";
 import { Image8 } from "../../icons/Image8";
 import { Image9 } from "../../icons/Image9";
+import { BiRefresh } from 'react-icons/bi';
 import { RightButton6 } from "../../icons/RightButton6";
 import { RightButton7 } from "../../icons/RightButton7";
 import { StarFilled1 } from "../../icons/StarFilled1";
@@ -25,6 +26,7 @@ import "./style.css";
 export const Home = () => {
   const [selectedTab, setSelectedTab] = useState("거래량"); // 초기 탭을 "거래량"으로 설정
   const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = async (selectedTab) => {
     try {
@@ -38,15 +40,21 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    //fetchData(selectedTab);
-  }, []);
+    fetchData(selectedTab);
+  }, [selectedTab]);
 
   // 선택한 탭과 데이터를 업데이트하기 위한 콜백 함수
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
     fetchData(tab);
   };
-  
+
+  // 새로고침
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData(selectedTab);
+    setRefreshing(false);
+  };
 
     return (
       <div className="home">
@@ -68,6 +76,7 @@ export const Home = () => {
                   </Link>
                 </div>
                 <div className="text-wrapper-2">실시간 차트</div>
+                <BiRefresh className="refresh-icon" onClick={handleRefresh}/>
                 <div>
                   <Toggle section1Text="거래량" section2Text="인기순" onTabChange={handleTabChange}/>
                 </div>

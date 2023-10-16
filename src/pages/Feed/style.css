@@ -170,7 +170,7 @@
   }
   
   .feed .design-component-instance-node {
-    color: var(--neutraldarklight) !important;
+    color: var(--neutraldarklight);
     font-family: "Inter", Helvetica !important;
     font-size: 10px !important;
     font-style: unset !important;

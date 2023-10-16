@@ -28,6 +28,13 @@ width: 375px;
     width: 142px !important;
   }
 
+  .quiz .button-primary-instance-2 {
+    display: flex !important;
+    height: 125px !important;
+    width: 142px !important;
+    background-color: var(--supporterrordark);
+  }
+
 .quiz .feed {
 align-items: flex-end;
 display: flex;
@@ -104,7 +111,7 @@ position: relative;
 width: 100%;
 }
 
-.quiz .subtitle {
+.quiz .question {
 align-self: stretch;
 color: var(--neutraldarkdarkest);
 font-family: var(--heading-h2-font-family);
@@ -239,11 +246,12 @@ width: unset !important;
 
 .quiz .design-component-instance-node {
 font-family: "Inter", Helvetica !important;
-font-size: 10px !important;
+font-size: 30px !important;
 font-style: unset !important;
 font-weight: 700 !important;
 letter-spacing: 0 !important;
 line-height: normal !important;
+color: #ffffff;
 }
 
 .quiz .tab-3 {

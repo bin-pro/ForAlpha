@@ -38,13 +38,25 @@ export const NavBar = ({
         </div>
       )}
 
-      {rightControl === "icon" && leftControl === "icon" && <LeftButton className="left-button" />}
+      {rightControl === "icon" && leftControl === "icon" &&
+        <Link to={leftLink}>
+          <LeftButton className="left-button" />
+        </Link>
+      }
 
-      {rightControl === "avatar" && leftControl === "icon" && <LeftButton className="left-button" />}
+      {rightControl === "avatar" && leftControl === "icon" &&
+          <Link to={leftLink}>
+            <LeftButton className="left-button" />
+          </Link>
+        }
 
       {rightControl === "avatar" && ["icon", "none"].includes(leftControl) && <Avatar9 className="avatar-1" />}
 
-      {rightControl === "none" && leftControl === "icon" && <LeftButton className="left-button" />}
+      {rightControl === "none" && leftControl === "icon" &&
+          <Link to={leftLink}>
+            <LeftButton className="left-button" />
+          </Link>
+      }
 
       {leftControl === "text" && ["text", "avatar"].includes(rightControl) && (
         <button className="text-wrapper">{leftText}</button>
@@ -88,7 +100,7 @@ export const NavBar = ({
         </>
       )}
 
-      {rightControl === "text" && leftControl === "icon" && <LeftButton className="left-button" />}
+      {rightControl === "text" && leftControl === "icon" && <LeftButton className="left-button" to={leftLink} />}
     </div>
   );
 };

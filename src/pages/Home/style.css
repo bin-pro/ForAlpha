@@ -119,6 +119,15 @@
     width: 311px !important;
   }
   
+  .home .refresh-icon {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    right: 130px;
+    top: 100px;
+    color: var(--highlightdarkest);
+  }
+
   .home .design-component-instance-node {
     font-family: "Inter", Helvetica !important;
     font-size: 14px !important;
