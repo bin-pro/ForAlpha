@@ -23,7 +23,7 @@ export const Quiz = () => {
     try {
       const response = await axios.get("http://test2.shinhan.site:8002/foralpha-service/point/quiz");
       const questionText = response.data.quiz_question;
-      const questionId = response.data.id;
+      const quizId = response.data.id;
       setQuestion(questionText);
       setQuizId(quizId);
       console.log("Quiz question loaded");
@@ -36,10 +36,9 @@ export const Quiz = () => {
     setSelectedAnswer(choice);
 
     try {
-      const answerResponse = await axios.get(`http://test2.shinhan.site:8002/foralpha-service/point/quiz/answer?quiz-uuid=${questionId}`);
+      const answerResponse = await axios.get(`http://test2.shinhan.site:8002/foralpha-service/point/quiz/answer?quiz-uuid=${quizId}`);
       const answer = answerResponse.data.quiz_answer;
       const explain = answerResponse.data.quiz_explanation;
-
       const isCorrect = choice === answer;
 
       await axios.post("http://test2.shinhan.site:8002/foralpha-service/point/quiz", {
