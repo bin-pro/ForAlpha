@@ -14,9 +14,10 @@ export const ButtonPrimary = ({
   text = "Button",
   className,
   divClassName,
+  onClick,
 }) => {
   return (
-    <button className={`button-primary ${className}`}>
+    <button className={`button-primary ${className}`} onClick={onClick}>
       {showText && <div className={`button ${divClassName}`}>{text}</div>}
     </button>
   );
@@ -27,4 +28,5 @@ ButtonPrimary.propTypes = {
   showText: PropTypes.bool,
   showRightIcon: PropTypes.bool,
   text: PropTypes.string,
+  onClick: PropTypes.func,
 };

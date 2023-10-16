@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ButtonPrimary } from "../../components/ButtonPrimary";
 import { NavBar } from "../../components/NavBar";
 import { TabBarItem } from "../../components/TabBarItem";
@@ -8,9 +9,15 @@ import { Icon7 } from "../../icons/Icon7";
 import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
 import { LeftButton } from "../../icons/LeftButton";
+import axios from "axios";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 export const Answer = () => {
+  const quizText = useSelector((state) => state.quiz.quizText);
+  const quizAnswer = useSelector((state) => state.quiz.quizAnswer);
+  const quizExplanation = useSelector((state) => state.quiz.quizExplanation);
+
   return (
     <div className="answer">
       <div className="div-2">
@@ -21,7 +28,8 @@ export const Answer = () => {
             leftControl="icon"
             pageTitle="OX퀴즈"
             rightButtonClassName="nav-bar-2"
-            rightControl="icon"
+            rightControl="none"
+            leftLink="/point-home"
           />
         <div className="overlap-group-2">
           <div className="feed">
@@ -35,7 +43,7 @@ export const Answer = () => {
                     showButton={false}
                     showDescription={false}
                     showTitle={false}
-                    subtitle="전월세뿐 아니라 매매 시세까지 파악하는 것은 전세 사기를 방지하는 방법이다."
+                    subtitle={quizText}
                     visuals="image"
                   />
                 </div>
@@ -44,14 +52,15 @@ export const Answer = () => {
             <div className="frame-2">
               <div className="frame-wrapper">
                 <div className="frame-3">
-                  <div className="text-wrapper-2">정답은 ‘O’ 입니다.</div>
+                  <div className="text-wrapper-2">정답은 ‘{quizAnswer}’ 입니다.</div>
                   <p className="p">
-                    전셋집을 구하는 세입자 입장에서 가장 중요하게 알아볼 것은 바로 전세로 들어갈 집의 정확한 매매시세를
-                    파악하는 것입니다.
+                    {quizExplanation}
                   </p>
                 </div>
               </div>
-              <ButtonPrimary className="button-primary-instance" divClassName="button-primary-2" text="다음 문제" />
+              <Link to="/quiz">
+                <ButtonPrimary className="button-primary-instance" divClassName="button-primary-2" text="다음 문제" />
+              </Link>
             </div>
           </div>
           <div className="tab-bar">
