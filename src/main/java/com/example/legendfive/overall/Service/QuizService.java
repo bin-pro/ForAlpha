@@ -48,7 +48,7 @@ public class QuizService {
     }
 
     @Transactional
-    public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID userUuid, Quiz quiz, boolean quizAnswer) {
+    public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID userUuid, Quiz quiz, boolean userAnswer) {
         User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
@@ -59,7 +59,7 @@ public class QuizService {
         int maxQuizzesPerDay = 2;
 
         // 오늘 푼 퀴즈 수 확인
-        int todayQuizCount = quizRecordRepository.countByUserIdAndQuizDate(user.getId(), today);
+        int todayQuizCount = quizRecordRepository.countByUserIdAndCreatedAt(user.getId(), today);
 
         // 중복 기록 확인
         if (todayQuizCount <= maxQuizzesPerDay) {
@@ -67,8 +67,7 @@ public class QuizService {
             QuizRecord quizRecord = QuizRecord.builder()
                     .user(user)
                     .quiz(quiz)
-                    .isWon(quizAnswer)
-                    .quizDate(today)
+                    .isWon(quiz.isAnswer() == userAnswer) //이 칼럼 없어도 됌
                     .build();
 
             quizRecordRepository.save(quizRecord);
@@ -76,7 +75,7 @@ public class QuizService {
             // 사용자의 포인트 업데이트
             int quizPoint = quiz.getPoint();
             User updatedUser = user.toBuilder()
-                    .userPoint(user.getUserPoint() + (quizAnswer ? quizPoint : 0))
+                    .userPoint(user.getUserPoint() + (quiz.isAnswer() == userAnswer ? quizPoint : 0))
                     .build();
 
             // 포인트 업데이트된 사용자 정보 저장
@@ -99,7 +98,7 @@ public class QuizService {
         return QuizDto.QuizAnswerResponseDto.builder()
                 .quizPoint(quiz.getPoint())
                 .quizQuestion(quiz.getQuestion())
-                .quizAnswer(quiz.getAnswer())
+                .quizAnswer(quiz.isAnswer())
                 .quizExplanation(quiz.getExplanation())
                 .build();
     }
@@ -130,7 +129,7 @@ public class QuizService {
                     .createdAt(quizRecord.getCreatedAt())
                     .quizPoint(quizAnswer ? quiz.getPoint() : 0)
                     .quizQuestion(quiz.getQuestion())
-                    .quizAnswer(quiz.getAnswer())
+                    .quizAnswer(quiz.isAnswer())
                     .build());
         }
 

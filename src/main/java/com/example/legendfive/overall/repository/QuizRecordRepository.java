@@ -20,5 +20,5 @@ public interface QuizRecordRepository extends JpaRepository<QuizRecord, Long> {
 
     //int countByUserAndCreatedAt(User user, LocalDate createdAt);
 
-    int countByUserIdAndQuizDate(long id, LocalDate today);
+    int countByUserIdAndCreatedAt(long id, LocalDate today);
 }
