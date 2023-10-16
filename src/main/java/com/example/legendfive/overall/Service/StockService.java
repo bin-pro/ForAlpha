@@ -50,12 +50,10 @@ public class StockService {
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      * S3에 저장된 오늘 날짜의 주식 정보를 가져오는 메소드 -> 아침마다 예측에 사용
      */
-    public StockDto.stockDetailResponseDto getStockDetails(String stockName) {
+    public StockDto.stockDetailResponseDto getStockDetails(String stockCode) {
 
-        Stock stock = stockRepository.findByStockName(stockName).orElseThrow(
-                () -> {
-                    throw new RuntimeException("해당 주식이 없습니다.");
-                }
+        Stock stock = stockRepository.findByStockCode(stockCode).orElseThrow(
+                () -> new RuntimeException("해당 주식이 없습니다.")
         );
 
         try {
@@ -178,14 +176,13 @@ public class StockService {
      * 주식 예측하기
      **/
     @Transactional
-    public StockDto.stockPredictionResponseDto predictStock(String stockCode, UUID
-            userUUID, StockDto.stockPredictionRequsetDto stockPredictionRequsetDto) {
+    public StockDto.stockPredictionResponseDto predictStock(StockDto.stockPredictionRequsetDto stockPredictionRequsetDto) {
 
-        Stock stock = stockRepository.findByStockCode(stockCode).orElseThrow(
+        Stock stock = stockRepository.findByStockName(stockPredictionRequsetDto.getStockName()).orElseThrow(
                 () -> new IllegalArgumentException("해당 주식이 존재하지 않습니다.")
         );
 
-        User user = userRepository.findByUserId(userUUID).orElseThrow(
+        User user = userRepository.findByUserId(stockPredictionRequsetDto.getUserUUID()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
         PredictionRecord existingPrediction = predictionRecordRepository.findByStockAndUserAndCreatedAt(stock, user, LocalDate.now()).orElse(null);

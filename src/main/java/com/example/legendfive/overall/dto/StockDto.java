@@ -52,6 +52,10 @@ public class StockDto {
     public static class stockPredictionRequsetDto{
 
         @NotNull
+        private String stockName;
+        @NotNull
+        private UUID userUUID;
+        @NotNull
         private String investment_period;
         @NotNull
         private String stock_present_price;
