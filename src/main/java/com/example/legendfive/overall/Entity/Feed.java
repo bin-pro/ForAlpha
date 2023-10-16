@@ -1,17 +1,12 @@
 package com.example.legendfive.overall.Entity;
 
-
 import com.example.legendfive.common.Time;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -36,7 +31,7 @@ public class Feed extends Time {
     @Column(name = "is_public", columnDefinition = "TINYINT(1)")
     private boolean isPublic;
 
-    @Column(name="earning_point")
+    @Column(name="earned_point")
     private int earnedPoint;
 
     @ManyToOne(fetch = FetchType.LAZY)

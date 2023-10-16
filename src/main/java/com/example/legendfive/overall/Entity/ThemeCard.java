@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -28,10 +28,8 @@ public class ThemeCard {
     @Column(name = "theme_name")
     private String themeName;
 
-    @Column(name = "theme_count")
-    private Long themeCount;
-
     @CreationTimestamp
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
+
 }

@@ -25,8 +25,12 @@ public class FriendService {
 
     public FriendDto.GetFriendsResponseDto getFriendList(UUID userUuid) {
         // 사용자 정보 조회
-        User user = userRepository.findByUserUuid(userUuid)
+        User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        if(user.getUserId().equals(user.getNickname())){
+            throw new RuntimeException("자기자신입니다.");
+        }
 
         // Friends 엔터티에서 사용자의 ID로 친구 목록 조회 -> 없을때 빈 리스트 반환
         List<Friend> friendsList = friendRepository.findAllByUser1Id(user.getUserId());
@@ -73,7 +77,7 @@ public class FriendService {
         // Friends 엔터티에서 user1Id와 user2Id 중 현재 사용자의 ID가 아닌 것을 찾아서 해당 사용자의 닉네임을 반환
         UUID friendUserId = friend.getUser1Id().equals(user.getUserId()) ? friend.getUser2Id() : friend.getUser1Id();
 
-        User friendUser = userRepository.findByUserUuid(friendUserId)
+        User friendUser = userRepository.findByUserId(friendUserId)
                 .orElseThrow(() -> new RuntimeException("친구를 찾을 수 없습니다."));
         return friendUser.getNickname();
     }
@@ -81,10 +85,10 @@ public class FriendService {
     @Transactional
     public FriendDto.AddFriendResponseDto addFriend(UUID userUuid, UUID friendUuid) {
         // 사용자 정보 조회
-        User user = userRepository.findByUserUuid(userUuid)
+        User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        User friend = userRepository.findByUserUuid(friendUuid)
+        User friend = userRepository.findByUserId(friendUuid)
                 .orElseThrow(() -> new RuntimeException("친구를 찾을 수 없습니다."));
 
         if (user.getId().equals(friend.getId())) {
@@ -126,7 +130,7 @@ public class FriendService {
         String nickname = searchUserRequestDto.getNickname();
 
         // 사용자 정보 조회
-        User user = userRepository.findByUserUuid(userId)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         //without user id

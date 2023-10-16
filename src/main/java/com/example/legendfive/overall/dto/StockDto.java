@@ -1,15 +1,13 @@
 package com.example.legendfive.overall.dto;
 
-import com.example.legendfive.overall.Entity.Stock;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 public class StockDto {
 
     @Getter @Builder @NoArgsConstructor @AllArgsConstructor
@@ -73,6 +71,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockBrandResponseDto{
+        private UUID stockUuid;
         private String StockName;
     }
 
@@ -82,6 +81,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockThemeResponseDto{
+        private UUID stockUuid;
         private String StockName;
     }
 }

@@ -1,13 +1,11 @@
 package com.example.legendfive.overall.Service;
 
 import com.example.legendfive.overall.Entity.User;
-import com.example.legendfive.overall.dto.UserDto;
 import com.example.legendfive.overall.dto.UserInfoDto;
 import com.example.legendfive.overall.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;

@@ -21,18 +21,38 @@ public class ThemeCardService {
     private final ThemeCardRepository themeCardRepository;
     private final UserRepository userRepository;
 
+//    public List<ThemeDto.ThemeCardListResponseDto> getThemeCardList(UUID userUuid) {
+//        User user = userRepository.findByUserUuid(userUuid)
+//                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+//
+//        List<ThemeCard> themeCards = themeCardRepository.findByUserId(user.getId());
+//        return themeCards.stream()
+//                .map(themeCard -> ThemeDto.ThemeCardListResponseDto.builder()
+//                        .themeName(themeCard.getThemeName())
+//                        .createdAt(themeCard.getCreatedAt())
+//                        .themeCount(themeCard.getThemeCount())
+//                        .userNickname(user.getNickname())
+//                        .build())
+//                .collect(Collectors.toList());
+//    }
+
     public List<ThemeDto.ThemeCardListResponseDto> getThemeCardList(UUID userUuid) {
-        User user = userRepository.findByUserUuid(userUuid)
+        User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        List<ThemeCard> themeCards = themeCardRepository.findByUserId(user.getId());
-        return themeCards.stream()
-                .map(themeCard -> ThemeDto.ThemeCardListResponseDto.builder()
-                        .themeName(themeCard.getThemeName())
-                        .createdAt(themeCard.getCreatedAt())
-                        .themeCount(themeCard.getThemeCount())
-                        .userNickname(user.getNickname())
-                        .build())
+        List<Object[]> themeCardCounts = themeCardRepository.countByThemeNameAndUserId(user.getId());
+
+        return themeCardCounts.stream()
+                .map(result -> {
+                    String themeName = (String) result[0];
+                    Long themeCount = (Long) result[1];
+                    return ThemeDto.ThemeCardListResponseDto.builder()
+                            .themeName(themeName)
+                            .createdAt(user.getCreatedAt())
+                            .themeCount(themeCount) // Convert Long to int
+                            .userNickname(user.getNickname())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

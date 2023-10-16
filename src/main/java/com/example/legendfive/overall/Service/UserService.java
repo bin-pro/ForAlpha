@@ -14,8 +14,4 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
 
-    public Optional<User> getUserByUserId(UUID userid) {
-        Optional<User> user = Optional.of(userRepository.findByUserUuid(userid).orElseThrow());
-        return user;
-    }
 }

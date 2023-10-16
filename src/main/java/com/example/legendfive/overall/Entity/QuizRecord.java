@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -38,5 +37,8 @@ public class QuizRecord extends Time {
 
     @Enumerated(EnumType.STRING)
     private Quiz quiz;
+
+    @Column(name = "quiz_date")
+    private LocalDate quizDate; // LocalDate 타입의 필드 추가
 
 }

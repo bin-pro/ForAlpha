@@ -3,8 +3,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -60,7 +59,7 @@ public class QuizDto {
     @Builder @NoArgsConstructor @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class QuizHistoryResponseDto{
-        private LocalDateTime createdAt;
+        private LocalDate createdAt;
         private int quizPoint;
         private String quizQuestion;
         private String quizAnswer;
