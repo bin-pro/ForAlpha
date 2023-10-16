@@ -73,6 +73,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockBrandResponseDto{
+        private UUID stockUuid;
         private String StockName;
     }
 
@@ -82,6 +83,7 @@ public class StockDto {
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockThemeResponseDto{
+        private UUID stockUuid;
         private String StockName;
     }
 }

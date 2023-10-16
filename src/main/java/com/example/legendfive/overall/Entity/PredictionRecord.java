@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -33,21 +34,31 @@ public class PredictionRecord extends Time {
     @Column(name="stock_code")
     private String stockCode;
 
-    @Column(name = "stock_present_price")
+    @Column(name = "stock_present_price", columnDefinition = "int default 0") // 이거 은지언니랑 맞추기
     private int stock_present_price;
+
+    @Column(name = "stock_end_price", columnDefinition = "int default 0")
+    private int stock_end_price;  // 예측 종료일의 종가 -> endday에 맞춰서 값이 저장됨 ->
 
     @Column(name="end_day")
     private LocalDateTime endDay; // 예측 종료일
+
+    @Column(name="stock_increaseRate")
+    private String stockIncreaseRate;//->
+
+    @ColumnDefault("true")
+    @Column(name = "is_public", columnDefinition = "TINYINT(1)")
+    private boolean isPublic;//------------------------------------------------
+
+    @Column(name="earned_point")
+    private int earnedPoint;//-----------------------------------------------
 
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @JoinColumn(name = "feed_id", foreignKey = @ForeignKey(name = "prediction_record_fk_feed_id"))
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Feed feed;
-
     @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "prediction_record_fk_stock_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Stock stock;
+
 }

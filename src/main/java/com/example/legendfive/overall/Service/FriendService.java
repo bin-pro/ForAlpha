@@ -28,6 +28,10 @@ public class FriendService {
         User user = userRepository.findByUserUuid(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
+        if(user.getUserId().equals(user.getNickname())){
+            throw new RuntimeException("자기자신입니다.");
+        }
+
         // Friends 엔터티에서 사용자의 ID로 친구 목록 조회 -> 없을때 빈 리스트 반환
         List<Friend> friendsList = friendRepository.findAllByUser1Id(user.getUserId());
 

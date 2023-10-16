@@ -7,18 +7,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class FeedDto {
+import java.time.LocalDateTime;
 
+public class HistoryDto {
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class FriendFeedListResponseDto{
-        private String friendNickname;
+    public static class PredictionHistoryResponseDto{
         private String stockName;
+        private LocalDateTime createdAt;
+        private LocalDateTime endDay;
+        private int earnedPoint;
         private String stockReturns;
-        private int beforePrice;
-        private int afterPrice;
     }
 }
