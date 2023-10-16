@@ -9,9 +9,8 @@ import java.util.UUID;
 
 public interface StockRepository extends JpaRepository<Stock, Long>
 {
-    boolean existsByStockUuid(UUID stockUuid);
-    Optional<Stock> findByStockUuid(UUID stockUuid);
     Page<Stock> findByStockNameContainingIgnoreCase(String brandName, Pageable pageable);
     Page<Stock> findByThemeNameContainingIgnoreCase(String themeName, Pageable pageable);
 
+    Optional<Stock> findByStockCode(String stockCode);
 }

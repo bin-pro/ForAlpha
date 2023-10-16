@@ -30,7 +30,6 @@ public class ThemeCardService {
                 .map(themeCard -> ThemeDto.ThemeCardListResponseDto.builder()
                         .themeName(themeCard.getThemeName())
                         .createdAt(themeCard.getCreatedAt())
-                        .themeCount(themeCard.getThemeCount())
                         .userNickname(user.getNickname())
                         .build())
                 .collect(Collectors.toList());

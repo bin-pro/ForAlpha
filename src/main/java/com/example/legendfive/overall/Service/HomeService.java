@@ -113,6 +113,34 @@ public class HomeService {
         return newJsonObject;
     }
 
+    public Mono<Object> getVolumeRank(String accessToken) {
+
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/uapi/domestic-stock/v1/quotations/volume-rank")
+                        .queryParam("FID_COND_MRKT_DIV_CODE", "J")
+                        .queryParam("FID_COND_SCR_DIV_CODE", "20171")
+                        .queryParam("FID_INPUT_ISCD", "0002")
+                        .queryParam("FID_DIV_CLS_CODE", "0")
+                        .queryParam("FID_BLNG_CLS_CODE", "1")
+                        .queryParam("FID_TRGT_CLS_CODE", "111111111")
+                        .queryParam("FID_TRGT_EXLS_CLS_CODE", "000000")
+                        .queryParam("FID_INPUT_PRICE_1", "0")
+                        .queryParam("FID_INPUT_PRICE_2", "0")
+                        .queryParam("FID_VOL_CNT", "20")
+                        .queryParam("FID_INPUT_DATE_1", "0")
+                        .build())
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)  // 올바른 헤더 이름을 사용
+                .header("appkey", prodAppKey)  // 다른 사용자 지정 헤더
+                .header("appsecret", prodAppSecret)  // 다른 사용자 지정 헤더
+                .header("tr_id", "FHPST01710000")
+                .retrieve()
+                .bodyToMono(Object.class);
+    }
+}
+
+
 //    @Scheduled(cron = "0 0 8 * * ?")
 //    public void getToken() {
 //        try {
@@ -144,30 +172,3 @@ public class HomeService {
 //            return null;
 //        }
 //    }
-
-    public Mono<Object> getVolumeRank(String accessToken) {
-
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/uapi/domestic-stock/v1/quotations/volume-rank")
-                        .queryParam("FID_COND_MRKT_DIV_CODE", "J")
-                        .queryParam("FID_COND_SCR_DIV_CODE", "20171")
-                        .queryParam("FID_INPUT_ISCD", "0002")
-                        .queryParam("FID_DIV_CLS_CODE", "0")
-                        .queryParam("FID_BLNG_CLS_CODE", "1")
-                        .queryParam("FID_TRGT_CLS_CODE", "111111111")
-                        .queryParam("FID_TRGT_EXLS_CLS_CODE", "000000")
-                        .queryParam("FID_INPUT_PRICE_1", "0")
-                        .queryParam("FID_INPUT_PRICE_2", "0")
-                        .queryParam("FID_VOL_CNT", "20")
-                        .queryParam("FID_INPUT_DATE_1", "0")
-                        .build())
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)  // 올바른 헤더 이름을 사용
-                .header("appkey", prodAppKey)  // 다른 사용자 지정 헤더
-                .header("appsecret", prodAppSecret)  // 다른 사용자 지정 헤더
-                .header("tr_id", "FHPST01710000")
-                .retrieve()
-                .bodyToMono(Object.class);
-    }
-}

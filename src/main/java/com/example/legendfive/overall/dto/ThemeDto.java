@@ -20,7 +20,7 @@ public class ThemeDto {
     public static class ThemeCardListResponseDto{
         private String themeName;
         private LocalDate createdAt;
-        private Long themeCount;
+        private int themeCount;
         private String userNickname;
     }
 }

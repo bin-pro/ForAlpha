@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ThemeCardRepository extends JpaRepository<ThemeCard, Long> {
 
     List<ThemeCard> findByUserId(Long userId);
+
+    ThemeCard findByUserIdAndThemeName(Long id, String themeName);
 }

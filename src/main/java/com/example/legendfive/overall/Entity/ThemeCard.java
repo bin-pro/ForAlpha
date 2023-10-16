@@ -28,10 +28,8 @@ public class ThemeCard {
     @Column(name = "theme_name")
     private String themeName;
 
-    @Column(name = "theme_count")
-    private Long themeCount;
-
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDate createdAt;
+
 }
