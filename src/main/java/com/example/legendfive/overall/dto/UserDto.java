@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
-import java.util.Map;
-
 @Getter
 @Setter
 @NoArgsConstructor

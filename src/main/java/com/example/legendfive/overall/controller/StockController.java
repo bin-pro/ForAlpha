@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +28,20 @@ public class StockController {
     private final ObjectMapper objectMapper;
     private final StockService stockService;
 
+    @GetMapping("/checkPredict")
+    public void checkPredict(){
+        stockService.checkIsStockUp();
+    }
+
 
     /**
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      */
     @GetMapping("/{stock_id}")
-    public ResponseEntity<ResponseDto> getStockDetails(@PathVariable("stock_id") String stockId) {
+    public ResponseEntity<ResponseDto> getStockDetails(@PathVariable("stock_id") String stockCode) {
 
         try {
-            StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetails(stockId);
+            StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetails(stockCode);
 
             ResponseDto responseDto2 = ResponseDto.builder()
                     .payload(objectMapper.convertValue(stockDetailResponseDto, Map.class))
@@ -56,9 +60,9 @@ public class StockController {
      * 개별 주식 예측하기를 눌렀을 때, DB에 저장
      * **/
     @PostMapping("/{stock_id}/users/{user_id}")
-    public ResponseEntity<ResponseDto> recordPredict(@PathVariable("stock_id") UUID stockUUID, @PathVariable("user_id") UUID userUUID, @RequestBody StockDto.stockPredictionRequsetDto stockPredictionRequsetDto) {
+    public ResponseEntity<ResponseDto> recordPredict(@PathVariable("stock_id") String stockCode, @PathVariable("user_id") UUID userUUID, @RequestBody StockDto.stockPredictionRequsetDto stockPredictionRequsetDto) {
         try {
-            StockDto.stockPredictionResponseDto stockPredictionResponseDto = stockService.predictStock(stockUUID, userUUID, stockPredictionRequsetDto);
+            StockDto.stockPredictionResponseDto stockPredictionResponseDto = stockService.predictStock(stockCode, userUUID, stockPredictionRequsetDto);
             ResponseDto responseDto2 = ResponseDto.builder()
                     .payload(objectMapper.convertValue(stockPredictionResponseDto, Map.class))
                     .build();

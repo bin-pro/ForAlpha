@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Getter
@@ -19,8 +19,8 @@ public class ThemeDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class ThemeCardListResponseDto{
         private String themeName;
-        private LocalDateTime createdAt;
-        private Long themeCount;
+        private LocalDate createdAt;
+        private int themeCount;
         private String userNickname;
     }
 }

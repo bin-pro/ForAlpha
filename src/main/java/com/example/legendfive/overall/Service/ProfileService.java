@@ -17,7 +17,7 @@ public class ProfileService {
 
     public ProfileDto.MyProfileResponseDto getMyProfile(UUID userUuid) {
         // 사용자 정보 조회
-        User user = userRepository.findByUserUuid(userUuid)
+        User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         // 친구 수 조회

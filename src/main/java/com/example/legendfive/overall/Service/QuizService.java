@@ -17,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
 
+import java.util.*;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -50,7 +49,7 @@ public class QuizService {
 
     @Transactional
     public QuizDto.QuizRecordResponseDto recordQuizResponse(UUID userUuid, Quiz quiz, boolean quizAnswer) {
-        User user = userRepository.findByUserUuid(userUuid)
+        User user = userRepository.findByUserId(userUuid)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         // 오늘 날짜

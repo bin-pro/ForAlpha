@@ -6,11 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 
@@ -34,21 +33,29 @@ public class PredictionRecord extends Time {
     @Column(name="stock_code")
     private String stockCode;
 
-    @Column(name = "stock_present_price", columnDefinition = "int default 0") // 이거 은지언니랑 맞추기
-    private int stock_present_price;
+    @Column(name = "stock_present_price")
+    private int stockPresentPrice;
 
-    @Column(name = "stock_end_price", columnDefinition = "int default 0")
-    private int stock_end_price;  // 예측 종료일의 종가 -> endday에 맞춰서 값이 저장됨 ->
+    @Column(name="stock_end_price")
+    private int stockEndPrice;
 
     @Column(name="end_day")
-    private LocalDateTime endDay; // 예측 종료일
-
-    @Column(name="stock_increaseRate")
-    private String stockIncreaseRate;//->
+    private LocalDate endDay;
 
     @ColumnDefault("true")
     @Column(name = "is_public", columnDefinition = "TINYINT(1)")
-    private boolean isPublic;//------------------------------------------------
+    private boolean isPublic;
+
+    //포인트
+    @ColumnDefault("0")
+    @Column(name="stock_earned_point")
+    private String stockEarnedPoint;
+
+    //수익률
+    @ColumnDefault("0")
+    @Column(name="stock_increase_rate")
+    private String stockIncreaseRate;
+
 
     @Column(name="earned_point")
     private int earnedPoint;//-----------------------------------------------
@@ -61,4 +68,9 @@ public class PredictionRecord extends Time {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Stock stock;
 
+    public void updateStockEndPriceIncreateRate(int stockEndPrice, String stockIncreaseRate, String stockEarnedPoint){
+        this.stockEndPrice = stockEndPrice;
+        this.stockIncreaseRate = stockIncreaseRate;
+        this.stockEarnedPoint = stockEarnedPoint;
+    }
 }

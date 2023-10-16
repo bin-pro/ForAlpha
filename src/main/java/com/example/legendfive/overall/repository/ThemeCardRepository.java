@@ -14,4 +14,6 @@ public interface ThemeCardRepository extends JpaRepository<ThemeCard, Long> {
 
     @Query("SELECT t.themeName, COUNT(t.themeName) FROM ThemeCard t WHERE t.user.id = :userId GROUP BY t.themeName")
     List<Object[]> countByThemeNameAndUserId(Long userId);
+    ThemeCard findByUserIdAndThemeName(Long id, String themeName);
+
 }
