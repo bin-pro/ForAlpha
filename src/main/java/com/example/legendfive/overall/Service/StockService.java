@@ -44,7 +44,6 @@ public class StockService {
     private final UserRepository userRepository;
     private final PredictionRecordRepository predictionRecordRepository;
     private final ThemeCardRepository themeCardRepository;
-
     /**
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      * S3에 저장된 오늘 날짜의 주식 정보를 가져오는 메소드 -> 아침마다 예측에 사용
@@ -216,6 +215,22 @@ public class StockService {
 
         predictionRecordRepository.save(predictionRecord);
 
+        int themeCount = (int) predictionRecordRepository.findByUser(user).stream().map(predictionRecord1 -> predictionRecord1.getStock().getStockCode()).distinct().count();
+        int userPredictedStockNumber = (int) predictionRecordRepository.findByUser(user).stream().map(predictionRecord1 -> predictionRecord1.getStock().getStockCode()).count();
+
+        if(userPredictedStockNumber < 3){
+            updateUserInvestType(user, "분석중");
+        }else {
+            log.info("themeCount: " + themeCount);
+            if (themeCount <= 3) {
+                updateUserInvestType(user, "집중투자형");
+            } else if (themeCount <= 5) {
+                updateUserInvestType(user, "중립형");
+            } else {
+                updateUserInvestType(user, "분산투자형");
+            }
+        }
+
         //user에서 포인트 차감 로직
         user.updateUserPoint(user.getUserPoint() - 100);
 
@@ -245,5 +260,14 @@ public class StockService {
                 .stockCode(stockEntity.getStockCode())
                 .StockName(stockEntity.getStockName())
                 .build());
+    }
+
+    public void updateUserInvestType(User user, String investType){
+        user = user.toBuilder()
+                .userInvestType(investType)
+                .build();
+        log.info(investType);
+
+        userRepository.save(user);
     }
 }

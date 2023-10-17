@@ -17,5 +17,6 @@ public class ProfileDto {
         private String Nickname;
         private int friendCount;
         private int totalPoint;
+        private String userInvestType;
     }
 }

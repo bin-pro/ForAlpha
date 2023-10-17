@@ -23,11 +23,14 @@ public class ProfileService {
         // 친구 수 조회
         long friendCount = friendsRepository.countFriendsByUser1Id(userUuid);
 
+
+
         // 프로필 DTO 생성
         ProfileDto.MyProfileResponseDto myProfileResponseDto = ProfileDto.MyProfileResponseDto.builder()
                 .Nickname(user.getNickname())
                 .friendCount((int) friendCount)
                 .totalPoint(user.getUserPoint())
+                .userInvestType(user.getUserInvestType())
                 .build();
 
         return myProfileResponseDto;

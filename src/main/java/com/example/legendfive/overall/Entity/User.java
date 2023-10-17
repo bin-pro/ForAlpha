@@ -48,4 +48,7 @@ public class User extends Time {
 
     @OneToMany(mappedBy = "user")
     private List<ThemeCard> themeCard;
+
+    @Column(name = "user_invest_type")
+    private String userInvestType;
 }

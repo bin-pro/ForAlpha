@@ -42,6 +42,7 @@ public class KafkaUserInfoConsumerServiceImpl implements KafkaUserInfoConsumerSe
                 .userId(userId)
                 .nickname(nickname)
                 .userPoint(100)
+                .userInvestType("분석중")
                 .build();
 
         try {
