@@ -12,7 +12,7 @@ public enum UserErrorResult {
     INVALID_PHONE_NUMBER(HttpStatus.UNPROCESSABLE_ENTITY, "유효하지 않은 전화번호입니다. 재시도해주세요."), //422
     INVALID_PASSWORD(HttpStatus.UNPROCESSABLE_ENTITY, "유효하지 않은 비밀번호(8자리 이상 20자리 이하이며 특수 문자 최소 하나 포함)입니다. 재시도해주세요."), //422
     INVALID_EMAIL(HttpStatus.UNPROCESSABLE_ENTITY, "유효하지 않은 이메일입니다. 재시도해주세요."), //422
-    INVALID_NICKNAME(HttpStatus.UNPROCESSABLE_ENTITY, "유효하지 않은 닉네임(8자리 이하, 특수문자X)입니다. 재시도해주세요."), //422
+    INVALID_NICKNAME(HttpStatus.UNPROCESSABLE_ENTITY, "유효하지 않은 닉네임(10자리 이상이거나, 특수문자 포함)입니다. 재시도해주세요."), //422
     FAILED_VALIDATING_CODE(HttpStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다. 인증 코드를 재요청해 주세요."), //400
     UNVERIFIED_PHONE_NUMBER(HttpStatus.UNPROCESSABLE_ENTITY, "인증되지 않은 전화번호입니다. 재시도해주세요."), //422
     UNVERIFIED_EMAIL(HttpStatus.UNPROCESSABLE_ENTITY, "인증되지 않은 이메일입니다. 재시도해주세요."), //422

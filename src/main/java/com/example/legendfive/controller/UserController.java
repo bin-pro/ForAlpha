@@ -28,12 +28,11 @@ public class UserController {
     private final VerificationService verificationService;
     private final MailService mailService;
     private final ObjectMapper objectMapper;
-    private String phoneNumberRegex = "^01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}$";
     private String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     private String passwordRegex = "^(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,20}$";
 
     //닉네임 한글 포함 8자리 이하 특수문자X
-    private String nicknameRegex = "^[가-힣a-zA-Z0-9]{1,8}$";
+    private String nicknameRegex = "^[가-힣a-zA-Z0-9]{1,10}$";
 
     @PostMapping("/login") //@AuthenticationPrincipal UserPrincipal userPrincipal, User user = userPrincipal.getUser();
     public ResponseEntity<ResponseDto> login(@RequestBody UserDto.LoginRequestDto loginRequestDto) {
