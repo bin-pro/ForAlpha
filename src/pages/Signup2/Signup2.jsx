@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ButtonPrimary } from "../../components/ButtonPrimary";
 import { Checkbox } from "../../components/Checkbox";
-import { TextField } from "../../components/TextField";
-import { Divider1 } from "../../icons/Divider1";
-import { StarFilled1 } from "../../icons/StarFilled1";
 import "./style.css";
 import "../../styles/styleguide.css";
 import axios from 'axios';
@@ -16,6 +11,7 @@ function Signup2() {
   const [password, setPassword] = React.useState("");
   const [passwordConfirm, setPasswordConfirm] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [code, setCode] = React.useState("");
   
 
   // 오류메세지 상태 저장
@@ -23,6 +19,7 @@ function Signup2() {
   const [passwordMessage, setPasswordMessage] = React.useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = React.useState("");
   const [emailMessage, setEmailMessage] = React.useState("");
+  const [codeMessage, setCodeMessage] = useState("");
 
   // 유효성 검사
   const [isName, setIsName] = React.useState(false);
@@ -30,11 +27,16 @@ function Signup2() {
   const [isPasswordConfirm, setIsPasswordConfirm] = React.useState(false);
   const [isEmail, setIsEmail] = React.useState(false);
   const [isAgreed, setIsAgreed] = React.useState(false);
+  const [isVerification, setIsVerification] = useState(false);
+
+  const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
+  const [remainingTime, setRemainingTime] = useState(300); // 5분은 300초
 
   const navigate = useNavigate();
 
   const toggleAgreement = () => {
     setIsAgreed(!isAgreed);
+    console.log(isAgreed);
   };
 
   const onChangeName = (e) => {
@@ -92,23 +94,96 @@ function Signup2() {
     }
   };
 
-const SIGNUP_API_URL = 'http://test2.shinhan.site:8001/user-service'; // 실제 엔드포인트 URL로 업데이트하기
+  useEffect(() => {
+    let timer;
 
+    if (isTimerActive && remainingTime > 0) {
+      timer = setTimeout(() => {
+        setRemainingTime(remainingTime - 1);
+      }, 1000); // 1초마다 1초씩 감소
+    }
+
+    if (remainingTime === 0) {
+      // 5분 경과 시
+      setIsVerification(false);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isTimerActive, remainingTime]);
+
+ // 이메일로 인증 코드 요청
+ const sendVerificationCode = async () => {
+  try {
+    const response = await axios.post('http://test2.shinhan.site/user-service/sign-in/email/verification', {
+      email: email
+    });
+    if (response.status === 200) {
+      setCodeMessage('코드가 전송되었습니다.');
+      setIsVerification(true);
+    } else {
+      setCodeMessage('유효하지 않은 이메일 주소입니다.');
+      setIsVerification(false);
+    }
+  } catch (error) {
+    console.error('인증 코드 전송 오류:', error);
+    setIsVerification(false);
+  }
+  // 인증 코드 요청 성공 시 타이머 활성화
+  if (isVerification) {
+    setIsTimerActive(true);
+  }
+};
+
+// 인증 코드 확인
+const handleVerification = async () => {
+  if (code) {
+    try {
+      const response = await axios.post('http://test2.shinhan.site:8001/user-service/sign-in/email/verification', {
+        email,
+        verification_code: code,
+      });
+
+      if (response.status === 200) {
+        setCodeMessage('인증이 완료되었습니다.');
+        setIsVerification(true);
+      } else {
+        setCodeMessage('인증에 실패했습니다.');
+        setIsVerification(false);
+      }
+    } catch (error) {
+      console.error('인증 코드 확인 오류:', error);
+      setIsVerification(false);
+    }
+  } else {
+    setCodeMessage('인증 코드를 입력해주세요.');
+    setIsVerification(false);
+  }
+
+  // 인증 코드 확인 시 타이머 중지
+  if (isVerification) {
+    setIsTimerActive(false);
+    setRemainingTime(300); // 타이머 초기화
+  }
+};
+
+// 회원 가입 처리
 const handleSubmit = async (e) => {
   e.preventDefault();
   const isValid = isName && isPassword && isPasswordConfirm && isEmail;
 
   if (isValid) {
     try {
-      const response = await axios.post(SIGNUP_API_URL, {
-        email: email,
+      const response = await axios.post('http://test2.shinhan.site/user-service', {
+        email,
         nickname: name,
-        password: password,
+        password,
       });
 
       if (response.status === 201) {
         console.log('회원가입 성공', response.data);
-        navigate("/home")
+        navigate("/")
       } else {
         console.error('회원가입 실패', response.data);
       }
@@ -120,7 +195,7 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <div className="signup">
+    <div className="sign-up">
       <div className="login-options-3">
         <div className="div-wrapper">
           <div className="text-wrapper-10">회원가입</div>
@@ -131,12 +206,34 @@ const handleSubmit = async (e) => {
             <input className="input-field" type="name" name="name" value={name} placeholder="Create a nickname" onChange={onChangeName} />
             <p className="text-wrapper-11"> {nameMessage} </p>
           </div>
-          <div className="text-field-instance">
-          <div className="subtitle">이메일</div>
-            <input className="input-field" type="email" name="email" value={email} placeholder="name@email.com" onChange={onChangeEmail} />
-            <p className="text-wrapper-11"> {emailMessage} </p>
-          </div>
+            <div className="text-field-instance">
+              <div className="subtitle">이메일</div>
+              <div className="email-field">
+                <input className="email-input-field" type="email" name="email" value={email} placeholder="name@email.com" onChange={onChangeEmail} />
+                <button
+                  type="submit"
+                  className="email-btn"
+                  onClick={sendVerificationCode}
+                  >코드 전송</button>
+              </div>
+              <p className="text-wrapper-11"> {emailMessage} </p>
+            </div>
+            <div className="text-field-instance">
+              <div className="email-field">
+                <input className="email-input-field" type="text" name="code" value={code} placeholder="code" />
+                <button
+                  type="submit"
+                  className="code-btn"
+                  onClick={handleVerification}
+                  >인증하기</button>
+              </div>
+              {isVerification && (<p className="text-wrapper-11">{remainingTime > 0
+                ? `5분 안에 인증을 완료해주세요. 남은 시간: ${Math.floor(remainingTime / 60)}분 ${remainingTime % 60}초`
+                : "인증이 완료되었습니다."}</p>
+                )}
+            </div>
           <div className="text-field">
+            <div className="subtitle">비밀번호</div>
             <input className="input-field" type="password" name="password" value={password} placeholder="Create a passaword" onChange={onChangePassword} />
             <p className="text-wrapper-11"> {passwordMessage} </p>
           </div>
@@ -146,14 +243,14 @@ const handleSubmit = async (e) => {
           </div>
         </div>
         <div className="frame-3">
-          <Checkbox className="checkbox-instance" selected={isAgreed} size="medium" />
+          <Checkbox className="checkbox-instance" selected={isAgreed} size="medium" onClick={toggleAgreement} />
           <div className="text-wrapper-11">개인정보 약관에 동의합니다.</div>
         </div>
         <button
           type="submit"
           className="blue-btn"
           onClick={handleSubmit}
-          disabled={!(isEmail && isName && isPassword && isPasswordConfirm)}>회원가입하기</button>
+          disabled={!(isEmail && isName && isPassword && isPasswordConfirm && isAgreed)}>회원가입하기</button>
       </div>
     </div>
   );

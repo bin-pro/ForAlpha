@@ -79,7 +79,7 @@ export const StockSearch = () => {
       
       const fetchThemeData = async (themeName) => {
         try {
-          const response = await axios.get(`http://test2.shinhan.site:8002/foralpha-service/stocks/point/stock/theme-search`);
+          const response = await axios.get(`http://test2.shinhan.site/foralpha-service/stocks/point/stock/theme-search`);
           const jsonData = response.data;
           setSearchResults(jsonData);
         } catch (error) {

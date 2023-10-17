@@ -12,7 +12,6 @@ import { ContentSwitcher } from "../../components/ContentSwitcher";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
 import "./style.css";
-
 export const History = () => {
   const [selectedTab, setSelectedTab] = useState("section1"); // 초기 탭 "예측 내역"
   const [HistoryData, setHistoryData] = useState([]);
@@ -91,8 +90,8 @@ export const History = () => {
 
   const fetchHistory = async (selectedTab, userUuid) => {
     try {
-      const endpoint = selectedTab === "section1" ? "prediction" : "quiz";
-      const response = await axios.get(`http://test2.shinhan.site//profile/history/${endpoint}?user-uuid=${userUuid}`);
+      const endpoint = selectedTab === "section1" ? "/history" : "/history/quiz";
+      const response = await axios.get(`http://test2.shinhan.site/foralpha-service/profile${endpoint}?user-uuid=${userUuid}`);
       let historyData;
 
       if (selectedTab === "section1") {
