@@ -92,7 +92,7 @@ function Signup2() {
     }
   };
 
-const SIGNUP_API_URL = '/users'; // 실제 엔드포인트 URL로 업데이트하기
+const SIGNUP_API_URL = 'http://test2.shinhan.site:8001/user-service'; // 실제 엔드포인트 URL로 업데이트하기
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -102,8 +102,8 @@ const handleSubmit = async (e) => {
     try {
       const response = await axios.post(SIGNUP_API_URL, {
         email: email,
-        password: password,
         nickname: name,
+        password: password,
       });
 
       if (response.status === 201) {

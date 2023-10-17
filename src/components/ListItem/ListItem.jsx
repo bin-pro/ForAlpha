@@ -21,10 +21,11 @@ export const ListItem = ({
   controls,
   className,
   divClassName,
+  onClick,
   icon = <RightButton3 className="right-button" />,
 }) => {
   return (
-    <div className={`list-item ${className}`}>
+    <div className={`list-item ${className}`} onClick={onClick}>
       {visuals === "icon" && controls === "icon" && (
         <div className="supporting-visuals">
           <LeftIcon className="left-icon" />
@@ -144,4 +145,5 @@ ListItem.propTypes = {
   description: PropTypes.string,
   visuals: PropTypes.oneOf(["avatar", "none", "icon"]),
   controls: PropTypes.oneOf(["none", "icon", "checkbox", "badge", "toggle"]),
+  onClick: PropTypes.func,
 };

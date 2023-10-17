@@ -30,8 +30,8 @@ export const Home = () => {
 
   const fetchData = async (selectedTab) => {
     try {
-      let endpoint = selectedTab === "거래량" ? "volume_endpoint" : "popularity_endpoint";
-      const response = await axios.get(endpoint);
+      let endpoint = selectedTab === "거래량" ? "trading-volumes" : "popular";
+      const response = await axios.get("http://test2.shinhan.site:8002/home/"+endpoint);
       const jsonData = response.data;
       setData(jsonData);
     } catch (error) {

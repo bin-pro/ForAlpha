@@ -76,27 +76,27 @@ export const Login = () => {
   };
 
   const kakaoHandler = () => {
-    const KAKAO_AUTH_URL = `https://testapi.shinhan.site/oauth2/authorize/kakao`;
+    const KAKAO_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/kakao`;
     socialLoginHandler(KAKAO_AUTH_URL);
   };
 
   const naverHandler = () => {
-    const NAVER_AUTH_URL = `https://testapi.shinhan.site/oauth2/authorize/naver`;
+    const NAVER_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/naver`;
     socialLoginHandler(NAVER_AUTH_URL);
   };
 
   const googleHandler = () => {
-    const GOOGLE_AUTH_URL = `https://testapi.shinhan.site/oauth2/authorize/google`;
+    const GOOGLE_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/google`;
     socialLoginHandler(GOOGLE_AUTH_URL);
   };
 
   const handleSubmit = async (e) => {
-    const USER_SERVICE_URL = 'http://localhost:8001/'
+    const USER_SERVICE_URL = 'http://test2.shinhan.site'
     
     e.preventDefault();
     if (isEmail && isPassword) {
       try {
-        const response = await axios.post(`${USER_SERVICE_URL}/users/login`, {
+        const response = await axios.post(`${USER_SERVICE_URL}/user-service/login/`, {
           email,
           password,
         });
@@ -104,20 +104,18 @@ export const Login = () => {
         console.log("로그인 성공:", data);
         navigate("/home");
       } catch (error) {
-        if (error.response) {
-          console.error("로그인 실패:", error.response.data);
+        if (error.response === 422) {
           Swal.fire({
-            icon: 'error',
-            title: '로그인 실패',
-            text: error.response.data, // 에러 메시지 표시
+            icon: "error",
+            title: "로그인 실패",
+            text: "유효하지 않은 이메일입니다. 재시도해주세요.",
           });
         } else {
-          // 네트워크 오류
-          console.error("로그인 실패:", error.message);
+          console.error("로그인 실패:", error.response);
           Swal.fire({
-            icon: 'error',
-            title: '네트워크 오류',
-            text: '서버에 연결할 수 없습니다. 나중에 다시 시도해 주세요.',
+            icon: "error",
+            title: "로그인 실패",
+            text: error.response,
           });
         }
       }

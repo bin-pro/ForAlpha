@@ -1,5 +1,6 @@
 import React , { useState, useEffect }from "react";
 import { Divider } from "../../components/Divider";
+import { Link } from "react-router-dom";
 import { NavBar } from "../../components/NavBar";
 import { ListItem } from "../../components/ListItem";
 import { TabBarItem } from "../../components/TabBarItem";
@@ -19,6 +20,9 @@ import { ArrowDown2 } from "../../icons/ArrowDown2";
 import { Search4 } from "../../icons/Search4";
 import { LeftButton } from "../../icons/LeftButton";
 import { RightButton6 } from "../../icons/RightButton6";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFlask } from "@fortawesome/free-solid-svg-icons";
+import { ThemeModal } from "../../components/ThemeModal";
 import axios from 'axios';
 import "./style.css";
 
@@ -28,11 +32,12 @@ export const StockSearch = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [stockname, setStockName] = React.useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const [selectedTheme, setSelectedTheme] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchData = async (selectedTab) => {
         try {
-          let endpoint = selectedTab === "종목" ? "stock-name" : "theme-name";
-          const response = await axios.get(endpoint);
+          const response = await axios.get('http://test2.shinhan.site:8002/foralpha-service/stocks/point/stock/brand-search');
           const jsonData = response.data;
           setData(jsonData);
           setIsLoaded(true);
@@ -57,15 +62,31 @@ export const StockSearch = () => {
         }
     };
 
-    const fetchResult = async (stockname) => {
-        try {
-            let endpoint = "엔드포인트";
-            // 이후 API 요청을 수행하고 데이터를 setData로 설정합니다.
-            // ... (API 요청 및 데이터 설정 부분 추가)
-        } catch (error) {
-            console.error("API 요청 실패:", error);
+    const clickSearch = async () => {
+        fetchData(selectedTab, stockname);
+    }
+
+    const handleListItemClick = (themeName) => {
+        setSelectedTheme(themeName);
+        setIsModalOpen(true);
+      };
+    
+      useEffect(() => {
+        if (selectedTheme) {
+          fetchData(selectedTheme);
         }
-    };
+      }, [selectedTheme]);
+      
+      const fetchThemeData = async (themeName) => {
+        try {
+          const response = await axios.get(`http://test2.shinhan.site:8002/foralpha-service/stocks/point/stock/theme-search`);
+          const jsonData = response.data;
+          setSearchResults(jsonData);
+        } catch (error) {
+          console.error("API 요청 실패:", error);
+        }
+      };
+      
 
   return (
     <div className="stock-search">
@@ -87,7 +108,7 @@ export const StockSearch = () => {
                             placeholder="search"
                             onKeyPress={handleSearch}
                             onChange={(e) => setStockName(e.target.value)} />
-                        <BiSearch className="searchbar-icon" />
+                        <BiSearch className="searchbar-icon" onClick={clickSearch} />
                     </div>
                     )}
                 <div>
@@ -98,14 +119,27 @@ export const StockSearch = () => {
                     {selectedTab === "section2" && (
                         <div className="text-field-instance">
                             <div className="chips">
+                            <div className="theme-title">
+                                <ListItem
+                                    className="list-item-instance"
+                                    controls="icon"
+                                    divClassName="design-component-instance-node"
+                                    icon={<RightButton6 className="right-button-6" />}
+                                    showDescription={false}
+                                    title="지속 가능한 기술 개발을 주도하는 화학 🧪"
+                                    visuals="none"
+                                    onClick={() => handleListItemClick("화학")}
+                                />
+                            </div>
                             <ListItem
                                 className="list-item-instance"
                                 controls="icon"
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🖥️ 빅테크"
+                                title="디지털 기술 발전의 핵심, 반도체 🧑🏻‍🏭"
                                 visuals="none"
+                                onClick={() => handleListItemClick("반도체")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -113,8 +147,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="글로벌 헬스 산업의 주역, 제약 💊"
                                 visuals="none"
+                                onClick={() => handleListItemClick("제약")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -122,8 +157,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="산업 자동화 및 혁신적인 생산 기술을 추구하는 ⚙️"
                                 visuals="none"
+                                onClick={() => handleListItemClick("기계/장비")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -131,8 +167,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="디지털 플랫폼과 인공지능 기술 발전의 중심 SW 🤖"
                                 visuals="none"
+                                onClick={() => handleListItemClick("소프트웨어")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -140,8 +177,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="금융 혁신을 선도하는 세계 경제의 주역 💰"
                                 visuals="none"
+                                onClick={() => handleListItemClick("금융")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -149,8 +187,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="서비스의 다양성을 대표하는 👩🏻‍🔧"
                                 visuals="none"
+                                onClick={() => handleListItemClick("기타서비스")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -158,8 +197,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="고객 중심의 서비스 기준을 정립하는 🧑🏻‍💼"
                                 visuals="none"
+                                onClick={() => handleListItemClick("서비스업")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -167,8 +207,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="컴퓨터 하드웨어 발전을 이끄는 🖲️"
                                 visuals="none"
+                                onClick={() => handleListItemClick("IT부품")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -176,8 +217,9 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="온오프라인 소매 업계의 다양성을 추구하는 🚛"
                                 visuals="none"
+                                onClick={() => handleListItemClick("유통")}
                             />
                             <ListItem
                                 className="list-item-instance"
@@ -185,8 +227,49 @@ export const StockSearch = () => {
                                 divClassName="design-component-instance-node"
                                 icon={<RightButton6 className="right-button-6" />}
                                 showDescription={false}
-                                title="🏦 금융"
+                                title="디지털 결제, 핀테크 혁신 💳"
                                 visuals="none"
+                                onClick={() => handleListItemClick("기타금융")}
+                            />
+                            <ListItem
+                                className="list-item-instance"
+                                controls="icon"
+                                divClassName="design-component-instance-node"
+                                icon={<RightButton6 className="right-button-6" />}
+                                showDescription={false}
+                                title="소비자 전자제품의 혁신주자 💻"
+                                visuals="none"
+                                onClick={() => handleListItemClick("전기전자")}
+                            />
+                            <ListItem
+                                className="list-item-instance"
+                                controls="icon"
+                                divClassName="design-component-instance-node"
+                                icon={<RightButton6 className="right-button-6" />}
+                                showDescription={false}
+                                title="의료기술 혁신이 치료 기술의 진보로 이어지는 🩺"
+                                visuals="none"
+                                onClick={() => handleListItemClick("의료/정밀기기")}
+                            />
+                            <ListItem
+                                className="list-item-instance"
+                                controls="icon"
+                                divClassName="design-component-instance-node"
+                                icon={<RightButton6 className="right-button-6" />}
+                                showDescription={false}
+                                title="소비자와의 연결고리 🖇️"
+                                visuals="none"
+                                onClick={() => handleListItemClick("유통업")}
+                            />
+                            <ListItem
+                                className="list-item-instance"
+                                controls="icon"
+                                divClassName="design-component-instance-node"
+                                icon={<RightButton6 className="right-button-6" />}
+                                showDescription={false}
+                                title="혁신적인 일상 속의 전자제품 📱"
+                                visuals="none"
+                                onClick={() => handleListItemClick("일반전기전자")}
                             />
                             </div>
                         </div>
@@ -221,6 +304,12 @@ export const StockSearch = () => {
                 <TabBarItem className="tab-3" icon={<Icon10 className="icon-3" />} selected={false} title="Profile" />
             </div>
             </div>
+            <ThemeModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                themeName={selectedTheme}
+                data={searchResults}
+            />
     </div>
   );
 };
