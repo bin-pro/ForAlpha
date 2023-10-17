@@ -192,9 +192,10 @@ public class StockService {
 
         int themeCount = (int) predictionRecordRepository.findByUser(user).stream().map(predictionRecord1 -> predictionRecord1.getStock().getStockCode()).distinct().count();
         int userPredictedStockNumber = (int) predictionRecordRepository.findByUser(user).stream().map(predictionRecord1 -> predictionRecord1.getStock().getStockCode()).count();
+        log.info("userPredictedStockNumber: " + userPredictedStockNumber);
 
         if(userPredictedStockNumber < 3){
-            updateUserInvestType(user, "분석중");
+            log.info("투자성향분석중, 종목 3개 미만");
         }else {
             log.info("themeCount: " + themeCount);
             if (themeCount <= 3) {
