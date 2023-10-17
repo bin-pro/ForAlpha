@@ -11,7 +11,6 @@ export const Login = () => {
   // 초기값
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [url, setUrl] = useState('');
 
   // 유효성 검사
   const [isPassword, setIsPassword] = React.useState(false);
@@ -19,30 +18,6 @@ export const Login = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-
-    const pathname = location.pathname;
-
-      if (pathname.includes('/login?error')) {
-        Swal.fire({
-          title: "로그인 불가",
-          text: "회원 정보가 없습니다. 회원가입을 먼저 진행해 주세요.",
-          icon: "question",
-          showCancelButton: false,
-          confirmButtonText: "OK",
-        });
-        navigate('/signup');
-      } else if (pathname.includes('social-login')) {
-        const Params = new URLSearchParams(location.search);
-        const isSocialLogin = Params.get("social-login") === "true";
-        if (isSocialLogin) {
-          navigate('/home');
-        } else {
-          navigate('/signup');
-        }
-      }
-  }, [location, navigate]);
 
   // 유효성 검사
   const onChangeEmail = (e) => {
@@ -71,28 +46,33 @@ export const Login = () => {
   };
 
   // 소셜 로그인
-  const socialLoginHandler = (socialAuthUrl) => {
-    window.location.href = socialAuthUrl;
+  const socialLoginHandler = (provider) => {
+    const SOCIAL_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/${provider}`;
+    window.location.href = SOCIAL_AUTH_URL;
   };
 
-  const kakaoHandler = () => {
-    const KAKAO_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/kakao`;
-    socialLoginHandler(KAKAO_AUTH_URL);
-  };
+  useEffect(() => {
+    const pathname = location.pathname;
 
-  const naverHandler = () => {
-    const NAVER_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/naver`;
-    socialLoginHandler(NAVER_AUTH_URL);
-  };
-
-  const googleHandler = () => {
-    const GOOGLE_AUTH_URL = `http://test2.shinhan.site/oauth2/authorize/google`;
-    socialLoginHandler(GOOGLE_AUTH_URL);
-  };
+      if (pathname.includes('/login?error')) {
+        Swal.fire({
+          title: "로그인 불가",
+          text: "회원 정보가 없습니다. 회원가입을 먼저 진행해 주세요.",
+          icon: "question",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        });
+        navigate('/signup');
+      } else if (pathname.includes('social-login')) {
+        const Params = new URLSearchParams(location.search);
+        const isSocialLogin = Params.get("social-login") === "true";
+        navigate(isSocialLogin ? "/home" : "/signup");
+      }
+  }, [location, navigate]);
 
   const handleSubmit = async (e) => {
-    const USER_SERVICE_URL = 'http://test2.shinhan.site'
-    
+    const USER_SERVICE_URL = 'http://test2.shinhan.site';
+  
     e.preventDefault();
     if (isEmail && isPassword) {
       try {
@@ -100,9 +80,22 @@ export const Login = () => {
           email,
           password,
         });
+  
         const data = response.data;
-        console.log("로그인 성공:", data);
-        navigate("/home");
+  
+        if (data && data.uuid) {
+          sessionStorage.setItem("userUUID", data.uuid);
+  
+          console.log("로그인 성공:", data);
+          navigate("/home");
+        } else {
+          console.error("로그인 실패: 서버에서 UUID를 반환하지 않음");
+          Swal.fire({
+            icon: "error",
+            title: "로그인 실패",
+            text: "서버에서 UUID를 반환하지 않았습니다.",
+          });
+        }
       } catch (error) {
         if (error.response === 422) {
           Swal.fire({
@@ -120,7 +113,7 @@ export const Login = () => {
         }
       }
     }
-  };
+  };  
 
   return (
     <div className="login">
@@ -181,11 +174,11 @@ export const Login = () => {
           <div className="social-login">
             <div className="text-wrapper-9">SNS로 시작하기</div>
             <div className="buttons">
-              <button type='button'className="k-button" onClick={kakaoHandler}>
+              <button type='button'className="k-button" onClick={() => socialLoginHandler("kakao")}>
               </button>
-              <button type='button' className="n-button" onClick={naverHandler}>
+              <button type='button' className="n-button" onClick={() => socialLoginHandler("naver")}>
               </button>
-              <button type='button' className="g-button" onClick={googleHandler}>
+              <button type='button' className="g-button" onClick={() => socialLoginHandler("google")}>
               </button>
             </div>
           </div>

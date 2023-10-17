@@ -94,6 +94,11 @@ function Signup2() {
     }
   };
 
+  const onChangeCode = (e) => {
+    const currentCode = e.target.value;
+    setCode(currentCode);
+  };  
+
   useEffect(() => {
     let timer;
 
@@ -116,7 +121,7 @@ function Signup2() {
  // 이메일로 인증 코드 요청
  const sendVerificationCode = async () => {
   try {
-    const response = await axios.post('http://test2.shinhan.site/user-service/sign-in/email/verification', {
+    const response = await axios.post('http://test2.shinhan.site:8001/user-service/sign-in/email/validation', {
       email: email
     });
     if (response.status === 200) {
@@ -171,7 +176,7 @@ const handleVerification = async () => {
 // 회원 가입 처리
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const isValid = isName && isPassword && isPasswordConfirm && isEmail;
+  const isValid = isName && isPassword && isPasswordConfirm && isEmail && isAgreed;
 
   if (isValid) {
     try {
@@ -220,13 +225,14 @@ const handleSubmit = async (e) => {
             </div>
             <div className="text-field-instance">
               <div className="email-field">
-                <input className="email-input-field" type="text" name="code" value={code} placeholder="code" />
+                <input className="email-input-field" type="text" name="code" value={code} placeholder="code" onChange={onChangeCode}/>
                 <button
                   type="submit"
                   className="code-btn"
                   onClick={handleVerification}
                   >인증하기</button>
               </div>
+              <p className="text-wrapper-11"> {codeMessage} </p>
               {isVerification && (<p className="text-wrapper-11">{remainingTime > 0
                 ? `5분 안에 인증을 완료해주세요. 남은 시간: ${Math.floor(remainingTime / 60)}분 ${remainingTime % 60}초`
                 : "인증이 완료되었습니다."}</p>

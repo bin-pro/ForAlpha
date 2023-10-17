@@ -12,24 +12,6 @@
   width: 1759px;
 }
 
-.sign-up .header {
-  background-color: var(--neutrallightlight);
-  height: 113px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 1759px;
-}
-
-.sign-up .title-2 {
-  align-items: center;
-  display: inline-flex;
-  gap: 8px;
-  left: 32px;
-  position: relative;
-  top: 32px;
-}
-
 .subtitle {
   align-self: stretch;
   font-family: var(--heading-h5-font-family);
@@ -40,23 +22,6 @@
   line-height: var(--heading-h5-line-height);
   margin: 10px;
   position: relative;
-}
-
-.sign-up .star-filled-wrapper {
-  align-items: flex-start;
-  background-color: var(--neutrallightmedium);
-  border-radius: 16px;
-  display: inline-flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  padding: 16px;
-  position: relative;
-}
-
-.sign-up .star-filled {
-  height: 16px !important;
-  position: relative !important;
-  width: 16px !important;
 }
 
 .sign-up .frame {
@@ -81,15 +46,6 @@
   width: fit-content;
 }
 
-.sign-up .login {
-  background-color: var(--neutrallightlightest);
-  height: 812px;
-  left: 45px;
-  position: absolute;
-  top: 170px;
-  width: 375px;
-}
-
 .sign-up .login-options {
   align-items: flex-start;
   display: flex;
@@ -101,33 +57,6 @@
   width: 375px;
 }
 
-.sign-up .foralpha-logo {
-  height: 43px;
-  object-fit: cover;
-  position: relative;
-  width: 108px;
-}
-
-.sign-up .text-wrapper-6 {
-  color: #000000;
-  font-family: var(--heading-h1-font-family);
-  font-size: var(--heading-h1-font-size);
-  font-style: var(--heading-h1-font-style);
-  font-weight: var(--heading-h1-font-weight);
-  letter-spacing: var(--heading-h1-letter-spacing);
-  line-height: var(--heading-h1-line-height);
-  position: relative;
-  width: fit-content;
-}
-
-.sign-up .login-2 {
-  align-items: flex-start;
-  display: inline-flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  gap: 24px;
-  position: relative;
-}
 
 .sign-up .div-3 {
   align-items: flex-start;
