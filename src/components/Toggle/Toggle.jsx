@@ -30,13 +30,13 @@ export const Toggle = ({ section1Text, section2Text, onTabChange }) => {
         {selectedTab === "section1" && (
           <div>
             {/* Section 1 내용 */}
-            <div>이 부분은 {section1Text}입니다.</div>
+            <div></div>
           </div>
         )}
         {selectedTab === "section2" && (
           <div>
             {/* Section 2 내용 */}
-            <div>이 부분은 {section2Text}입니다.</div>
+            <div></div>
           </div>
         )}
       </div>

@@ -343,15 +343,7 @@
     flex-grow: 1 !important;
     width: unset !important;
   }
-  
-  .prediction .tab-2 {
-    font-family: "Inter", Helvetica !important;
-    font-size: 10px !important;
-    font-style: unset !important;
-    font-weight: 700 !important;
-    letter-spacing: 0 !important;
-    line-height: normal !important;
-  }
+
   
   .prediction .tab-3 {
     flex: 1 !important;

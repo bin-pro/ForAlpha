@@ -56,10 +56,10 @@ export const PointHome = () => {
                 </div>
             </div>
             <div className="tab-bar">
-                <TabBarItem className="tab-3" icon={<Icon11 className="icon-3" />} selected={false} title="Home" />
-                <TabBarItem className="tab-bar-item-instance" icon={<Icon13 className="icon-3" />} selected tabNameClassName="tab-2" title="Point"/>
-                <TabBarItem className="tab-3" icon={<Icon9 className="icon-3" />} selected={false} title="Feed" />
-                <TabBarItem className="tab-3" icon={<Icon10 className="icon-3" />} selected={false} title="Profile" />
+                <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-3" /></Link>} selected={false} title="Home" />
+                <TabBarItem className="tab-bar-item-instance" icon={<Link to="/point-home"><Icon13 className="icon-3" /></Link>} selected tabNameClassName="tab-2" title="Point"/>
+                <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-3" /></Link>} selected={false} title="Feed" />
+                <TabBarItem className="tab-3" icon={<Link to="/profile"><Icon10 className="icon-3" /></Link>} selected={false} title="Profile" />
             </div>
         </div>
     </div>

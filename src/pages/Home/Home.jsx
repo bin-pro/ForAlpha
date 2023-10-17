@@ -59,83 +59,81 @@ export const Home = () => {
     return (
       <div className="home">
         <div className="div-2">
-          <div className="home-2">
-            <div className="overlap-group">
-              <div className="frame-2">
-                <div className="cards">
-                  <Link to="/point-home">
-                  <ListItem
-                    className="list-item-instance"
-                    controls="icon"
-                    divClassName="design-component-instance-node"
-                    icon={<RightButton6 className="right-button-6" />}
-                    showDescription={false}
-                    title="포인트 쌓으러 가기"
-                    visuals="none"
-                  />
-                  </Link>
-                </div>
-                <div className="text-wrapper-2">실시간 차트</div>
-                <BiRefresh className="refresh-icon" onClick={handleRefresh}/>
-                <div>
-                  <Toggle section1Text="거래량" section2Text="인기순" onTabChange={handleTabChange}/>
-                </div>
-                <div className="your-events">
-                  <div className="events">
 
-                    <div className="horizontal-card">
-                      <div className="image-wrapper">
-                        <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
-                      </div>
-                      <div className="frame-3">
-                        <div className="content-3">
-                          <div className="title-3">삼성전자</div>
-                          <p className="subtitle">
-                            <span className="span">66,000원 </span>
-                            <span className="text-wrapper-3">-1.0%</span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+          <div className="cards">
+            <Link to="/point-home">
+            <ListItem
+              className="list-item-instance"
+              controls="icon"
+              divClassName="design-component-instance-node"
+              icon={<RightButton6 className="right-button-6" />}
+              showDescription={false}
+              title="포인트 쌓으러 가기"
+              visuals="none"
+            />
+            </Link>
+          </div>
+          <div className="home-banner">
+            <div className="text-wrapper-2">실시간 차트</div>
+          </div>
+          <BiRefresh className="refresh-icon" onClick={handleRefresh}/>
+          <div className="home-toggle">
+            <Toggle section1Text="거래량" section2Text="인기순" onTabChange={handleTabChange}/>
+          </div>
 
-                    {data.map((item) => (
-                      <div className="horizontal-card" key={item.id}>
-                        <div className="image-wrapper">
-                          <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
-                        </div>
-                        <div className="frame-3">
-                          <div className="content-3">
-                            <div className="title-3">{item.title}</div>
-                            <p className="subtitle">
-                              <span className="span">{item.price} </span>
-                              <span className="text-wrapper-3">{item.change}</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
 
-                  </div>
-                </div>
-              </div>
-              <NavBar
-                className="nav-bar-instance"
-                icon={<RightButton7 className="right-button-7" />}
-                leftControl="none"
-                pageTitle="Home"
-                rightButtonClassName="nav-bar-2"
-                rightControl="icon"
-                rightLink="/stock-search"
-              />
+          <div className="horizontal-card">
+            <div className="image-wrapper">
+              <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
             </div>
-            <div className="tab-bar">
-                <Link to="/home" className="tab-3"><TabBarItem className="tab-3" icon={<Icon7 className="icon-2" />} selected={false} title="Home" /></Link>
-                <Link to="/point-home" className="tab-3"><TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" /></Link>
-                <Link to="/feed" className="tab-3"><TabBarItem className="tab-3" icon={<Icon9 className="icon-2" />} selected={false} title="Feed" /></Link>
-                <Link to="/profile" className="tab-3"><TabBarItem className="tab-3" icon={<Icon10 className="icon-2" />} selected={false} title="Profile" /></Link>
+            <div className="frame-3">
+              <div className="content-3">
+                <div className="title-3">삼성전자</div>
+                <p className="subtitle">
+                  <span className="span">66,000원 </span>
+                  <span className="text-wrapper-3">-1.0%</span>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+
+
+          {data.map((item) => (
+            <div className="horizontal-card" key={item.id}>
+              <div className="image-wrapper">
+                <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
+              </div>
+              <div className="frame-3">
+                <div className="content-3">
+                  <div className="title-3">{item.title}</div>
+                  <p className="subtitle">
+                    <span className="span">{item.price} </span>
+                    <span className="text-wrapper-3">{item.change}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <NavBar
+            className="nav-bar-instance"
+            icon={<RightButton7 className="right-button-7" />}
+            leftControl="none"
+            pageTitle="Home"
+            rightButtonClassName="nav-bar-2"
+            rightControl="icon"
+            rightLink="/stock-search"
+          />
+
+
+          <div className="tab-bar">
+            <TabBarItem className="tab-3" icon={<Link to="/home" className="tab-3"><Icon7 className="icon-2" /></Link>} selected={true} title="Home" />
+            <TabBarItem className="tab-3" icon={<Link to="/point-home" className="tab-3"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
+            <TabBarItem className="tab-3" icon={<Link to="/feed" className="tab-3"><Icon9 className="icon-2" /></Link>} selected={false} title="Feed" />
+            <TabBarItem className="tab-3" icon={<Link to="/profile" className="tab-3"><Icon10 className="icon-2" /></Link>} selected={false} title="Profile" />
+          </div>
+
       </div>
+    </div>
     );
   };

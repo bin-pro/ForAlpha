@@ -8,11 +8,17 @@
   .unselectedButton {
     background-color: red;
   }
-  
+
   .home .div-2 {
-    height: 1028px;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 729px;
+    padding: 24px;
     position: relative;
-    width: 465px;
+    top: 83px;
+    width: 375px;
   }
   
   .home .header {
@@ -35,22 +41,6 @@
     position: relative;
   }
   
-  .home .star-filled-wrapper {
-    align-items: flex-start;
-    background-color: var(--neutrallightmedium);
-    border-radius: 16px;
-    display: inline-flex;
-    flex: 0 0 auto;
-    flex-direction: column;
-    padding: 16px;
-    position: relative;
-  }
-  
-  .home .star-filled {
-    height: 16px !important;
-    position: relative !important;
-    width: 16px !important;
-  }
   
   .home .frame {
     align-items: flex-start;
@@ -64,14 +54,40 @@
   
   .home .home {
     color: var(--neutraldarkdarkest);
-    font-family: "Inter", Helvetica;
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 0.24px;
-    line-height: normal;
-    margin-top: -1px;
-    position: relative;
-    width: fit-content;
+    height: 812px;
+    left: 45px;
+    position: absolute;
+    top: 170px;
+    width: 375px;
+  } 
+
+  .home .cards {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+  }
+
+  .home .home-banner {
+    width: 350px;
+    position: absolute;
+    top: 150px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .home .home-toggle {
+    width: 375px;
+    position: absolute;
+    top: 200px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
   }
   
   .home .home-2 {
@@ -102,15 +118,6 @@
     position: absolute;
     top: 56px;
     width: 375px;
-  }
-  
-  .home .cards {
-    align-items: center;
-    display: inline-flex;
-    flex: 0 0 auto;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
   }
   
   .home .list-item-instance {
@@ -215,9 +222,10 @@
     display: flex;
     flex: 0 0 auto;
     overflow: hidden;
-    position: relative;
-    width: 100%;
-  }
+    position: absolute;
+    top: 300px;
+    width: 375px;
+}
   
   .home .image-wrapper {
     align-self: stretch;

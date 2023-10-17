@@ -17,6 +17,7 @@ import { RightButton3 } from "../../icons/RightButton3";
 import { RightButton6 } from "../../icons/RightButton6";
 import { RightButton7 } from "../../icons/RightButton7";
 import { Search4 } from "../../icons/Search4";
+import axios from 'axios';
 import "./style.css";
 
 export const Feed = () => {

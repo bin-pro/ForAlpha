@@ -65,6 +65,14 @@
     gap: 10px;
     position: relative;
     width: 100%;
+    margin: 10px;
+  }
+
+  .history .donut-chart {
+    display: flex;
+    justify-content: center;
+    width: 375px;
+    font-family: var(--heading-h2-font-family);
   }
   
   .history .text-wrapper {
@@ -137,9 +145,13 @@
     flex: 0 0 auto;
     gap: 16px;
     padding: 16px 0px;
-    position: relative;
-    width: 100%;
+    position: absolute;
+    top: 270px;
+    width: 375px;
+    flex-direction: column;
+    text-align: left;
   }
+
   
   .history .content {
     align-items: flex-start;
@@ -149,6 +161,7 @@
     flex-grow: 1;
     gap: 4px;
     position: relative;
+    width: 375px;
   }
   
   .history .title {

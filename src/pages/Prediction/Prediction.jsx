@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ButtonPrimary } from "../../components/ButtonPrimary";
 import { Divider } from "../../components/Divider";
 import { NavBar } from "../../components/NavBar";
@@ -64,10 +65,12 @@ export const Prediction = () => {
                   className="nav-bar-instance"
                   hasDiv={false}
                   hasRightButton={false}
-                  leftControl="none"
+                  leftControl="icon"
+                  icon={<LeftButton className="left-button-4" />}
                   pageTitle="상승할 주식 예측하기"
                   rightButtonClassName="nav-bar-2"
                   rightControl="none"
+                  leftLink="/point-home"
               />
             <div className="text-field-instance">
                 <input className="input-field-stock" type="text" name="stockname" value={stockname} placeholder="search" />
@@ -157,10 +160,10 @@ export const Prediction = () => {
                 <div>120 + α 포인트를 얻을 수 있어요</div>
             </div>
             <div className="tab-bar">
-                <TabBarItem className="tab-3" icon={<Icon11 className="icon-3" />} selected={false} title="Home" />
-                <TabBarItem className="tab-bar-item-instance" icon={<Icon13 className="icon-3" />} selected tabNameClassName="tab-2" title="Point"/>
-                <TabBarItem className="tab-3" icon={<Icon9 className="icon-3" />} selected={false} title="Feed" />
-                <TabBarItem className="tab-3" icon={<Icon10 className="icon-3" />} selected={false} title="Profile" />
+              <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-3" /></Link>} selected={false} title="Home" />
+              <TabBarItem className="tab-bar-item-instance" icon={<Link to="/point-home"><Icon13 className="icon-3" /></Link>} selected tabNameClassName="tab-2" title="Point"/>
+              <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-3" /></Link>} selected={false} title="Feed" />
+              <TabBarItem className="tab-3" icon={<Link to="/profile"><Icon10 className="icon-3" /></Link>} selected={false} title="Profile" />
             </div>
         </div>
     </div>

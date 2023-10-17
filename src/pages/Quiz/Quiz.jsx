@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -11,6 +12,8 @@ import { Icon7 } from "../../icons/Icon7";
 import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
 import { Icon10 } from "../../icons/Icon10";
+import { Icon11 } from "../../icons/Icon11";
+import { Icon13 } from "../../icons/Icon13";
 import { LeftButton } from "../../icons/LeftButton";
 import { Answer } from '../Answer/Answer'; 
 import axios from "axios";
@@ -123,12 +126,12 @@ export const Quiz = () => {
           </div>
         </div>
         <div className="tab-bar">
-                <TabBarItem className="tab-3" icon={<Icon7 className="icon-2" />} selected={false} title="Home" />
-                <TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" />
-                <TabBarItem className="tab-3" icon={<Icon9 className="icon-2" />} selected={false} title="Feed" />
-                <TabBarItem className="tab-3" icon={<Icon10 className="icon-2" />} selected={false} title="Profile" />
-            </div>
+          <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-3" /></Link>} selected={false} title="Home" />
+          <TabBarItem className="tab-bar-item-instance" icon={<Link to="/point-home"><Icon13 className="icon-3" /></Link>} selected tabNameClassName="tab-2" title="Point"/>
+          <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-3" /></Link>} selected={false} title="Feed" />
+          <TabBarItem className="tab-3" icon={<Link to="/profile"><Icon10 className="icon-3" /></Link>} selected={false} title="Profile" />
         </div>
+      </div>
       <NavBar
         className="nav-bar-instance"
         hasRightButton={false}

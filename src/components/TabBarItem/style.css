@@ -25,7 +25,7 @@
   font-family: var(--action-action-s-font-family);
   font-size: var(--action-action-s-font-size);
   font-style: var(--action-action-s-font-style);
-  font-weight: var(--action-action-s-font-weight);
+  font-weight: 900;
   letter-spacing: var(--action-action-s-letter-spacing);
   line-height: var(--action-action-s-line-height);
 }
