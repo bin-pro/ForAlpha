@@ -27,6 +27,8 @@ public class StockController {
 
     private final ObjectMapper objectMapper;
     private final StockService stockService;
+    final List<String> themes = List.of("화학", "반도체", "제약", "기계·장비", "소프트웨어", "금융", "서비스", "IT부품", "유통", "전기전자", "의료·정밀기기");
+
 
 
     @GetMapping("/checkPredict")
@@ -100,19 +102,30 @@ public class StockController {
         }
     }
 
+    // 테마 상위 15개 아니면 오류 반환
     @GetMapping("/point/stock/theme-search")
     public ResponseEntity<ResponseDto> searchStockTheme(@RequestParam("stock-theme-name") String themeName,
                                                         @RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size) {
+        //화학, 반도체, 제약, 기계·장비, 소프트웨어, 금융, 서비스, IT부품, 유통, 전기전자, 의료·정밀기기
+        //화학, 반도체, 제약, 기계·장비, 소프트웨어, 금융, 기타서비스, 서비스업, IT부품, 유통, 기타금융, 전기전자, 의료·정밀기기, 유통업, 일반전기전자
+
         try {
+            if(!themes.contains(themeName)){
+                ResponseDto responseDto = ResponseDto.builder()
+                        .error("검색되지 않는 테마")
+                        .build();
+                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+            }
+
             Pageable pageable = PageRequest.of(page, size);
-            Page<StockDto.SearchStockBrandResponseDto> searchResults = stockService.searchStockByThemeName(themeName, pageable);
+
+            Page<StockDto.SearchStockThemeResponseDto> searchResults = stockService.searchStockByThemeName(themeName, pageable);
 
             // 정상적인 응답 생성
             ResponseDto successResponse = ResponseDto.builder()
                     .payload(Collections.singletonMap("stocks", searchResults.getContent()))
                     .build();
-
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
         } catch (Exception e) {
             // 예외 발생 시 에러 응답

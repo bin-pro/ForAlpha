@@ -235,11 +235,11 @@ public class StockService {
                 .build());
     }
 
-    public Page<StockDto.SearchStockBrandResponseDto> searchStockByThemeName(String themeName, Pageable pageable) {
-        Page<Stock> searchResults = stockRepository.findByThemeNameContainingIgnoreCase(themeName, pageable);
+    public Page<StockDto.SearchStockThemeResponseDto> searchStockByThemeName(String themeName, Pageable pageable) {
+        Page<Stock> searchResults = stockRepository.findByThemeName(themeName, pageable);
 
         // Page를 DTO로 변환
-        return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
+        return searchResults.map(stockEntity -> StockDto.SearchStockThemeResponseDto.builder()
                 .stockCode(stockEntity.getStockCode())
                 .StockName(stockEntity.getStockName())
                 .build());
