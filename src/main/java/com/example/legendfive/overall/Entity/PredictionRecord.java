@@ -55,6 +55,9 @@ public class PredictionRecord extends Time {
     @Column(name="earned_point")
     private int earnedPoint;
 
+    @Column(name="input_point")
+    private Long inputPoint;
+
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "prediction_record_fk_user_id"))
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;

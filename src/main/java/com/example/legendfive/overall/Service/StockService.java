@@ -107,7 +107,7 @@ public class StockService {
                     String formattedEarningRate = decimalFormat.format(earningRate * 100);
 
                     //계산된 포인트
-                    int calculatedTotalPoint = calculateTotalPoint(investmentPeriod, earningRate);
+                    int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint());
 
                     if (user.getUserPoint() + calculatedTotalPoint < 0) {
                         user.updateUserPoint(0);
@@ -137,40 +137,6 @@ public class StockService {
     }
 
     /**
-     * 포인트 계산 로직
-     **/
-    public int calculateTotalPoint(int investmentPeriod, double earningRate) {
-
-        int basePoint = 100;
-        double additionalPercentage = 100;
-        int totalPoint = 0;
-
-//        // 수익률을 양수와 음수로 구분
-//        if (investmentPeriod <= 1) {
-//            // 단타(1일)의 경우
-//            additionalPercentage = 200;
-//        } else if (investmentPeriod <= 90) {
-//            int maxK = 200;
-//            int minK = 5;
-//            int daysAfter1 = investmentPeriod - 1;
-//            double K = maxK - (daysAfter1 * (maxK - minK) / 89);
-//
-//            additionalPercentage = K;
-//        }
-
-        // 수익률이 양수인 경우
-        if (earningRate > 0) {
-            totalPoint = basePoint + (int) (earningRate * additionalPercentage);
-        }
-        // 수익률이 음수인 경우
-        else if (earningRate < 0) {
-            totalPoint = -basePoint + (int) (earningRate * additionalPercentage);
-        }
-
-        return totalPoint;
-    }
-
-    /**
      * 주식 예측하기
      **/
     @Transactional
@@ -191,8 +157,16 @@ public class StockService {
                     .build();
         }
 
-        //포인트가 있는지 확인 -> 예측하기 하려면 50 포인트가 필요
-        if (user.getUserPoint() <= 0 || user.getUserPoint() - 100 < 0) {
+        //사용자가 입력한 포인트
+        Long inputPoint = stockPredictionRequsetDto.getInputPoint();
+
+        if(inputPoint == 0){
+            return StockDto.stockPredictionResponseDto.builder()
+                    .message("0 이상의 값을 입력해주세요.")
+                    .build();
+        }
+
+        if (user.getUserPoint() - inputPoint < 0) {
             return StockDto.stockPredictionResponseDto.builder()
                     .message("포인트가 부족합니다.")
                     .build();
@@ -200,17 +174,18 @@ public class StockService {
 
         //주식 예측 기록 저장
         LocalDate now = LocalDate.now();
-        LocalDate end_day = now.plusDays(Long.parseLong(stockPredictionRequsetDto.getInvestment_period()));
+        LocalDate end_day = now.plusDays(Long.parseLong(stockPredictionRequsetDto.getInvestmentPeriod()));
 
         PredictionRecord predictionRecord = PredictionRecord.builder()
                 .stock(stock)
                 .user(user)
-                .stockPresentPrice(Integer.parseInt(stockPredictionRequsetDto.getStock_present_price()))
+                .stockPresentPrice(Integer.parseInt(stockPredictionRequsetDto.getStockPresentPrice()))
                 .predictionRecordUuid(UUID.randomUUID())
                 .endDay(end_day)
                 .isPublic(true)
                 .earnedPoint(0)
                 .stockIncreaseRate("0")
+                .inputPoint(stockPredictionRequsetDto.getInputPoint())
                 .stockCode(stock.getStockCode()).build();
 
         predictionRecordRepository.save(predictionRecord);
@@ -232,7 +207,7 @@ public class StockService {
         }
 
         //user에서 포인트 차감 로직
-        user.updateUserPoint(user.getUserPoint() - 30);
+        user.updateUserPoint((int) (user.getUserPoint() - inputPoint));
 
         return StockDto.stockPredictionResponseDto.builder()
                 .message("주식 예측 기록 저장 완료")

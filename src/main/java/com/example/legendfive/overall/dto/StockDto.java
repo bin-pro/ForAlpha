@@ -56,9 +56,11 @@ public class StockDto {
         @NotNull
         private UUID userId;
         @NotNull
-        private String investment_period;
+        private String investmentPeriod;
         @NotNull
-        private String stock_present_price;
+        private String stockPresentPrice;
+        @NotNull
+        private Long inputPoint;
     }
 
     @Getter
