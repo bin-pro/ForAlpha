@@ -1,50 +1,42 @@
 server:
   port: 8002
+
 spring:
   application:
     name: foralpha-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   config:
     import:
       - classpath:/config/openApiS3.yml
-      - classpath:/config/data.yml
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP-SERVERS}
 
   redis:
-    host: 127.0.0.1
-    port: 6379
-
+    host: ${SPRING_REDIS_HOST}
+    port: ${SPRING_REDIS_PORT}
   jpa:
+    database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_DATASOURCE_DDL-AUTO}
+    show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-    show-sql: true
-
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
-    org.springframework.jdbc.core.JdbcTemplate: DEBUG
-    org.springframework.transaction: DEBUG
-
-profiles:
-  active: dev
-
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://${EUREKA_HOST}:8761/eureka/
-#    register-with-eureka: true
-#    fetch-registry: true
-#  instance:
-#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-#    hostname: ${INSTANCE_HOST}
-
-
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST}:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: ${INSTANCE_HOST}

@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/feed")
+@RequestMapping("/foralpha-service/feed")
 public class FeedController {
 
     private final FeedService feedService;

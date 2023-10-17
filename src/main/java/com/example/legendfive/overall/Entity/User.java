@@ -37,15 +37,18 @@ public class User extends Time {
     private int userPoint;
 
     @OneToMany(mappedBy = "user")
-    private List<PredictionRecord> predictionRecord = new ArrayList<>();
+    private List<PredictionRecord> predictionRecord;
 
     @OneToMany(mappedBy = "user")
-    private List<QuizRecord> quizRecord = new ArrayList<>();
+    private List<QuizRecord> quizRecord;
 
     public void updateUserPoint(int userPoint){
         this.userPoint = userPoint;
     }
 
     @OneToMany(mappedBy = "user")
-    private List<ThemeCard> themeCard = new ArrayList<>();
+    private List<ThemeCard> themeCard;
+
+    @Column(name = "user_invest_type")
+    private String userInvestType;
 }

@@ -16,6 +16,7 @@ import java.util.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/foralpha-service")
 public class QuizController {
     private final QuizService quizService;
     private final ObjectMapper objectMapper;
