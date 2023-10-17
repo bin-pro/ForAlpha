@@ -217,7 +217,7 @@ public class StockService {
         predictionRecordRepository.save(predictionRecord);
 
         //user에서 포인트 차감 로직
-        user.updateUserPoint(user.getUserPoint() - 100);
+        user.updateUserPoint(user.getUserPoint() - 30);
 
         return StockDto.stockPredictionResponseDto.builder()
                 .message("주식 예측 기록 저장 완료")
