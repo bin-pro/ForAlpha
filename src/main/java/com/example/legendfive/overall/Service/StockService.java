@@ -236,8 +236,10 @@ public class StockService {
     }
 
     public Page<StockDto.SearchStockThemeResponseDto> searchStockByThemeName(String themeName, Pageable pageable) {
+        log.info("themeName: " + themeName);
+        log.info("pageable: " + pageable.toString());
         Page<Stock> searchResults = stockRepository.findByThemeName(themeName, pageable);
-
+        log.info("searchResults: " + searchResults.toString());
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> StockDto.SearchStockThemeResponseDto.builder()
                 .stockCode(stockEntity.getStockCode())
