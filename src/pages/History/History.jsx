@@ -13,6 +13,7 @@ import axios from "axios";
 import "./style.css";
 
 export const History = () => {
+
   const [selectedTab, setSelectedTab] = useState("section1"); // 초기 탭 "예측 내역"
   const [HistoryData, setHistoryData] = useState([]);
   const donutData = {
@@ -30,7 +31,7 @@ export const History = () => {
       plotOptions: {
         pie: {
           donut: {
-            size: "70%",
+            size: "90%",
             labels: {
               show: true,
               total: {
@@ -68,12 +69,10 @@ export const History = () => {
     try {
       let historyData;
       if (selectedTab === "section1") {
-
-        const response = await axios.get(`http://test2.shinhan.site/foralpha-service/history?user-uuid=${userUuid}`);
+        const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/history?user-uuid=${userUuid}`);
         historyData = response.data.payload.predictionHistory;
       } else if (selectedTab === "section2") {
-
-        const response = await axios.get(`http://test2.shinhan.site/foralpha-service/profile/history/quiz?user-uuid=${userUuid}`);
+        const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/profile/history/quiz?user-uuid=${userUuid}`);
         historyData = response.data.payload.quizHistory;
         console.log(historyData);
       }
@@ -88,7 +87,17 @@ export const History = () => {
     const userUuid = "ca5f9cce-6caf-11ee-bde4-027e9aa2905c";
     fetchHistory(tab, userUuid);
   };
-
+  function getPostposition(str) {
+    if (!str) {
+      return ''; // 빈 문자열 또는 다른 처리를 원하는 값으로 변경
+    }
+    const lastChar = str.charCodeAt(str.length - 1);
+    // 한글 유니코드 범위: 가(0xAC00) ~ 힣(0xD7A3)
+    const isKorean = lastChar >= 0xAC00 && lastChar <= 0xD7A3;
+    // 받침이 있는지 여부에 따라 조사 선택
+    return isKorean ? (lastChar % 28 > 0 ? '으로' : '로') : '로';
+  }
+  
   return (
     <div className="history">
       <div className="div-2">
@@ -134,7 +143,7 @@ export const History = () => {
           </div>
         </div>
         <div className="list">
-        {selectedTab === "section1" && HistoryData && HistoryData.length > 0 &&(
+        {selectedTab === "section1" && HistoryData && HistoryData.length > 0 && (
           <div className="list-item">
             {HistoryData.map((item, index) => (
               <div key={index} className="content">
@@ -145,8 +154,11 @@ export const History = () => {
                   </p>
                   <p className="description">
                     <span className="text-wrapper-3">{item.stock_name}</span>
-                    <span className="text-wrapper-4">로 </span>
-                    <span className="text-wrapper-5" style={{ color: item.stock_returns <= 0 ? 'var(--highlightdarkest)' : 'var(--supporterrordark)' }}>{item.stock_returns}%</span>
+                    <span className="text-wrapper-4">{getPostposition(item.stock_name)}</span>
+                    {/* 여기서 item.yaxis가 있는지 확인 후 접근 */}
+                    <span className="text-wrapper-5" style={{ color: item.yaxis && item.yaxis <= 0 ? 'var(--highlightdarkest)' : 'var(--supporterrordark)' }}>
+                      {item.yaxis ? `${item.yaxis}%` : 'N/A'}
+                    </span>
                     <span className="text-wrapper-4">를 달성했어요.</span>
                   </p>
                 </div>

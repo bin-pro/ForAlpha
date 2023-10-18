@@ -5,6 +5,11 @@
     width: 100%;
 }
 
+.stock-search .theme-list {
+    position: absolute;
+    top: 100px;
+}
+
 .stock-search .frame-6 {
     align-items: flex-start;
     display: flex;
@@ -148,6 +153,13 @@
     display: flex;
     position: relative;
     align-items: center;
+  }
+
+.stock-search .text-field-instance-2 {
+    display: flex;
+    position: relative;
+    align-items: center;
+    overflow-y: scroll;
   }
 
 .stock-search .data-display {
@@ -314,7 +326,6 @@
     display: flex;
     flex: 0 0 auto;
     gap: 12px;
-    overflow-x: scroll;
     position: relative;
     width: 100%;
 }
@@ -524,11 +535,49 @@
     flex-direction: column;
     gap: 12px;
     left: 0;
-    overflow-y: scroll;
     padding: 24px;
     position: absolute;
     top: 100px;
     width: 375px;
+}
+
+.data-display::-webkit-scrollbar {
+    width: 7px
+  }
+  
+  .data-display::-webkit-scrollbar-thumb {
+    height: 20%;
+    background: var(--highlightlightest);
+    border-radius: 10px;
+  }
+  
+  .data-display::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .05);
+  }
+
+  .text-field-instance-2::-webkit-scrollbar {
+    width: 7px
+  }
+  
+  .text-field-instance-2::-webkit-scrollbar-thumb {
+    height: 20%;
+    background: var(--highlightlightest);
+    border-radius: 10px;
+  }
+  
+  .text-field-instance-2::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .05);
+  }
+
+.stock-search .error-message {
+    text-align: center;
+    color: var(--neutraldarklight);
+    font-family: var(--body-body-m-font-family);
+    font-size: var(--body-body-m-font-size);
+    font-style: var(--body-body-m-font-style);
+    font-weight: var(--body-body-m-font-weight);
+    letter-spacing: var(--body-body-m-letter-spacing);
+    line-height: var(--body-body-m-line-height);
 }
 
 .stock-search .chips-wrapper {
@@ -540,7 +589,6 @@
     gap: 16px;
     position: relative;
     width: 100%;
-    overflow-y: scroll;
     height: 500px;
 }
 
@@ -551,6 +599,7 @@
     flex-direction: column;
     gap: 8px;
     position: relative;
+    height: 500px;
 }
 
 .stock-search .list-item-instance {
