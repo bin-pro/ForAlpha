@@ -147,6 +147,7 @@
 .stock-search .text-field-instance {
     display: flex;
     position: relative;
+    align-items: center;
   }
 
 
@@ -177,13 +178,12 @@
 }
 
 .stock-search .searchbar-icon {
-    position : absolute;
     width: 20px;
     height: 20px;
-    top: 13px;
-    right: 10px;
     margin: 0;
     color: var(--neutraldarklightest);
+    position: absolute;
+    right: 10px;
   }
 
   .stock-search .input-field-stock:focus {

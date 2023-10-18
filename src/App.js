@@ -1,7 +1,6 @@
 import "./styles/reset.css";
 import "./styles/global.css";
 import React from "react";
-import ReactDOMClient from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Intro } from "./pages/Intro";
 import { Login } from "./pages/Login";

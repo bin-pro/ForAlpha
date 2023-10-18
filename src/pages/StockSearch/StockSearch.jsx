@@ -4,24 +4,17 @@ import { Link } from "react-router-dom";
 import { NavBar } from "../../components/NavBar";
 import { ListItem } from "../../components/ListItem";
 import { TabBarItem } from "../../components/TabBarItem";
-import { StateActiveWrapper } from "../../components/StateActivateWrapper";
 import { Toggle } from "../../components/Toggle";
-import { Tag } from "../../components/Tag";
 import { Image } from "../../components/Image";
-import { SearchBar } from "../../components/SearchBar";
 import { Icon9 } from "../../icons/Icon9";
 import { Icon10 } from "../../icons/Icon10";
 import { Icon11 } from "../../icons/Icon11";
 import { Icon13 } from "../../icons/Icon13";
-import { Icon26 } from "../../icons/Icon26";
 import { BiSearch} from 'react-icons/bi';
+import { Divider1 } from '../../icons/Divider1';
 import { Image5 } from "../../icons/Image5";
-import { ArrowDown2 } from "../../icons/ArrowDown2";
-import { Search4 } from "../../icons/Search4";
 import { LeftButton } from "../../icons/LeftButton";
 import { RightButton6 } from "../../icons/RightButton6";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlask } from "@fortawesome/free-solid-svg-icons";
 import { ThemeModal } from "../../components/ThemeModal";
 import axios from 'axios';
 import "./style.css";
@@ -37,7 +30,7 @@ export const StockSearch = () => {
 
     const fetchData = async (selectedTab) => {
         try {
-          const response = await axios.get('http://test2.shinhan.site:8002/foralpha-service/stocks/point/stock/brand-search');
+          const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/stocks/point/stock/brand-search`);
           const jsonData = response.data;
           setData(jsonData);
           setIsLoaded(true);
@@ -56,11 +49,18 @@ export const StockSearch = () => {
         setSearchResults([]);
     };
 
-    const handleSearch = (event) => {
-        if (event.key === "Enter") {
-            fetchData(selectedTab, stockname);
+    const handleSearch = async () => {
+        try {
+          const response = await axios.get(
+            `${window.API_BASE_URL}/foralpha-service/stocks/point/stock/brand-search?stock-brand-name=${stockname}&page=0&size=10`
+          );
+          const jsonData = response.data.payload.stocks;
+          setSearchResults(jsonData);
+          console.log(jsonData);
+        } catch (error) {
+          console.error("API 요청 실패:", error);
         }
-    };
+      };
 
     const clickSearch = async () => {
         fetchData(selectedTab, stockname);
@@ -76,17 +76,6 @@ export const StockSearch = () => {
           fetchData(selectedTheme);
         }
       }, [selectedTheme]);
-      
-      const fetchThemeData = async (themeName) => {
-        try {
-          const response = await axios.get(`http://test2.shinhan.site/foralpha-service/stocks/point/stock/theme-search`);
-          const jsonData = response.data;
-          setSearchResults(jsonData);
-        } catch (error) {
-          console.error("API 요청 실패:", error);
-        }
-      };
-      
 
   return (
     <div className="stock-search">

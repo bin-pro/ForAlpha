@@ -151,7 +151,7 @@ function Signup2() {
 const handleVerification = async () => {
   if (code) {
     try {
-      const response = await axios.post('http://test2.shinhan.site:8001/user-service/sign-in/email/verification', {
+      const response = await axios.post('http://test2.shinhan.site/user-service/sign-in/email/verification', {
         email,
         verification_code: code,
       });
@@ -225,7 +225,7 @@ const handleSubmit = async (e) => {
                   type="submit"
                   className="email-btn"
                   onClick={sendVerificationCode}
-                  >코드 전송</button>
+                  >코드전송</button>
               </div>
               <p className="text-wrapper-11"> {emailMessage} </p>
             </div>

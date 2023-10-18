@@ -400,7 +400,7 @@
 }
 
 .sign-up .email-btn {
-  width: 80px;
+  width: 90px;
   height: 48px;
   background-color: var(--highlightdarkest);
   border-radius: 12px;
@@ -421,7 +421,7 @@
 }
 
 .sign-up .code-btn {
-  width: 80px;
+  width: 90px;
   height: 48px;
   background-color: var(--highlightdarkest);
   border-radius: 12px;

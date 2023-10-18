@@ -17,6 +17,12 @@
     width: 375px;
   }
 
+  .prediction .search-result {
+    position: absolute;
+    top: 170px;
+    left: 30px;
+  }
+
   .prediction .stock-chart {
     display: flex;
     justify-content: center;

@@ -1,22 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ListItem } from "../../components/ListItem";
 import { NavBar } from "../../components/NavBar";
-import { SearchBar } from "../../components/SearchBar";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Avatar9 } from "../../icons/Avatar9";
 import { Icon12 } from "../../icons/Icon12";
 import { Icon11 } from "../../icons/Icon11";
 import { Icon10 } from "../../icons/Icon10";
 import { Icon8 } from "../../icons/Icon8";
-import { Icon9 } from "../../icons/Icon9";
-import { Icon7 } from "../../icons/Icon7";
 import { Add } from "../../icons/Add";
-import { RightButton3 } from "../../icons/RightButton3";
-import { RightButton6 } from "../../icons/RightButton6";
-import { RightButton7 } from "../../icons/RightButton7";
-import { Search4 } from "../../icons/Search4";
 import axios from 'axios';
 import "./style.css";
 

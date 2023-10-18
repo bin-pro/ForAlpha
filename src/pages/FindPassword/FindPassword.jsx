@@ -1,9 +1,6 @@
 import React from "react";
 import { ButtonPrimary } from "../../components/ButtonPrimary";
-import { Checkbox } from "../../components/Checkbox";
 import { TextField } from "../../components/TextField";
-import { Divider1 } from "../../icons/Divider1";
-import { StarFilled1 } from "../../icons/StarFilled1";
 import "./style.css";
 import "../../styles/styleguide.css"
 

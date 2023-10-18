@@ -9,7 +9,6 @@ import { Icon7 } from "../../icons/Icon7";
 import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
 import { LeftButton } from "../../icons/LeftButton";
-import axios from "axios";
 import "./style.css";
 import { Link } from "react-router-dom";
 

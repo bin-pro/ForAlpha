@@ -4,15 +4,11 @@ import { useState, useEffect } from "react";
 import { Badge } from "../../components/Badge";
 import { Image } from "../../components/Image";
 import { NavBar } from "../../components/NavBar";
-import { TabBarItem } from "../../components/TabBarItem";
-import { Icon11 } from "../../icons/Icon11";
-import { Icon8 } from "../../icons/Icon8";
-import { Icon9 } from "../../icons/Icon9";
-import { Icon14 } from "../../icons/Icon14";
 import { Image5 } from "../../icons/Image5";
 import { LeftButton } from "../../icons/LeftButton";
 import axios from "axios";
 import "./style.css";
+
 export const Card = () => {
   const [CardData, setCardData] = useState([]);
   useEffect(() => {
@@ -52,12 +48,7 @@ export const Card = () => {
             </div>
           ))}
         </div>
-        <div className="tab-bar">
-            <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-2" /></Link>} selected={false} title="Home" />
-            <TabBarItem className="tab-3" icon={<Link to="/point-home"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
-            <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-2" /></Link>} selected={false} title="Feed" />
-            <TabBarItem className="tab-bar-item-instance" icon={<Link to="/profile"><Icon14 className="icon-2" /></Link>} selected={true} title="Profile" />
-        </div>
+        
         <NavBar
           className="nav-bar-instance"
           icon={<LeftButton className="left-button-5" />}

@@ -111,13 +111,12 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    height: 493px;
+    height: 400px;
     left: 2px;
     overflow-y: scroll;
     padding: 10px;
     position: absolute;
-    top: 250px;
-    width: 375px;
+    top: 300px;
   }
 
   .home .frame-2 {
@@ -269,18 +268,129 @@
   }
   
   .home .frame-3 {
-    align-items: baseline;
     display: flex;
     flex: 1 1;
     flex-grow: 1;
     gap: 16px;
     padding: 16px;
     position: relative;
-    flex-direction: column-reverse;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
+    align-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
   }
+
+  .home .ranking {
+    align-self: stretch;
+    color: var(--neutraldarkdarkest);
+    font-family: var(--heading-h4-font-family);
+    font-size: var(--heading-h4-font-size);
+    font-style: var(--heading-h4-font-style);
+    font-weight: var(--heading-h4-font-weight);
+    letter-spacing: var(--heading-h4-letter-spacing);
+    line-height: var(--heading-h4-line-height);
+    margin-top: -1px;
+    position: relative;
+    margin-right: 10px;
+  }
+
+  .home .stock-price-plus {
+    align-self: stretch;
+    color: var(--supporterrordark);
+    font-family: var(--heading-h3-font-family);
+    font-size: var(--heading-h3-font-size);
+    font-style: var(--heading-h3-font-style);
+    font-weight: var(--heading-h3-font-weight);
+    letter-spacing: var(--heading-h3-letter-spacing);
+    line-height: var(--heading-h3-line-height);
+    position: relative;
+    margin-right: 10px;
+    padding: 5px 10px;
+  }
+
+  .home .stock-price-minus {
+    align-self: stretch;
+    color: var(--highlightdarkest);
+    font-family: var(--heading-h3-font-family);
+    font-size: var(--heading-h3-font-size);
+    font-style: var(--heading-h3-font-style);
+    font-weight: var(--heading-h3-font-weight);
+    letter-spacing: var(--heading-h3-letter-spacing);
+    line-height: var(--heading-h3-line-height);
+    position: relative;
+    margin-right: 10px;
+    padding: 5px 10px;
+  }
+
+  .home .stock-change-plus {
+    align-self: stretch;
+    color: var(--supporterrordark);
+    font-family: var(--heading-h5-font-family);
+    font-size: var(--heading-h5-font-size);
+    font-style: var(--heading-h5-font-style);
+    font-weight: 500;
+    letter-spacing: var(--heading-h5-letter-spacing);
+    line-height: var(--heading-h5-line-height);
+    position: relative;
+    margin-right: 10px;
+    border-radius: 5px;
+    background-color: var(--supporterrorlight);
+    padding: 5px 10px;
+  }
+
+  .home .stock-change-minus {
+    align-self: stretch;
+    color: var(--highlightdarkest);
+    font-family: var(--heading-h5-font-family);
+    font-size: var(--heading-h5-font-size);
+    font-style: var(--heading-h5-font-style);
+    font-weight: 500;
+    letter-spacing: var(--heading-h5-letter-spacing);
+    line-height: var(--heading-h5-line-height);
+    position: relative;
+    margin-right: 10px;
+    border-radius: 5px;
+    background-color: var(--highlightlightest);
+    padding: 5px 10px;
+  }
+
+  .home .predict-count {
+    align-self: stretch;
+    color: var(--light-ink);
+    font-family: var(--heading-h5-font-family);
+    font-size: var(--heading-h5-font-size);
+    font-style: var(--heading-h5-font-style);
+    font-weight: 500;
+    letter-spacing: var(--heading-h5-letter-spacing);
+    line-height: var(--heading-h5-line-height);
+    position: relative;
+    padding: 5px 10px;
+    background-color: var(--neutrallightmedium);
+    border-radius: 5px;
+  }
+
+  .home .predict-count-bold {
+    font-weight: 700;
+  }
+
+  .home .content-1 {
+    display: flex;
+
+  }
+
+  /* 아래의 모든 코드는 영역::코드로 사용 */
+.list::-webkit-scrollbar {
+  width: 7px;  /* 스크롤바의 너비 */
+}
+
+.list::-webkit-scrollbar-thumb {
+  height: 20%; /* 스크롤바의 길이 */
+  background: var(--highlightlightest); /* 스크롤바의 색상 */
+  border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, .05);  /*스크롤바 뒷 배경 색상*/
+}
   
   .home .content-3 {
     align-items: flex-start;

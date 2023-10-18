@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from "react";
 import "./style.css";
 
-export const Toggle = ({ section1Text, section2Text, onTabChange }) => {
+export const Toggle = ({ section1Text, section2Text, section1_subtitle, section2_subtitle, onTabChange }) => {
   const [selectedTab, setSelectedTab] = useState("section1");
 
   const handleTabClick = (tab) => {
@@ -28,15 +28,15 @@ export const Toggle = ({ section1Text, section2Text, onTabChange }) => {
       </div>
       <div className="tab-content">
         {selectedTab === "section1" && (
-          <div>
-            {/* Section 1 내용 */}
-            <div></div>
+          <div className="tab-subtitle">
+            {/* Section 1 content */}
+            {section1_subtitle && <p>{section1_subtitle}</p>}
           </div>
         )}
         {selectedTab === "section2" && (
-          <div>
-            {/* Section 2 내용 */}
-            <div></div>
+          <div className="tab-subtitle">
+            {/* Section 2 content */}
+            {section2_subtitle && <p>{section2_subtitle}</p>}
           </div>
         )}
       </div>

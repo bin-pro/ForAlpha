@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRightWrapper } from "../../components/ArrowRightWrapper";
-import { Image } from "../../components/Image";
 import { ListItem } from "../../components/ListItem";
 import { NavBar } from "../../components/NavBar";
-import { NoOfItemsWrapper } from "../../components/NoOfItemsWrapper";
 import { Toggle } from "../../components/Toggle";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Icon10 } from "../../icons/Icon10";
 import { Icon7 } from "../../icons/Icon7";
 import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
-import { Image5 } from "../../icons/Image5";
-import { Image6 } from "../../icons/Image6";
-import { Image7 } from "../../icons/Image7";
-import { Image8 } from "../../icons/Image8";
-import { Image9 } from "../../icons/Image9";
-import { BiRefresh } from 'react-icons/bi';
 import { RightButton6 } from "../../icons/RightButton6";
 import { RightButton7 } from "../../icons/RightButton7";
-import { StarFilled1 } from "../../icons/StarFilled1";
 import axios from 'axios';
 import "./style.css";
 
@@ -28,7 +18,16 @@ export const Home = () => {
   const [HomeData, setHomeData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  function addCommasToNumber(number) {
+    if (number !== undefined && number !== null) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    } else {
+      return "";
+    }
+  }
+
   useEffect(() => {
+    
     fetchData(selectedTab);
     // 5초(5000밀리초)마다 fetchData 함수 호출
     const intervalId = setInterval(() => {
@@ -42,10 +41,10 @@ export const Home = () => {
     try {
       let homeData;
       if (selectedTab === "section1") {
-        const response = await axios.get("http://test2.shinhan.site/foralpha-service/home/trading-volumes");
+        const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/home/trading-volumes`);
         homeData = response.data.payload.trading_volumes;
       } else if (selectedTab === "section2") {
-        const response = await axios.get("http://test2.shinhan.site/foralpha-service/home/popular");
+        const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/home/popular`);
         homeData = response.data.payload.popularStocks;
         console.log(homeData);
       }
@@ -58,12 +57,6 @@ export const Home = () => {
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
     fetchData(tab);
-  };
-
-  const handleRefresh = () => {
-    setRefreshing(true);
-    fetchData(selectedTab);
-    setRefreshing(false);
   };
 
     return (
@@ -87,23 +80,21 @@ export const Home = () => {
           </div>
           {/* <BiRefresh className="refresh-icon" onClick={handleRefresh}/> */}
           <div className="home-toggle">
-            <Toggle section1Text="거래량" section2Text="인기순" onTabChange={handleTabChange}/>
+            <Toggle section1Text="거래량" section2Text="인기순" section1_subtitle="지금 거래량이 가장 많은 종목" section2_subtitle="다른 사람들이 주목하는 종목" onTabChange={handleTabChange}/>
           </div>
           {selectedTab === "section1" && (
             <div className="list">
               {HomeData.map((item, index) => (
               <div className="horizontal-card" key={index}>
-                <div className="image-wrapper">
-                  <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
-                </div>
                 <div className="frame-3">
-                  <div className="content-3">
+                  <div className="content-1">
+                    <div className="ranking">{index+1}</div>
                     <div className="title-3">{item.stock_name}</div>
-                    <p className="subtitle">
-                      <span className="span">{item.stock_present_price}원 </span>
-                      <span className="text-wrapper-3"> {item.stock_dod_percentage}%</span>
-                    </p>
                   </div>
+                  <div className="content-1">
+                  <div className={`stock-price ${item.stock_dod_percentage > 0 ? 'stock-price-plus' : 'stock-price-minus'}`}>{addCommasToNumber(item.stock_present_price)}</div>
+                  <div className={`stock-change ${item.stock_dod_percentage > 0 ? 'stock-change-plus' : 'stock-change-minus'}`}> {item.stock_dod_percentage}%</div>
+                </div>
                 </div>
               </div>
             ))}
@@ -113,18 +104,17 @@ export const Home = () => {
           <div className="list">
             {HomeData.map((item, index) => (
               <div className="horizontal-card" key={index}>
-                <div className="image-wrapper">
-                  <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
+              <div className="frame-3">
+                <div className="content-1">
+                  <div className="ranking">{index+1}</div>
+                  <div className="title-3">{item.stock_name}</div>
                 </div>
-                <div className="frame-3">
-                  <div className="content-3">
-                    <div className="title-3">{item.stock_name}</div>
-                    <p className="subtitle">
-                      <span className="text-wrapper-3">예측 횟수: {item.predict_count}</span>
-                    </p>
-                  </div>
-                </div>
+                <div className="content-1">
+                <div className={`stock-price ${item.stock_dod_percentage > 0 ? 'stock-price-plus' : 'stock-price-minus'}`}>{addCommasToNumber(item.stock_present_price)}</div>
+                <div className="predict-count"><span className="predict-count-bold">{item.predict_count}</span>명이 상승을 예측했어요</div>
               </div>
+              </div>
+            </div>
             ))}
           </div>
         )}

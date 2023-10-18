@@ -2,24 +2,25 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AddWrapper } from "../../components/AddWrapper";
-import { Image } from "../../components/Image";
 import { NavBar } from "../../components/NavBar";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Icon14 } from "../../icons/Icon14";
 import { Icon11 } from "../../icons/Icon11";
 import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
-import { Image3 } from "../../icons/Image3";
 import historyIcon from '../../asset/img/file-text.png';
 import cardIcon from '../../asset/img/sheild.png';
 import axios from "axios";
 import "./style.css";
+
 export const Profile = () => {
   const [ProfileData, setProfileData] = useState([]);
+
   useEffect(() => {
     const userUuid = "ca5f9c68-6caf-11ee-bde4-027e9aa2905c"; // 실제로는 동적으로 설정해야 합니다.
     fetchProfile(userUuid);
   }, []);
+
   const fetchProfile = async (userUuid) => {
     try {
       const response = await axios.get(`http://test2.shinhan.site/foralpha-service/profiles/profile?user-uuid=${userUuid}`);//(`http://localhost:8002/feed?user-uuid=${userUuid}`)//(`http://test2.shinhan.site/foralpha-service/profiles/profile?user-uuid=${userUuid}`)//(`http://test2.shinhan.site/foralpha-service/profiles/profile?user-uuid=${userUuid}`);
@@ -30,6 +31,7 @@ export const Profile = () => {
       console.error("Failed to fetch feed:", error);
     }
   };
+  
   return (
     <div className="profile">
       <div className="div-2">
