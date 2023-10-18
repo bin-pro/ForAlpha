@@ -3,7 +3,7 @@ name: 리액트 빌드 / 배포 Actions # workflow 이름
 on:  # workflow 실행 조건
   push:
     branches:
-      - main # 메인 브랜치가 푸쉬된 경우
+      - master # 메인 브랜치가 푸쉬된 경우
 
 jobs: # job 설정
   react: # job id
