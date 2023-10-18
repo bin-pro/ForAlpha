@@ -33,8 +33,8 @@ public class Test {
                 totalPoint = -basePoint + (int)(earningRate * additionalPercentage);
             }
 
-            System.out.println("Investment Period: " + investmentPeriod + " days");
-            System.out.println("Total Point: " + totalPoint);
+//            System.out.println("Investment Period: " + investmentPeriod + " days");
+//            System.out.println("Total Point: " + totalPoint);
         }
     }
 }

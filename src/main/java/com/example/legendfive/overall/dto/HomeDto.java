@@ -20,7 +20,6 @@ public class HomeDto {
     @Data
     public static class volumeDto {
         private String stock_name;
-        private String stock_theme_name;
         private String data_rank;
         private String stock_present_price;
         private String stock_dod_percentage;

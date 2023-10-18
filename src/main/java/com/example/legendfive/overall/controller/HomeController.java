@@ -2,7 +2,7 @@ package com.example.legendfive.overall.controller;
 
 import com.example.legendfive.common.response.ResponseDto;
 import com.example.legendfive.overall.Service.HomeService;
-import com.example.legendfive.overall.Service.VolumesTestService;
+//import com.example.legendfive.overall.Service.VolumesTestService;
 import com.example.legendfive.overall.dto.HomeDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +22,7 @@ public class HomeController {
 
     private final HomeService homeService;
     private final ObjectMapper objectMapper;
-    private final VolumesTestService volumesTestService;
+//    private final VolumesTestService volumesTestService;
 
     /**
      * 레디스를 사용하여 거래량 정보 가져오기
@@ -44,23 +44,23 @@ public class HomeController {
             throw new RuntimeException(e);
         }
     }
-
-    /***
-     * 한투 open api로부터 바로 거래량 데이터 가져오기
-     * **/
-    @GetMapping("/test/trading-volumes")
-    public ResponseEntity<ResponseDto> tradingVolumeFromOpenApi() {
-
-        try {
-            HomeDto.volumeReseponseDto tradingFromCache = volumesTestService.getTradingVolumesFromOpenApi().block();
-
-            ResponseDto responseDto = ResponseDto.builder()
-                    .payload(objectMapper.convertValue(tradingFromCache, Map.class))
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-        } catch (IllegalArgumentException e) {
-            ResponseDto responseDto = ResponseDto.builder().error("Can't get trandingVolumes from cache").build();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
-        }
-    }
+//
+//    /***
+//     * 한투 open api로부터 바로 거래량 데이터 가져오기
+//     * **/
+//    @GetMapping("/test/trading-volumes")
+//    public ResponseEntity<ResponseDto> tradingVolumeFromOpenApi() {
+//
+//        try {
+//            HomeDto.volumeReseponseDto tradingFromCache = volumesTestService.getTradingVolumesFromOpenApi().block();
+//
+//            ResponseDto responseDto = ResponseDto.builder()
+//                    .payload(objectMapper.convertValue(tradingFromCache, Map.class))
+//                    .build();
+//            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+//        } catch (IllegalArgumentException e) {
+//            ResponseDto responseDto = ResponseDto.builder().error("Can't get trandingVolumes from cache").build();
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
+//        }
+//    }
 }
