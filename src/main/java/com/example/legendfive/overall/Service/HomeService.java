@@ -1,6 +1,8 @@
 package com.example.legendfive.overall.Service;
 
+import com.example.legendfive.overall.Entity.Stock;
 import com.example.legendfive.overall.dto.HomeDto;
+import com.example.legendfive.overall.repository.stock.StockRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +31,7 @@ public class HomeService {
 
     private final WebClient webClient;
     private final RedisTemplate<String, String> redisTemplate;
+    private final StockRepository stockRepository;
 
     @Value("${openapi.appkey}")
     private String prodAppKey;
@@ -98,6 +103,13 @@ public class HomeService {
             JSONObject outputItem = (JSONObject) item;
             JSONObject priceDataItem = new JSONObject();
 
+            Optional<Stock> stock = stockRepository.findByStockName(outputItem.get("hts_kor_isnm").toString());
+            if(stock.isPresent()){
+                priceDataItem.put("stock_theme_name", stock.get().getThemeName());
+            }
+            else{
+                priceDataItem.put("stock_theme_name", "미분류");
+            }
             priceDataItem.put("stock_name", outputItem.get("hts_kor_isnm"));
             priceDataItem.put("data_rank", outputItem.get("data_rank"));
             priceDataItem.put("stock_present_price", outputItem.get("stck_prpr"));
