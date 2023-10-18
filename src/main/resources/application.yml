@@ -1,0 +1,23 @@
+openapi:
+    prod_appkey: ${api_appkey}
+    prod_appsecret: ${api_appsecret}
+    access_token: ${access_token}
+
+
+cloud:
+    aws:
+        credentials:
+            access-key: ${aws_accesskey}
+            secret-key: ${aws_secretkey}
+        region:
+            static: ${region}
+        s3:
+            bucket: ${bucket}
+        stack:
+            auto: false
+
+spring:
+    servlet:
+        multipart:
+            max-file-size: 15MB
+            max-request-size: 100MB
