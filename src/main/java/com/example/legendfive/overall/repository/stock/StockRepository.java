@@ -16,6 +16,4 @@ public interface StockRepository extends JpaRepository<Stock, Long>
     @Query("SELECT s FROM Stock s WHERE s.themeName LIKE %:themeName%")
     Page<Stock> findByThemeName(String themeName, Pageable pageable);
     Optional<Stock> findByStockCode(String stockCode);
-
-    Optional<Stock> findByStockName(String stockName);
 }

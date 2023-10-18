@@ -35,5 +35,6 @@ public class HomeDto {
     public static class popularStockResponseDto{
         private String stockName;
         private int predictCount;
+        private String stockPrice;
     }
 }

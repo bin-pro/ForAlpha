@@ -78,6 +78,7 @@ public class StockDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockBrandResponseDto{
         private String stockCode;
+        private String stockPrice;
         private String StockName;
     }
 
@@ -88,6 +89,7 @@ public class StockDto {
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SearchStockThemeResponseDto{
         private String stockCode;
+        private String stockPrice;
         private String StockName;
     }
 }

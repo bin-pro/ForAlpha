@@ -16,6 +16,9 @@ import com.example.legendfive.overall.repository.stock.StockRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +51,7 @@ public class StockService {
      * 검색 리스트에서 세부 종목을 하나 눌렀을때, S3에서 값을 가져와서 프론트로 전해줄 값
      * S3에 저장된 오늘 날짜의 주식 정보를 가져오는 메소드 -> 아침마다 예측에 사용
      */
-    public StockDto.stockDetailResponseDto getStockDetails(String stockCode) {
+    public StockDto.stockDetailResponseDto getStockDetailsFromS3(String stockCode) {
 
         Stock stock = stockRepository.findByStockCode(stockCode).orElseThrow(
                 () -> new RuntimeException("해당 주식이 없습니다.")
@@ -57,7 +60,6 @@ public class StockService {
         try {
 
             S3Object s3Object = amazonS3.getObject(S3_BUCKET_NAME, S3_FILE_PATH + stock.getStockCode() + ".json");
-//            System.out.println(s3Object);
             S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
 
             String jsonContent = new BufferedReader(new InputStreamReader(s3ObjectInputStream))
@@ -73,6 +75,20 @@ public class StockService {
             e.printStackTrace();
             throw new AmazonS3Exception("Amazon S3에서 파일을 읽을 수 없습니다.");
         }
+    }
+
+    public String getStockPriceFromS3(String stockCode) throws ParseException {
+
+        S3Object s3Object = amazonS3.getObject(S3_BUCKET_NAME, S3_FILE_PATH + stockCode + ".json");
+        S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
+
+        String jsonContent = new BufferedReader(new InputStreamReader(s3ObjectInputStream))
+                .lines().collect(Collectors.joining("\n"));
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(jsonContent);
+
+        return (String) jsonObject.get("stock_present_price");
     }
 
     /**
@@ -93,11 +109,8 @@ public class StockService {
                 if (Objects.equals(predictionRecord.getEndDay(), LocalDate.now())) {
 
                     //4. 종료일이 오늘이라면, S3에서 해당 주식의 현재 가격을 가져온다
-                    StockDto.stockDetailResponseDto stockDetailResponseDto = getStockDetails(predictionRecord.getStockCode().toString());
+                    StockDto.stockDetailResponseDto stockDetailResponseDto = getStockDetailsFromS3(predictionRecord.getStockCode().toString());
                     String stockEndPriceFromS3 = stockDetailResponseDto.getStock_present_price();
-
-                    // 예측 설정한 기간을 가져옴
-                    int investmentPeriod = predictionRecord.getEndDay().getDayOfYear() - predictionRecord.getCreatedAt().getDayOfYear();
 
                     //수익률(+,-)
                     double earningRate = (double) (Integer.parseInt(stockEndPriceFromS3) - predictionRecord.getStockPresentPrice()) / predictionRecord.getStockPresentPrice();
@@ -220,10 +233,19 @@ public class StockService {
         Page<Stock> searchResults = stockRepository.findByStockNameContainingIgnoreCase(brandName, pageable);
 
         // Page를 DTO로 변환
-        return searchResults.map(stockEntity -> StockDto.SearchStockBrandResponseDto.builder()
-                .stockCode(stockEntity.getStockCode())
-                .StockName(stockEntity.getStockName())
-                .build());
+        return searchResults.map(stockEntity -> {
+            try {
+                log.info(stockEntity.getStockCode());
+                log.info(getStockPriceFromS3(stockEntity.getStockCode()));
+                return StockDto.SearchStockBrandResponseDto.builder()
+                        .stockCode(stockEntity.getStockCode())
+                        .stockPrice(getStockPriceFromS3(stockEntity.getStockCode()))
+                        .StockName(stockEntity.getStockName())
+                        .build();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public Page<StockDto.SearchStockThemeResponseDto> searchStockByThemeName(String themeName, Pageable pageable) {
@@ -232,10 +254,19 @@ public class StockService {
         Page<Stock> searchResults = stockRepository.findByThemeName(themeName, pageable);
         log.info("searchResults: " + searchResults.toString());
         // Page를 DTO로 변환
-        return searchResults.map(stockEntity -> StockDto.SearchStockThemeResponseDto.builder()
-                .stockCode(stockEntity.getStockCode())
-                .StockName(stockEntity.getStockName())
-                .build());
+        return searchResults.map(stockEntity -> {
+            try {
+                log.info(stockEntity.getStockCode());
+                log.info(getStockPriceFromS3(stockEntity.getStockCode()));
+                return StockDto.SearchStockThemeResponseDto.builder()
+                        .stockCode(stockEntity.getStockCode())
+                        .stockPrice(getStockPriceFromS3(stockEntity.getStockCode()))
+                        .StockName(stockEntity.getStockName())
+                        .build();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void updateUserInvestType(User user, String investType){

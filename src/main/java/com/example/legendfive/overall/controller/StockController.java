@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +44,7 @@ public class StockController {
     public ResponseEntity<ResponseDto> getStockDetails(@PathVariable("stock_code") String stockCode) {
 
         try {
-            StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetails(stockCode);
+            StockDto.stockDetailResponseDto stockDetailResponseDto = stockService.getStockDetailsFromS3(stockCode);
 
             ResponseDto responseDto2 = ResponseDto.builder()
                     .payload(objectMapper.convertValue(stockDetailResponseDto, Map.class))
