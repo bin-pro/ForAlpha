@@ -22,6 +22,7 @@ import { RightButton7 } from "../../icons/RightButton7";
 import { StarFilled1 } from "../../icons/StarFilled1";
 import axios from 'axios';
 import "./style.css";
+
 export const Home = () => {
   const [selectedTab, setSelectedTab] = useState("section1"); // 초기 탭 "예측 내역"
   const [HomeData, setHomeData] = useState([]);
