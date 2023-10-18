@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ListItem } from "../../components/ListItem";
 import { NavBar } from "../../components/NavBar";
+import { Link } from "react-router-dom";
 import { SearchBar } from "../../components/SearchBar";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Avatar9 } from "../../icons/Avatar9";
@@ -45,9 +46,10 @@ export const Friends = () => {
             <NavBar
                 className="nav-bar-instance"
                 divClassName="nav-bar-3"
-                leftControl="none"
+                leftControl="icon"
                 pageTitle="친구 찾기"
                 rightControl="none"
+                leftLink="/feed"
              />
             <div className="text-field-instance">
                 <input className="input-field-stock"
@@ -79,11 +81,11 @@ export const Friends = () => {
             ))}
             </div>
             <div className="tab-bar">
-              <TabBarItem className="tab-3" icon={<Icon11 className="icon-2" />} selected={false} title="Home" />
-              <TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" />
-              <TabBarItem className="tab-3" icon={<Icon12 className="icon-2" />} selected={false} title="Feed" />
-              <TabBarItem className="tab-3" icon={<Icon10 className="icon-2" />} selected={false} title="Profile" />
-            </div>
+              <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-2" /></Link>} selected={false} title="Home" />
+              <TabBarItem className="tab-3" icon={<Link to="/point-home"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
+              <TabBarItem className="tab-bar-item-instance" icon={<Link to="/feed"><Icon12 className="icon-2" /></Link>} selected={true} title="Feed" />
+              <TabBarItem className="tab-3" icon={<Link to="/profile"><Icon10 className="icon-2" /></Link>} selected={false} title="Profile" />
+          </div>
         </div>
     </div>
   )

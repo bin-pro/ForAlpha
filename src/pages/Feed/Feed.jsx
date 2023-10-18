@@ -80,10 +80,10 @@ export const Feed = () => {
             ))}
         </div>
         <div className="tab-bar">
-              <TabBarItem className="tab-3" icon={<Icon11 className="icon-2" />} selected={false} title="Home" />
-              <TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" />
-              <TabBarItem className="tab-3" icon={<Icon12 className="icon-2" />} selected={false} title="Feed" />
-              <TabBarItem className="tab-3" icon={<Icon10 className="icon-2" />} selected={false} title="Profile" />
+            <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-2" /></Link>} selected={false} title="Home" />
+            <TabBarItem className="tab-3" icon={<Link to="/point-home"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
+            <TabBarItem className="tab-bar-item-instance" icon={<Link to="/feed"><Icon12 className="icon-2" /></Link>} selected={true} title="Feed" />
+            <TabBarItem className="tab-3" icon={<Link to="/profile"><Icon10 className="icon-2" /></Link>} selected={false} title="Profile" />
         </div>
       </div>
     </div>

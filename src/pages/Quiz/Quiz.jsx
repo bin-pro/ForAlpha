@@ -15,45 +15,53 @@ import { Icon10 } from "../../icons/Icon10";
 import { Icon11 } from "../../icons/Icon11";
 import { Icon13 } from "../../icons/Icon13";
 import { LeftButton } from "../../icons/LeftButton";
-import { Answer } from '../Answer/Answer'; 
+import { Answer } from '../Answer/Answer';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./style.css";
 
 export const Quiz = () => {
   const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [explain, setExplain] = useState("");
+
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [quizId, setQuizId] = useState(null);
-
+  const navigate = useNavigate();
   const quizText = useSelector((state) => state.quiz.quizText);
   const quizAnswer = useSelector((state) => state.quiz.quizAnswer);
   const quizExplanation = useSelector((state) => state.quiz.quizExplanation);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     fetchQuestion();
-
-    dispatch({
-      type: "SET_QUIZ",
-      quizText,
-      quizAnswer,
-      quizExplanation,
-    });
   }, []);
 
   const fetchQuestion = async () => {
     try {
       // quiz 문제 조회
-      const response = await axios.get("http://test2.shinhan.site:8002/foralpha-service/point/quiz");
+      const response = await axios.get("http://test2.shinhan.site/foralpha-service/point/quiz");
       const quizText = response.data.payload.quiz_question;
-      const quizId = response.data.paypoad.id;
+      const quizAnswer = response.data.payload.quiz_answer;
+      const quizExplanation = response.data.payload.quiz_explanation;
+
+      console.log(quizAnswer);
+      console.log(quizText);
+      console.log(quizExplanation);
+      
+      dispatch({
+        type: 'SET_QUIZ',
+        quizText,
+        quizAnswer,
+        quizExplanation,
+      });
+
       setQuestion(quizText);
       setQuizId(quizId);
+      setAnswer(quizAnswer);
+      setExplain(quizExplanation);
       console.log("Quiz question loaded");
-      // quiz 정답 및 해설 조회
-      const answerResponse = await axios.get(`http://test2.shinhan.site:8002/foralpha-service/point/quiz/answer?quiz-uuid=${quizId}`);
-      const quizAnswer = answerResponse.data.payload.quiz_answer;
-      const quizExplain = answerResponse.data.payload.quiz_explanation;
+      
     } catch (error) {
       console.error("Failed to fetch question:", error);
     }
@@ -61,34 +69,38 @@ export const Quiz = () => {
 
   const handleButtonClick = async (choice) => {
     setSelectedAnswer(choice);
-
     try {
       const isCorrect = choice === quizAnswer;
-
-      await axios.post("http://test2.shinhan.site:8002/foralpha-service/point/quiz", {
-        quizId,
-        userId: "user-id",
-        selectedAnswer: choice,
-      });
-
+      const quizData = {
+        quiz_id: quizId,
+        user_id: "ca5f9e53-6caf-11ee-bde4-027e9aa2905c",
+        quizAnswer: choice,
+      };
+      await axios.post("http://test2.shinhan.site/foralpha-service/point/quiz", quizData)
+        .then((response) => {
+          if(response.status === 201){
+            console.log("success")
+        }
+      }).catch((error)=>console.log(error.response));
       if (isCorrect) {
         Swal.fire({
           text: "정답입니다!",
           icon: "success",
           timer: 2000, // 알림이 자동으로 사라지는 시간 (밀리초 단위)
         });
+        navigate(`/answer`);
       } else {
         Swal.fire({
           text: "오답입니다!",
           icon: "error",
           timer: 2000,
         });
+        navigate(`/answer`);
       }
     } catch (error) {
       console.error("Failed to send user choice:", error);
     }
   };
-
   return (
     <div className="quiz">
     <div className="div-2">
@@ -114,13 +126,13 @@ export const Quiz = () => {
                 className="button-primary-instance"
                 divClassName="design-component-instance-node"
                 text="O"
-                onClick={() => handleButtonClick("O")}
+                onClick={() => handleButtonClick(true)}
               />
               <ButtonPrimary
                 className="button-primary-instance-2"
                 divClassName="design-component-instance-node"
                 text="X"
-                onClick={() => handleButtonClick("X")}
+                onClick={() => handleButtonClick(false)}
               />
             </div>
           </div>

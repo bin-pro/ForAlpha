@@ -14,7 +14,7 @@ import "./style.css";
 import { Link } from "react-router-dom";
 
 export const Answer = () => {
-  const quizText = useSelector((state) => state.quiz.quizText);
+  const quizText = useSelector((state) => state.quiz.quizText) 
   const quizAnswer = useSelector((state) => state.quiz.quizAnswer);
   const quizExplanation = useSelector((state) => state.quiz.quizExplanation);
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AddWrapper } from "../../components/AddWrapper";
 import { Image } from "../../components/Image";
@@ -11,9 +12,24 @@ import { Icon9 } from "../../icons/Icon9";
 import { Image3 } from "../../icons/Image3";
 import historyIcon from '../../asset/img/file-text.png';
 import cardIcon from '../../asset/img/sheild.png';
+import axios from "axios";
 import "./style.css";
-
 export const Profile = () => {
+  const [ProfileData, setProfileData] = useState([]);
+  useEffect(() => {
+    const userUuid = "ca5f9c68-6caf-11ee-bde4-027e9aa2905c"; // 실제로는 동적으로 설정해야 합니다.
+    fetchProfile(userUuid);
+  }, []);
+  const fetchProfile = async (userUuid) => {
+    try {
+      const response = await axios.get(`http://test2.shinhan.site/foralpha-service/profiles/profile?user-uuid=${userUuid}`);//(`http://localhost:8002/feed?user-uuid=${userUuid}`)//(`http://test2.shinhan.site/foralpha-service/profiles/profile?user-uuid=${userUuid}`)//(`http://test2.shinhan.site/foralpha-service/profiles/profile?user-uuid=${userUuid}`);
+      const profileData = response.data.payload.profile;
+      setProfileData(profileData);
+      console.log("Feed loaded");
+    } catch (error) {
+      console.error("Failed to fetch feed:", error);
+    }
+  };
   return (
     <div className="profile">
       <div className="div-2">
@@ -80,10 +96,10 @@ export const Profile = () => {
           rightControl="none"
         />
          <div className="tab-bar">
-                <TabBarItem className="tab-3" icon={<Icon11 className="icon-2" />} selected={false} title="Home" />
-                <TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" />
-                <TabBarItem className="tab-3" icon={<Icon9 className="icon-2" />} selected={false} title="Feed" />
-                <TabBarItem className="tab-3" icon={<Icon14 className="icon-2" />} selected={false} title="Profile" />
+            <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-2" /></Link>} selected={false} title="Home" />
+            <TabBarItem className="tab-3" icon={<Link to="/point-home"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
+            <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-2" /></Link>} selected={false} title="Feed" />
+            <TabBarItem className="tab-bar-item-instance" icon={<Link to="/profile"><Icon14 className="icon-2" /></Link>} selected={true} title="Profile" />
         </div>
       </div>
     </div>

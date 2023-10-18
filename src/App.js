@@ -14,6 +14,7 @@ import { Feed } from "./pages/Feed";
 import { Friends } from "./pages/Friends";
 import { PointHome } from "./pages/PointHome";
 import { Prediction } from "./pages/Prediction";
+
 import { StockSearch } from "./pages/StockSearch";
 import { Complete } from "./pages/Complete";
 import { Quiz } from "./pages/Quiz";

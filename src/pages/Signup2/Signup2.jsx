@@ -120,11 +120,17 @@ function Signup2() {
 
  // 이메일로 인증 코드 요청
  const sendVerificationCode = async () => {
+
+  console.log(email);
+
   try {
-    const response = await axios.post('http://test2.shinhan.site:8001/user-service/sign-in/email/validation', {
-      email: email
+    const response = await axios.post('http://test2.shinhan.site/user-service/sign-in/email/validation', {
+       email: email
     });
-    if (response.status === 200) {
+    // const response = await axios.get('http://test2.shinhan.site/user-service/');
+    // console.log(response);
+    if (response.status === 204) {
+      console.log("hihi");
       setCodeMessage('코드가 전송되었습니다.');
       setIsVerification(true);
     } else {

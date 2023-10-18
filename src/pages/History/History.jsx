@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { NavBar } from "../../components/NavBar";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Toggle } from "../../components/Toggle";
@@ -98,13 +99,14 @@ export const History = () => {
           leftControl="icon"
           pageTitle="History"
           rightButtonClassName="design-component-instance-node"
-          rightControl="icon"
+          rightControl="none"
+          leftLink="/profile"
         />
         <div className="tab-bar">
-                <TabBarItem className="tab-3" icon={<Icon11 className="icon-2" />} selected={false} title="Home" />
-                <TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" />
-                <TabBarItem className="tab-3" icon={<Icon9 className="icon-2" />} selected={false} title="Feed" />
-                <TabBarItem className="tab-3" icon={<Icon14 className="icon-2" />} selected={false} title="Profile" />
+            <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-2" /></Link>} selected={false} title="Home" />
+            <TabBarItem className="tab-3" icon={<Link to="/point-home"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
+            <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-2" /></Link>} selected={false} title="Feed" />
+            <TabBarItem className="tab-bar-item-instance" icon={<Link to="/profile"><Icon14 className="icon-2" /></Link>} selected={true} title="Profile" />
         </div>
         <div className="comment">
           <div className="frame">

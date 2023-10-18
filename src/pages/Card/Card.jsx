@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Badge } from "../../components/Badge";
 import { Image } from "../../components/Image";
@@ -12,19 +13,15 @@ import { Image5 } from "../../icons/Image5";
 import { LeftButton } from "../../icons/LeftButton";
 import axios from "axios";
 import "./style.css";
-
 export const Card = () => {
-
   const [CardData, setCardData] = useState([]);
-
   useEffect(() => {
-    const userUuid = "846813a8-d894-4956-9d41-ad6d24292e2c";
+    const userUuid = "ca5f9d44-6caf-11ee-bde4-027e9aa2905c";
     fetchCard(userUuid);
   }, []);
-
   const fetchCard = async (userUuid) => {
     try {
-      const response = await axios.get(`http://localhost:8002/profile/theme-card?user-uuid=${userUuid}`)
+      const response = await axios.get(`http://test2.shinhan.site/foralpha-service/profile/theme-card?user-uuid=${userUuid}`)
       const cardData = response.data.payload.themeCardList;
       setCardData(cardData);
       console.log("Feed loaded");
@@ -32,7 +29,6 @@ export const Card = () => {
       console.error("Failed to fetch feed:", error);
     }
   };
-
   return (
     <div className="card">
       <div className="div-2">
@@ -57,10 +53,10 @@ export const Card = () => {
           ))}
         </div>
         <div className="tab-bar">
-          <TabBarItem className="tab-3" icon={<Icon11 className="icon-2" />} selected={false} title="Home" />
-          <TabBarItem className="tab-3" icon={<Icon8 className="icon-2" />} selected={false} title="Point" />
-          <TabBarItem className="tab-3" icon={<Icon9 className="icon-2" />} selected={false} title="Feed" />
-          <TabBarItem className="tab-3" icon={<Icon14 className="icon-2" />} selected={false} title="Profile" />
+            <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-2" /></Link>} selected={false} title="Home" />
+            <TabBarItem className="tab-3" icon={<Link to="/point-home"><Icon8 className="icon-2" /></Link>} selected={false} title="Point" />
+            <TabBarItem className="tab-3" icon={<Link to="/feed"><Icon9 className="icon-2" /></Link>} selected={false} title="Feed" />
+            <TabBarItem className="tab-bar-item-instance" icon={<Link to="/profile"><Icon14 className="icon-2" /></Link>} selected={true} title="Profile" />
         </div>
         <NavBar
           className="nav-bar-instance"
@@ -69,6 +65,7 @@ export const Card = () => {
           pageTitle="Card"
           rightButtonClassName="nav-bar-2"
           rightControl="none"
+          leftLink="/profile"
         />
       </div>
     </div>

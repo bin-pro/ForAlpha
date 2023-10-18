@@ -189,13 +189,14 @@
   }
   
   .card .tab-3 {
-    color: var(--neutraldarkdarkest) !important;
-    font-family: "Inter", Helvetica !important;
-    font-size: 10px !important;
-    font-style: unset !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.15px !important;
-    line-height: 14px !important;
+    align-items: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 8px;
+    margin-bottom: -2px;
+    position: relative;
   }
   
   .card .nav-bar-instance {
