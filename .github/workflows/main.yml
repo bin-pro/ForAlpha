@@ -1,0 +1,25 @@
+name: AWS Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1 
+        with: 
+          aws-access-key-id: AKIAVUG3QNWYFTSND4XH
+          aws-secret-access-key: 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
+          aws-region: ap-northeast-2
+      - name: Upload /build to S3
+        env:
+          BUCKET_NAME: pda-front
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 build s3://$BUCKET_NAME
