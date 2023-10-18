@@ -57,7 +57,7 @@ public class StockService {
         try {
 
             S3Object s3Object = amazonS3.getObject(S3_BUCKET_NAME, S3_FILE_PATH + stock.getStockCode() + ".json");
-            System.out.println(s3Object);
+//            System.out.println(s3Object);
             S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
 
             String jsonContent = new BufferedReader(new InputStreamReader(s3ObjectInputStream))
@@ -160,7 +160,7 @@ public class StockService {
         //사용자가 입력한 포인트
         Long inputPoint = stockPredictionRequsetDto.getInputPoint();
 
-        if(inputPoint == 0){
+        if(inputPoint <= 0){
             return StockDto.stockPredictionResponseDto.builder()
                     .message("0 이상의 값을 입력해주세요.")
                     .build();

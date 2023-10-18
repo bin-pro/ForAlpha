@@ -103,13 +103,6 @@ public class HomeService {
             JSONObject outputItem = (JSONObject) item;
             JSONObject priceDataItem = new JSONObject();
 
-            Optional<Stock> stock = stockRepository.findByStockName(outputItem.get("hts_kor_isnm").toString());
-            if(stock.isPresent()){
-                priceDataItem.put("stock_theme_name", stock.get().getThemeName());
-            }
-            else{
-                priceDataItem.put("stock_theme_name", "미분류");
-            }
             priceDataItem.put("stock_name", outputItem.get("hts_kor_isnm"));
             priceDataItem.put("data_rank", outputItem.get("data_rank"));
             priceDataItem.put("stock_present_price", outputItem.get("stck_prpr"));
