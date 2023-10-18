@@ -5,14 +5,11 @@ import { NavBar } from "../../components/NavBar";
 import { ListItem } from "../../components/ListItem";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Toggle } from "../../components/Toggle";
-import { Image } from "../../components/Image";
 import { Icon9 } from "../../icons/Icon9";
 import { Icon10 } from "../../icons/Icon10";
 import { Icon11 } from "../../icons/Icon11";
 import { Icon13 } from "../../icons/Icon13";
 import { BiSearch} from 'react-icons/bi';
-import { Divider1 } from '../../icons/Divider1';
-import { Image5 } from "../../icons/Image5";
 import { LeftButton } from "../../icons/LeftButton";
 import { RightButton6 } from "../../icons/RightButton6";
 import { ThemeModal } from "../../components/ThemeModal";
@@ -23,59 +20,60 @@ export const StockSearch = () => {
     const [selectedTab, setSelectedTab] = useState("section1"); // 초기 탭을 "거래량"으로 설정
     const [data, setData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [stockname, setStockName] = React.useState("");
+    const [stockname, setStockName] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [selectedTheme, setSelectedTheme] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchError, setSearchError] = useState(null);
 
-    const fetchData = async (selectedTab) => {
+    const fetchData = async (selectedTab, stockname) => {
         try {
-          const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/stocks/point/stock/brand-search`);
-          const jsonData = response.data;
-          setData(jsonData);
-          setIsLoaded(true);
-        } catch (error) {
-          console.error("API 요청 실패:", error);
-        }
-      };
+            const response = await axios.get(
+              `${window.API_BASE_URL}/foralpha-service/stocks/point/stock/brand-search?stock-brand-name=${stockname}&page=0&size=10`
+            );
+            const jsonData = response.data.payload.stocks;
+            setSearchResults(jsonData);
+            setIsLoaded(true);
+            setSearchError(null);
+            console.log(stockname);
+            console.log(jsonData);
+          } catch (error) {
+            console.error("API 요청 실패:", error);
+            setSearchResults([]);
+            setIsLoaded(false);
+            setSearchError("검색 결과가 없습니다.");
+          }
+    };
 
-    useEffect(() => {
-        fetchData(selectedTab);
-    }, [selectedTab]);
-
-    // 선택한 탭과 데이터를 업데이트하기 위한 콜백 함수
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
         setSearchResults([]);
-    };
-
-    const handleSearch = async () => {
-        try {
-          const response = await axios.get(
-            `${window.API_BASE_URL}/foralpha-service/stocks/point/stock/brand-search?stock-brand-name=${stockname}&page=0&size=10`
-          );
-          const jsonData = response.data.payload.stocks;
-          setSearchResults(jsonData);
-          console.log(jsonData);
-        } catch (error) {
-          console.error("API 요청 실패:", error);
-        }
+        setIsLoaded(false);
+        setSearchError(null);
       };
 
+      const handleSearch = async () => {
+        if (stockname.trim() === "") {
+          setSearchError("종목명을 입력해주세요");
+          setSearchResults([]);
+          setIsLoaded(false);
+        } else {
+          fetchData(selectedTab, stockname);
+        }
+      };
+    
     const clickSearch = async () => {
-        fetchData(selectedTab, stockname);
-    }
+        handleSearch();
+    };
 
     const handleListItemClick = (themeName) => {
         setSelectedTheme(themeName);
         setIsModalOpen(true);
-      };
+    };
     
-      useEffect(() => {
-        if (selectedTheme) {
-          fetchData(selectedTheme);
-        }
-      }, [selectedTheme]);
+    useEffect(() => {
+        fetchData(selectedTab, stockname);
+        }, [selectedTab, stockname]);
 
   return (
     <div className="stock-search">
@@ -96,7 +94,11 @@ export const StockSearch = () => {
                             type="text" name="stockname"
                             value={stockname}
                             placeholder="search"
-                            onKeyPress={handleSearch}
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  handleSearch();
+                                }
+                              }}
                             onChange={(e) => setStockName(e.target.value)} />
                         <BiSearch className="searchbar-icon" onClick={clickSearch} />
                     </div>
@@ -265,28 +267,31 @@ export const StockSearch = () => {
                         </div>
                         )}
                 </div>
-                {isLoaded ? (
+
+                {searchError && (
+                    <p className="error-message">{searchError}</p>
+                )}
+
+                {isLoaded && selectedTab === "section1" && (
                         <div className="data-display">
-                            {data.map((item, index) => (
+                            {searchResults.length > 0 ? (
+                            searchResults.map((item, index) => (
                                 <div key={index} className="data-item">
-                                    <Image className="image-2" icon={<Image5 className="image-4" />} />
-                                    <div className="content-7">
-                                        <div className="div-4">
-                                            <div className="product-name-2">{item.name}</div>
-                                            <p className="details-2">
-                                                <span className="text-wrapper-8">{item.price}</span>
-                                                <span className="text-wrapper-9">{item.change}%</span>
-                                            </p>
-                                        </div>
-                                    </div>
+                                    <div className="result-name">{item.stock_name}</div>
+                                    <div className="result-content">
+                                        <div className="result-price-plus">가격</div>
+                                        <div className="result-predict">1명이 상승을 예측했어요</div>
                                 </div>
-                            ))}
+                                </div>
+                                
+                            ))
+                            ) : (
+                            <p className="error-message">검색 결과가 없습니다.</p>
+                            )}
                         </div>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                <Divider className="divider-7" />
-            </div>
+        )}
+                
+                </div>
             <div className="tab-bar">
                 <TabBarItem className="tab-3" icon={<Link to="/home"><Icon11 className="icon-3" /></Link>} selected={false} title="Home" />
                 <TabBarItem className="tab-bar-item-instance" icon={<Link to="/point-home"><Icon13 className="icon-3" /></Link>} selected tabNameClassName="tab-2" title="Point"/>
