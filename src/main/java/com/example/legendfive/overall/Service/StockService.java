@@ -117,7 +117,7 @@ public class StockService {
 
                     // DecimalFormat을 사용하여 소수점 이하 숫자를 제외하고 출력
                     DecimalFormat decimalFormat = new DecimalFormat("#");
-                    String formattedEarningRate = decimalFormat.format(earningRate * 200);
+                    String formattedEarningRate = decimalFormat.format(earningRate * 100);
 
                     //계산된 포인트
                     int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint());
