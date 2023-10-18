@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @Service
@@ -54,6 +55,7 @@ public class HomeService {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 String dataJson = objectMapper.writeValueAsString(data);
+                System.out.println(dataJson);
                 return Mono.just(dataJson);
             } catch (JsonProcessingException e) {
                 log.error("데이터 JSON 변환 오류", e);
@@ -65,6 +67,7 @@ public class HomeService {
                         JSONObject reformattedJson = jsonReformat(dataJson);
                         ValueOperations<String, String> vop = redisTemplate.opsForValue();
                         vop.set("tradingVolumes", reformattedJson.toJSONString());
+//                        System.out.println(reformattedJson.toJSONString());
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -143,6 +146,7 @@ public class HomeService {
 
 
     @Scheduled(cron = "0 0 8 * * ?")
+    @PostConstruct
     public void getToken() {
         try {
             accessToken = getAccessToken();
