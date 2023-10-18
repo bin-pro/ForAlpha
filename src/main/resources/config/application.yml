@@ -14,8 +14,8 @@ spring:
       - classpath:/config/openApiS3.yml
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP-SERVERS}
+#  kafka:
+#    bootstrap-servers: ${KAFKA_BOOTSTRAP-SERVERS}
 
   redis:
     host: ${SPRING_REDIS_HOST}

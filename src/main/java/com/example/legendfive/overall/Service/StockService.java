@@ -117,7 +117,7 @@ public class StockService {
 
                     // DecimalFormat을 사용하여 소수점 이하 숫자를 제외하고 출력
                     DecimalFormat decimalFormat = new DecimalFormat("#");
-                    String formattedEarningRate = decimalFormat.format(earningRate * 100);
+                    String formattedEarningRate = decimalFormat.format(earningRate * 200);
 
                     //계산된 포인트
                     int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint());
@@ -232,14 +232,21 @@ public class StockService {
     public Page<StockDto.SearchStockBrandResponseDto> searchStockByBrandName(String brandName, Pageable pageable) {
         Page<Stock> searchResults = stockRepository.findByStockNameContainingIgnoreCase(brandName, pageable);
 
+
+
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> {
             try {
-                log.info(stockEntity.getStockCode());
-                log.info(getStockPriceFromS3(stockEntity.getStockCode()));
+                log.info("stockCode: ",stockEntity.getStockCode());
+                log.info("stockPriceDataFromS3: ",getStockPriceFromS3(stockEntity.getStockCode()));
+
+                //주식의 예측 기록을 가져온다.
+                String stockPredictionCount = String.valueOf(predictionRecordRepository.countByStockCode(stockEntity.getStockCode()));
+                log.info("stockPrecitionCount: ",stockPredictionCount);
                 return StockDto.SearchStockBrandResponseDto.builder()
                         .stockCode(stockEntity.getStockCode())
                         .stockPrice(getStockPriceFromS3(stockEntity.getStockCode()))
+                        .stockPredictionCount(stockPredictionCount)
                         .StockName(stockEntity.getStockName())
                         .build();
             } catch (ParseException e) {
@@ -256,11 +263,16 @@ public class StockService {
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> {
             try {
-                log.info(stockEntity.getStockCode());
-                log.info(getStockPriceFromS3(stockEntity.getStockCode()));
+                log.info("stockCode: ",stockEntity.getStockCode());
+                log.info("stockPriceDataFromS3: ",getStockPriceFromS3(stockEntity.getStockCode()));
+
+                String stockPredictionCount = String.valueOf(predictionRecordRepository.countByStockCode(stockEntity.getStockCode()));
+                log.info("stockPrecitionCount: ",stockPredictionCount);
+
                 return StockDto.SearchStockThemeResponseDto.builder()
                         .stockCode(stockEntity.getStockCode())
                         .stockPrice(getStockPriceFromS3(stockEntity.getStockCode()))
+                        .stockPredictionCount(stockPredictionCount)
                         .StockName(stockEntity.getStockName())
                         .build();
             } catch (ParseException e) {

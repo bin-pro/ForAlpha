@@ -79,6 +79,7 @@ public class StockDto {
     public static class SearchStockBrandResponseDto{
         private String stockCode;
         private String stockPrice;
+        private String stockPredictionCount;
         private String StockName;
     }
 
@@ -90,6 +91,7 @@ public class StockDto {
     public static class SearchStockThemeResponseDto{
         private String stockCode;
         private String stockPrice;
+        private String stockPredictionCount;
         private String StockName;
     }
 }
