@@ -123,7 +123,7 @@ public class StockService {
                     String formattedEarningRate = decimalFormat.format(earningRate * 100);
 
                     //계산된 포인트
-                    int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint() * 100);
+                    int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint() * 10);
 
                     if (user.getUserPoint() + calculatedTotalPoint < 0) {
                         user.updateUserPoint(0);
