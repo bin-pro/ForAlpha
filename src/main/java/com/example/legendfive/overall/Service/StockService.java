@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.context.Theme;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -133,16 +134,25 @@ public class StockService {
 
                     //예측하기 성공시, 테마 카드 저장
                     if (earningRate > 0) {
+
                         //테마 이름 가져옴
                         String themeName = stockDetailResponseDto.getStock_theme_code();
+                        String stockName = stockDetailResponseDto.getStock_name();
 
-                        ThemeCard newThemeCard = ThemeCard.builder()
-                                .themeName(themeName)
-                                .createdAt(LocalDate.now())
-                                .user(user)
-                                .build();
+                        if(themeCardRepository.findByStockName(stockName) != null){
+                            log.info("이미 테마 카드에 저장되어 있습니다.");
+                        }
 
-                        themeCardRepository.save(newThemeCard);
+                        else{
+                            ThemeCard newThemeCard = ThemeCard.builder()
+                                    .themeName(themeName)
+                                    .stockName(stockName)
+                                    .createdAt(LocalDate.now())
+                                    .user(user)
+                                    .build();
+
+                            themeCardRepository.save(newThemeCard);
+                        }
                     }
 
                     predictionRecord.updatePriceRatePoint(Integer.parseInt(stockEndPriceFromS3), String.valueOf(formattedEarningRate), calculatedTotalPoint);
