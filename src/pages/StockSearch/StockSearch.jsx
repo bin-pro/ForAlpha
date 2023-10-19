@@ -5,6 +5,7 @@ import { NavBar } from "../../components/NavBar";
 import { ListItem } from "../../components/ListItem";
 import { TabBarItem } from "../../components/TabBarItem";
 import { Toggle } from "../../components/Toggle";
+import { ArrowDown2 } from "../../icons/ArrowDown2";
 import { Icon9 } from "../../icons/Icon9";
 import { Icon10 } from "../../icons/Icon10";
 import { Icon11 } from "../../icons/Icon11";
@@ -30,18 +31,20 @@ export const StockSearch = () => {
     const [stockData, setStockData] = useState([]);
     const [isThemeOpen, setIsThemeOpen] = useState(false);
     const [themeData, setThemeData] = useState([]);
+    const [description, setDescription] = useState("");
+
     const themes = [
-        { name: "화학", description: "화학섬유산업은 석유화학과 밀접하게 연계되는 하이테크산업입니다" },
-        { name: "반도체", description: "첨단 IT제품에 대한 수요가 급증하면서 활용범위가 크게 확대되었어요" },
-        { name: "제약", description: "인간 생명과 보건에 관련된 제품을 개발, 생산, 판매하는 업체입니다" },
-        { name: "기계·장비", description: "모든 산업의 기반이 되는 핵심 자본재 산업입니다" },
-        { name: "소프트웨어", description: "국내 대표 소프트웨어 기업군입니다" },
-        { name: "금융", description: "없어서는 안될 은행, 증권, 보험 회사들입니다" },
-        { name: "서비스", description: "네이버, 카카오, 토스, CJ 등 하다 보면 시간이 순삭되는 서비스 회사들입니다" },
-        { name: "IT부품", description: "IT 부품을 제공하는 업체, IT 시장의 성장과 세계수출시장에서 높은 점유율을 기록하고 있어요" },
-        { name: "유통", description: "제조회사의 상품이나 서비스회사의 상품을 고객에게 직접 판매하는 업체들입니다" },
-        { name: "전기전자", description: "삼성전자, LG전자, SK하이닉스 등이 있어요" },
-        { name: "의료·정밀기기", description: "초고령화 사회의 도래, 소득증대 등으로 건강 수요가 증가됨에 따라 맞춤형 치료 및 예방을 위한 진단 중심의 의료기기 시장 성장이 기대되고 있어요" },
+        { name: "화학", title: "지속 가능한 기술 개발을 주도하는 화학", description: "화학섬유산업은 석유화학과 밀접하게 연계되는 하이테크산업입니다" },
+        { name: "반도체", title: "디지털 기술 발전의 핵심, 반도체",description: "첨단 IT제품에 대한 수요가 급증하면서 활용범위가 크게 확대되었어요" },
+        { name: "제약", title: "글로벌 헬스 산업의 주역, 제약",description: "인간 생명과 보건에 관련된 제품을 개발, 생산, 판매하는 업체입니다" },
+        { name: "기계·장비", title: "혁신적인 생산 기술을 추구하는 기계·장비",description: "모든 산업의 기반이 되는 핵심 자본재 산업입니다" },
+        { name: "소프트웨어", title: "디지털 플랫폼과 AI 기술 발전의 중심,소프트웨어",description: "국내 대표 소프트웨어 기업군입니다" },
+        { name: "금융", title: "금융 혁신을 선도하는 세계 경제의 주역 금융",description: "없어서는 안될 은행, 증권, 보험 회사들입니다" },
+        { name: "서비스", title: "고객 중심의 서비스 기준을 정립하는 서비스업 ",description: "네이버, 카카오, 토스, CJ 등 하다 보면 시간이 순삭되는 서비스 회사들입니다" },
+        { name: "IT부품", title: "컴퓨터 하드웨어 발전을 이끄는 디지털 기술의 기반 IT부품",description: "IT 부품을 제공하는 업체, IT 시장의 성장과 세계수출시장에서 높은 점유율을 기록하고 있어요" },
+        { name: "유통", title: "온오프라인 소매 업계의 다양성을 추구하는 유통업",description: "제조회사의 상품이나 서비스회사의 상품을 고객에게 직접 판매하는 업체들입니다" },
+        { name: "전기전자", title: "소비자 전자제품의 혁신주자 전기전자",description: "삼성전자, LG전자, SK하이닉스 등이 있어요" },
+        { name: "의료·정밀기기", title: "의료기술 혁신이 치료 기술의 진보로 이어지는 의료·정밀기기",description: "초고령화 사회의 도래, 소득증대 등으로 건강 수요가 증가됨에 따라 맞춤형 치료 및 예방을 위한 진단 중심의 의료기기 시장 성장이 기대되고 있어요" },
       ];
       
       function addCommasToNumber(number) {
@@ -148,6 +151,7 @@ export const StockSearch = () => {
                 rightControl="none"
                 leftLink="/home"
             />
+            
             <div className="frame-5">
                 {selectedTab === "section1" && (
                     <div className="text-field-instance">
@@ -168,27 +172,38 @@ export const StockSearch = () => {
                     <Toggle section1Text="종목" section2Text="테마" onTabChange={handleTabChange} />
                 </div>
                 
-                <div className="chips-wrapper">
-                    {selectedTab === "section2" && (
-                    <div className="text-field-instance-2">
-                        <div className="chips">
-                        {themes.map((theme) => (
-                            <ListItem
-                            key={theme.name}
-                            className="list-item-instance"
-                            controls="icon"
-                            divClassName="design-component-instance-node"
-                            icon={<RightButton6 className="right-button-6" />}
-                            showDescription={false}
-                            title={`${theme.name} ${selectedTheme === theme.name ? "🧪" : ""}`}
-                            visuals="none"
-                            onClick={() => handleListItemClick(theme.name)}
-                            />
-                        ))}
-                        </div>
-                    </div>
-                    )}
-                </div>
+                {selectedTab === "section2" && (
+          <div className="text-field-instance-2">
+            <div className="chips">
+              {themes.map((theme) => (
+                <ListItem
+                  key={theme.name}
+                  className={`list-item-instance${selectedTheme === theme.name ? " active" : ""}`}
+                  controls="icon"
+                  divClassName="design-component-instance-node"
+                  icon={
+                    isThemeOpen && selectedTheme === theme.name ? (
+                      <ArrowDown2 className="down-arrow-icon" />
+                    ) : (
+                      <RightButton6 className="right-button-6" />
+                    )
+                  }
+                  showDescription={selectedTheme === theme.name}
+                  title={theme.title}
+                  visuals="none"
+                  onClick={() => handleListItemClick(theme.name, theme.description)}
+                />
+              ))}
+            </div>
+        </div>
+        )}
+
+      {/* 클릭한 테마의 설명을 나타낼 부분 */}
+      {selectedTheme && (
+        <div className="theme-description">
+          {themes.description}
+        </div>
+      )}
 
                 {selectedTab === "section1" && searchError && (
                     <p className="error-message">{searchError}</p>
@@ -212,7 +227,7 @@ export const StockSearch = () => {
                         )}
                     </div>
                 )}
-                
+
                 
                 </div>
             <div className="tab-bar">

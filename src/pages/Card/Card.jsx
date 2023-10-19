@@ -40,9 +40,6 @@ export const Card = () => {
             <div className="card" key={index}>
               <div className="events">
                 <div className="vertical-card">
-                  <div className="frame">
-                    <Image className="image-instance" icon={<Image5 className="icon-instance-node" />} />
-                  </div>
                   <div className="content">
                     <div className="title">
                       <div className="title-2">{cardItem.theme_name}</div>
