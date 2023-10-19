@@ -81,7 +81,6 @@ export const Login = () => {
         });
 
         console.log("Response Data:", response.data.payload);
-        console.log("hihi");
   
         const data = response.data.payload;
   

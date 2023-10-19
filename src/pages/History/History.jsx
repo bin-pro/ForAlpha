@@ -8,6 +8,7 @@ import { Icon8 } from "../../icons/Icon8";
 import { Icon9 } from "../../icons/Icon9";
 import { Icon14 } from "../../icons/Icon14";
 import { LeftButton } from "../../icons/LeftButton";
+import styled from "styled-components";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
 import "./style.css";
@@ -16,49 +17,19 @@ export const History = () => {
   const [selectedTab, setSelectedTab] = useState("section1"); // 초기 탭 "예측 내역"
   const [HistoryData, setHistoryData] = useState([]);
   const [HistoryType, setHistoryType] = useState([]);
-  const donutData = {
-    series: [50,40,30,10,0],
+  const [themeList, setThemeList] = useState([]);
+  const [themeCount, setThemeCount] = useState([]);
+  const [maxCountTheme, setMaxCountTheme] = useState('');
+  const [maxCount, setMaxCount] = useState(0);
+  const [donutChart, setDonutChart] = useState({
+    series: [], // 빈 배열 또는 기본 데이터를 여기에 설정할 수 있음
     options: {
       chart: {
         type: 'donut',
       },
-      legend: {
-        position: 'bottom'
-      },
-      responsive: [{
-        breakpoint: 480,
-      }],
-      plotOptions: {
-        pie: {
-          donut: {
-            size: "70%",
-            labels: {
-              show: true,
-              total: {
-                showAlways: true,
-                show: true,
-                label: 'THEME',
-                fontSize: '12px',
-              },
-              value: {
-                fontSize: '22px',
-                show: true,
-              },
-            },
-          }
-        }
-      },
-      labels: ["금융", "IT", "화학", "유통", "반도체"],
-      title: {
-        text: '내가 주로 성공한 종목은?',
-        align: 'center'
-      },
-      fill: {
-        opacity: 1,
-        colors: ["#0066FF", "#7AFFBF", "#00D1FF"],
-      },
+      // 나머지 옵션들을 추가하세요
     },
-  }
+  });
 
   useEffect(() => {
     const userUuid = "ca5f9cce-6caf-11ee-bde4-027e9aa2905c";
@@ -71,6 +42,79 @@ export const History = () => {
       let typeData;
       const TypeResponse = await axios.get(`${window.API_BASE_URL}/foralpha-service/profiles/profile?user-uuid=${userUuid}`);
       typeData = TypeResponse.data.payload.profile.user_invest_type;
+      const themeCardListResponse = await axios.get(`${window.API_BASE_URL}/foralpha-service/profile/theme-card?user-uuid=${userUuid}`);
+      const themeCardList = themeCardListResponse.data.payload.themeCardList;
+      console.log(typeData);
+      console.log(themeCardList);
+
+      if (themeCardList) {
+        const themes = [];
+        const counts = [];
+        let maxCountTheme = '';
+        let maxCount = 0;
+
+        themeCardList.forEach(theme => {
+          themes.push(theme.theme_name);
+          counts.push(theme.theme_count);
+
+          if (theme.theme_count > maxCount) {
+            maxCount = theme.theme_count;
+            maxCountTheme = theme.theme_name;
+          }
+        });
+
+        setMaxCount(maxCount);
+        setMaxCountTheme(maxCountTheme);
+
+        const donutData = {
+          series: counts,
+          options: {
+            chart: {
+              type: 'donut',
+            },
+            legend: {
+              position: 'bottom'
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            responsive: [{
+              breakpoint: 480,
+            }],
+            plotOptions: {
+              pie: {
+                donut: {
+                  size: "90%",
+                  labels: {
+                    show: false,
+                    total: {
+                      showAlways: true,
+                      show: true,
+                      label: 'THEME',
+                      fontSize: '12px',
+                    },
+                    value: {
+                      fontSize: '22px',
+                      show: true,
+                    },
+                  },
+                }
+              }
+            },
+            labels: themes, // 테마 이름을 설정
+            title: {
+              text: '내가 주로 성공한 종목은?',
+              align: 'center'
+            },
+            fill: {
+              opacity: 1,
+              colors: ["#0066FF", "#7AFFBF", "#00D1FF"],
+            },
+          },
+        };
+
+        setDonutChart(donutData);
+      }
 
       if(typeData === "중립형") {
         typeData = "주식 컬렉터형";
@@ -149,13 +193,24 @@ export const History = () => {
             </div>
             <div className="donut-chart">
                 <ReactApexChart
-                    options={donutData.options}
-                    series={donutData.series}
+                    options={donutChart.options}
+                    series={donutChart.series}
                     type="donut"
                     width="300"
                 />
+                {donutChart.series.length === 0 ? (
+                  <ReactApexChart
+                  options={donutChart.options}
+                  series={[1, 1, 1]}
+                  type="donut"
+                  width="300"
+                />
+              ) : null}
             </div>
-            <div className="chart-info">
+            <div className="chart-info">           
+              <div className="chart-info-title">성공률 1위</div>
+              <div className="chart-desc">{maxCountTheme}</div>
+              <div className="chart-desc">{maxCount}개</div>
             </div>
           </div>
           <img
@@ -201,7 +256,7 @@ export const History = () => {
                   </p>
                   <p className="description">
                     <span className="text-wrapper-3">{item.quiz_question}</span>
-                    <span className="text-wrapper-4" style={{ color: item.quiz_point === 0 ? 'blue' : 'red' }}>{item.quiz_answer ? " :o:️" : " :x:"}</span>
+                    <span className="text-wrapper-4" style={{ color: item.quiz_point === 0 ? 'blue' : 'red' }}>{item.quiz_answer ? " ⭕️" : " ❌"}</span>
                   </p>
                 </div>
               </div>

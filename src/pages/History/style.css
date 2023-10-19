@@ -102,6 +102,33 @@
     position: relative;
     text-align: center;
   }
+
+  .history .chart-info {
+    text-align: center;
+    position: absolute;
+    top: 145px;
+    left: 160px;
+    font-family: var(--heading-h4-font-family);
+    font-size: var(--heading-h4-font-size);
+    font-style: var(--heading-h4-font-style);
+    font-weight: 500;
+    letter-spacing: var(--heading-h4-letter-spacing);
+    line-height: var(--heading-h4-line-height);
+  }
+
+  .history .chart-info-title {
+    font-weight: var(--heading-h4-font-weight);
+  }
+
+  .history .no-data-message {
+    text-align: center;
+    font-family: var(--heading-h5-font-family);
+    font-size: var(--heading-h5-font-size);
+    font-style: var(--heading-h5-font-style);
+    font-weight: var(--heading-h5-font-weight);
+    letter-spacing: var(--heading-h5-letter-spacing);
+    line-height: var(--heading-h5-line-height);
+  }
   
   .history .divider-3 {
     height: 1px;
