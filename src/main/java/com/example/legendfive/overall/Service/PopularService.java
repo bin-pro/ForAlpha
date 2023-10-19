@@ -41,7 +41,7 @@ public class PopularService {
 
                     if (stock != null) {
                         try {
-                            stockPrice = stockService.getStockPriceFromS3(stock.getStockCode());
+                            stockPrice = stockService.getStockFromS33(stock.getStockCode()).getStock_price();
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
@@ -52,7 +52,6 @@ public class PopularService {
                             .stockName(stock != null ? stock.getStockName() : null)
                             .predictCount(predictCount.intValue())
                             .stockPrice(stockPrice)
-                            .stockPrice("100")//값을 넣을 부분
                             .build();
                 })
                 .collect(Collectors.toList());

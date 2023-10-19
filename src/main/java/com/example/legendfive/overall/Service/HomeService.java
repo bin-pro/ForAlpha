@@ -55,7 +55,7 @@ public class HomeService {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 String dataJson = objectMapper.writeValueAsString(data);
-                System.out.println(dataJson);
+//                System.out.println(dataJson);
                 return Mono.just(dataJson);
             } catch (JsonProcessingException e) {
                 log.error("데이터 JSON 변환 오류", e);
