@@ -35,6 +35,11 @@ ForAlpha 서비스의 메인 서비스입니다.
 - Kafka
 - docker compose
 
+### 백엔드 성능 개선
+![image](https://github.com/PDA-Project/pda-foralpha-service/assets/76419984/05df5679-5a96-4a11-94c3-e5253b1451f3)
+![image](https://github.com/PDA-Project/pda-foralpha-service/assets/76419984/01b0a835-607d-4ddf-8a65-63e22eddd688)
+
+
 ### 협업툴
 - Notion
 - Slack
