@@ -10,6 +10,16 @@ import java.util.UUID;
 
 public class StockDto {
 
+
+    @Getter
+    @Builder @NoArgsConstructor @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class stockPriceDodPercentageInS3Dto{
+
+        private String stock_price;
+        private String stock_dod_percentage;
+    }
+
     @Getter @Builder @NoArgsConstructor @AllArgsConstructor
     public static class StockListDto{
         private String email;
@@ -79,6 +89,7 @@ public class StockDto {
     public static class SearchStockBrandResponseDto{
         private String stockCode;
         private String stockPrice;
+        private String stockDodPercentage;
         private String stockPredictionCount;
         private String StockName;
     }
@@ -91,6 +102,7 @@ public class StockDto {
     public static class SearchStockThemeResponseDto{
         private String stockCode;
         private String stockPrice;
+        private String stockDodPercentage;
         private String stockPredictionCount;
         private String StockName;
     }

@@ -56,7 +56,7 @@ public class QuizService {
         LocalDate today = LocalDate.now();
 
         // 하루에 풀 수 있는 최대 퀴즈 수
-        int maxQuizzesPerDay = 2;
+        int maxQuizzesPerDay = 30;
 
         // 오늘 푼 퀴즈 수 확인
         int todayQuizCount = quizRecordRepository.countByUserIdAndCreatedAt(user.getId(), today);

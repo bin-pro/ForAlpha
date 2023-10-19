@@ -77,7 +77,7 @@ public class StockService {
         }
     }
 
-    public String getStockPriceFromS3(String stockCode) throws ParseException {
+    public StockDto.stockPriceDodPercentageInS3Dto getStockFromS33(String stockCode) throws ParseException {
 
         S3Object s3Object = amazonS3.getObject(S3_BUCKET_NAME, S3_FILE_PATH + stockCode + ".json");
         S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
@@ -88,7 +88,10 @@ public class StockService {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(jsonContent);
 
-        return (String) jsonObject.get("stock_present_price");
+        return StockDto.stockPriceDodPercentageInS3Dto.builder()
+                .stock_price((String) jsonObject.get("stock_present_price"))
+                .stock_dod_percentage((String) jsonObject.get("stock_dod_percentage"))
+                .build();
     }
 
     /**
@@ -120,7 +123,7 @@ public class StockService {
                     String formattedEarningRate = decimalFormat.format(earningRate * 100);
 
                     //계산된 포인트
-                    int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint());
+                    int calculatedTotalPoint = (int) (earningRate * predictionRecord.getInputPoint() * 100);
 
                     if (user.getUserPoint() + calculatedTotalPoint < 0) {
                         user.updateUserPoint(0);
@@ -232,20 +235,23 @@ public class StockService {
     public Page<StockDto.SearchStockBrandResponseDto> searchStockByBrandName(String brandName, Pageable pageable) {
         Page<Stock> searchResults = stockRepository.findByStockNameContainingIgnoreCase(brandName, pageable);
 
-
-
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> {
             try {
-                log.info("stockCode: ",stockEntity.getStockCode());
-                log.info("stockPriceDataFromS3: ",getStockPriceFromS3(stockEntity.getStockCode()));
+                log.info("stockCode: " + stockEntity.getStockCode());
+                log.info("stockPriceDataFromS3: " + getStockFromS33(stockEntity.getStockCode()));
 
                 //주식의 예측 기록을 가져온다.
                 String stockPredictionCount = String.valueOf(predictionRecordRepository.countByStockCode(stockEntity.getStockCode()));
-                log.info("stockPrecitionCount: ",stockPredictionCount);
+                StockDto.stockPriceDodPercentageInS3Dto stockPriceDodPercentageInS3Dto = getStockFromS33(stockEntity.getStockCode());
+                log.info("stockPriceDodPercentageInS3Dto" + stockPriceDodPercentageInS3Dto);
+                log.info("stockPrecitionCount: " + stockPredictionCount);
+
+
                 return StockDto.SearchStockBrandResponseDto.builder()
                         .stockCode(stockEntity.getStockCode())
-                        .stockPrice(getStockPriceFromS3(stockEntity.getStockCode()))
+                        .stockPrice(stockPriceDodPercentageInS3Dto.getStock_price())
+                        .stockDodPercentage(stockPriceDodPercentageInS3Dto.getStock_dod_percentage())
                         .stockPredictionCount(stockPredictionCount)
                         .StockName(stockEntity.getStockName())
                         .build();
@@ -263,15 +269,17 @@ public class StockService {
         // Page를 DTO로 변환
         return searchResults.map(stockEntity -> {
             try {
-                log.info("stockCode: ",stockEntity.getStockCode());
-                log.info("stockPriceDataFromS3: ",getStockPriceFromS3(stockEntity.getStockCode()));
 
+                //주식의 예측 기록을 가져온다.
                 String stockPredictionCount = String.valueOf(predictionRecordRepository.countByStockCode(stockEntity.getStockCode()));
-                log.info("stockPrecitionCount: ",stockPredictionCount);
+                StockDto.stockPriceDodPercentageInS3Dto stockPriceDodPercentageInS3Dto = getStockFromS33(stockEntity.getStockCode());
+                log.info("stockPriceDodPercentageInS3Dto" + stockPriceDodPercentageInS3Dto);
+                log.info("stockPrecitionCount: " + stockPredictionCount);
 
                 return StockDto.SearchStockThemeResponseDto.builder()
                         .stockCode(stockEntity.getStockCode())
-                        .stockPrice(getStockPriceFromS3(stockEntity.getStockCode()))
+                        .stockPrice(stockPriceDodPercentageInS3Dto.getStock_price())
+                        .stockDodPercentage(stockPriceDodPercentageInS3Dto.getStock_dod_percentage())
                         .stockPredictionCount(stockPredictionCount)
                         .StockName(stockEntity.getStockName())
                         .build();
