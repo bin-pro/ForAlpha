@@ -13,9 +13,9 @@ import axios from "axios";
 import "./style.css";
 
 export const History = () => {
-
   const [selectedTab, setSelectedTab] = useState("section1"); // 초기 탭 "예측 내역"
   const [HistoryData, setHistoryData] = useState([]);
+  const [HistoryType, setHistoryType] = useState([]);
   const donutData = {
     series: [50,40,30,10,0],
     options: {
@@ -31,7 +31,7 @@ export const History = () => {
       plotOptions: {
         pie: {
           donut: {
-            size: "90%",
+            size: "70%",
             labels: {
               show: true,
               total: {
@@ -68,6 +68,20 @@ export const History = () => {
   const fetchHistory = async (selectedTab, userUuid) => {
     try {
       let historyData;
+      let typeData;
+      const TypeResponse = await axios.get(`${window.API_BASE_URL}/foralpha-service/profiles/profile?user-uuid=${userUuid}`);
+      typeData = TypeResponse.data.payload.profile.user_invest_type;
+
+      if(typeData === "중립형") {
+        typeData = "주식 컬렉터형";
+      } else if(typeData === "집중투자형") {
+        typeData = "집중 몰빵형";
+      } else {
+        typeData = "분산 투자형";
+      }
+      
+      setHistoryType(typeData);
+
       if (selectedTab === "section1") {
         const response = await axios.get(`${window.API_BASE_URL}/foralpha-service/history?user-uuid=${userUuid}`);
         historyData = response.data.payload.predictionHistory;
@@ -87,6 +101,7 @@ export const History = () => {
     const userUuid = "ca5f9cce-6caf-11ee-bde4-027e9aa2905c";
     fetchHistory(tab, userUuid);
   };
+  
   function getPostposition(str) {
     if (!str) {
       return ''; // 빈 문자열 또는 다른 처리를 원하는 값으로 변경
@@ -97,7 +112,17 @@ export const History = () => {
     // 받침이 있는지 여부에 따라 조사 선택
     return isKorean ? (lastChar % 28 > 0 ? '으로' : '로') : '로';
   }
-  
+
+  function addPlusIfPositive(inputString) {
+    const numberValue = parseFloat(inputString);
+    
+    if (!isNaN(numberValue) && numberValue > 0) {
+        return '+' + inputString;
+    } else {
+        return inputString;
+    }
+}
+
   return (
     <div className="history">
       <div className="div-2">
@@ -120,7 +145,7 @@ export const History = () => {
         <div className="comment">
           <div className="frame">
             <div className="div-wrapper">
-              <p className="text-wrapper">편식 없이 골고루 투자하는 ‘균형파&#39;</p>
+              <p className="text-wrapper">나의 투자 성향은 &#39;{HistoryType}&#39;</p>
             </div>
             <div className="donut-chart">
                 <ReactApexChart
@@ -150,14 +175,13 @@ export const History = () => {
                 <div className="content">
                   <p className="title">
                     <span className="span">{item.created_at}-{item.end_day} </span>
-                    <span className="text-wrapper-2">{item.earned_point}Point</span>
+                    <span className="text-wrapper-2">{addPlusIfPositive(item.earned_point)}Point</span>
                   </p>
                   <p className="description">
                     <span className="text-wrapper-3">{item.stock_name}</span>
-                    <span className="text-wrapper-4">{getPostposition(item.stock_name)}</span>
-                    {/* 여기서 item.yaxis가 있는지 확인 후 접근 */}
+                    <span className="text-wrapper-4">{getPostposition(item.stock_name)} </span>
                     <span className="text-wrapper-5" style={{ color: item.yaxis && item.yaxis <= 0 ? 'var(--highlightdarkest)' : 'var(--supporterrordark)' }}>
-                      {item.yaxis ? `${item.yaxis}%` : ' none'}
+                      {addPlusIfPositive(item.stock_returns)}%
                     </span>
                     <span className="text-wrapper-4">를 달성했어요.</span>
                   </p>
@@ -173,11 +197,11 @@ export const History = () => {
                 <div className="content">
                   <p className="title">
                     <span className="span">{item.created_at} </span>
-                    <span className="text-wrapper-2">{item.quiz_point}Point</span>
+                    <span className="text-wrapper-2">{addPlusIfPositive(item.quiz_point)}Point</span>
                   </p>
                   <p className="description">
                     <span className="text-wrapper-3">{item.quiz_question}</span>
-                    <span className="text-wrapper-4" style={{ color: item.quiz_point === 0 ? 'blue' : 'red' }}>{item.quiz_answer ? " ⭕️" : " ❌"}</span>
+                    <span className="text-wrapper-4" style={{ color: item.quiz_point === 0 ? 'blue' : 'red' }}>{item.quiz_answer ? " :o:️" : " :x:"}</span>
                   </p>
                 </div>
               </div>
