@@ -10,7 +10,7 @@ import { Icon10 } from "../../icons/Icon10";
 import { Icon11 } from "../../icons/Icon11";
 import { Icon13 } from "../../icons/Icon13";
 import { BiSearch} from 'react-icons/bi';
-import { LeftButton } from "../../icons/LeftButton";
+import { LeftButton } from "../../icons/LeftButton"; 
 import { RightButton6 } from "../../icons/RightButton6";
 import { ThemeModal } from "../../components/ThemeModal";
 import axios from 'axios';
@@ -43,6 +43,14 @@ export const StockSearch = () => {
         { name: "전기전자", description: "삼성전자, LG전자, SK하이닉스 등이 있어요" },
         { name: "의료·정밀기기", description: "초고령화 사회의 도래, 소득증대 등으로 건강 수요가 증가됨에 따라 맞춤형 치료 및 예방을 위한 진단 중심의 의료기기 시장 성장이 기대되고 있어요" },
       ];
+      
+      function addCommasToNumber(number) {
+        if (number !== undefined && number !== null) {
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+          return "";
+        }
+      }
     
     // brand-search
     const fetchData = async (selectedTab, stockname) => {
@@ -193,7 +201,7 @@ export const StockSearch = () => {
                             <div key={index} className="data-item">
                                 <div className="result-name">{item.stock_name}</div>
                                 <div className="result-content">
-                                    <div className="result-price-plus">가격</div>
+                                    <div className="result-price-plus">{addCommasToNumber(item.stock_price)}</div>
                                     <div className="result-predict">1명이 상승을 예측했어요</div>
                             </div>
                             </div>

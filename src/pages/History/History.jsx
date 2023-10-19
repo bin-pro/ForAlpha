@@ -157,7 +157,7 @@ export const History = () => {
                     <span className="text-wrapper-4">{getPostposition(item.stock_name)}</span>
                     {/* 여기서 item.yaxis가 있는지 확인 후 접근 */}
                     <span className="text-wrapper-5" style={{ color: item.yaxis && item.yaxis <= 0 ? 'var(--highlightdarkest)' : 'var(--supporterrordark)' }}>
-                      {item.yaxis ? `${item.yaxis}%` : 'N/A'}
+                      {item.yaxis ? `${item.yaxis}%` : ' none'}
                     </span>
                     <span className="text-wrapper-4">를 달성했어요.</span>
                   </p>

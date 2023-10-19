@@ -71,20 +71,22 @@ export const Login = () => {
   }, [location, navigate]);
 
   const handleSubmit = async (e) => {
-    const USER_SERVICE_URL = 'http://test2.shinhan.site';
   
     e.preventDefault();
     if (isEmail && isPassword) {
       try {
-        const response = await axios.post(`${USER_SERVICE_URL}/user-service/login/`, {
+        const response = await axios.post(`${window.API_BASE_URL}/user-service/login`, {
           email,
           password,
         });
+
+        console.log("Response Data:", response.data.payload);
+        console.log("hihi");
   
-        const data = response.data;
+        const data = response.data.payload;
   
-        if (data && data.uuid) {
-          sessionStorage.setItem("userUUID", data.uuid);
+        if (data && data.user_id) {
+          sessionStorage.setItem("userUUID", data.user_id);
   
           console.log("로그인 성공:", data);
           navigate("/home");
@@ -123,7 +125,7 @@ export const Login = () => {
           alt="Foralpha logo"
           src="https://cdn.animaapp.com/projects/6524a15db6c5edc3e26fb475/releases/6524a20bd0b8c0b30f5bfa70/img/foralpha-logo-1.png"
         />
-        <div classNamㅅe="login-options">
+        <div className="login-options">
           <div className="text-wrapper-6">로그인</div>
           <div className="login-2">
             <div className="div-3">
