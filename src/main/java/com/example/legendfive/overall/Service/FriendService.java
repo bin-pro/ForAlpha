@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.amazonaws.services.ec2.model.FindingsFound.True;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -23,6 +25,7 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly=true)
     public FriendDto.GetFriendsResponseDto getFriendList(UUID userUuid) {
         // 사용자 정보 조회
         User user = userRepository.findByUserId(userUuid)
@@ -72,7 +75,7 @@ public class FriendService {
 
         return getFriendsResponseDto;
     }
-
+    @Transactional(readOnly=true)
     private String getFriendNickname(User user, Friend friend) {
         // Friends 엔터티에서 user1Id와 user2Id 중 현재 사용자의 ID가 아닌 것을 찾아서 해당 사용자의 닉네임을 반환
         UUID friendUserId = friend.getUser1Id().equals(user.getUserId()) ? friend.getUser2Id() : friend.getUser1Id();
@@ -86,7 +89,7 @@ public class FriendService {
     public FriendDto.AddFriendResponseDto addFriend(UUID userUuid, UUID friendUuid) {
         // 사용자 정보 조회
         User user = userRepository.findByUserId(userUuid)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("사용자를  찾을 수 없습니다."));
 
         User friend = userRepository.findByUserId(friendUuid)
                 .orElseThrow(() -> new RuntimeException("친구를 찾을 수 없습니다."));
@@ -120,6 +123,7 @@ public class FriendService {
                 .build();
     }
 
+    @Transactional(readOnly=true)
     private boolean areAlreadyFriends(UUID user1Id, UUID user2Id) {
         // 이미 친구인지 확인
         return friendRepository.existsByUser1IdAndUser2Id(user1Id, user2Id);

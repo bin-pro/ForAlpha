@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class HistoryService {
     private final PredictionRecordRepository predictionRecordRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<HistoryDto.PredictionHistoryResponseDto> getPredictionHistory(UUID userUuid) {
         List<PredictionRecord> predictionRecords = predictionRecordRepository.findAllByUserUserId(userUuid);
 

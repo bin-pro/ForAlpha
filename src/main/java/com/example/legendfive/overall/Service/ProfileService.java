@@ -7,6 +7,7 @@ import com.example.legendfive.overall.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service
@@ -15,6 +16,7 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final FriendRepository friendsRepository;
 
+    @Transactional(readOnly = true)
     public ProfileDto.MyProfileResponseDto getMyProfile(UUID userUuid) {
         // 사용자 정보 조회
         User user = userRepository.findByUserId(userUuid)
