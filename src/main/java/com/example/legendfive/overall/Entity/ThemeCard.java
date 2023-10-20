@@ -28,6 +28,9 @@ public class ThemeCard {
     @Column(name = "theme_name")
     private String themeName;
 
+    @Column(name = "stock_name")
+    private String stockName;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDate createdAt;
