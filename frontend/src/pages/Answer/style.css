@@ -1,0 +1,233 @@
+.answer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .answer .div-2 {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 729px;
+    padding: 24px;
+    position: relative;
+    top: 83px;
+    width: 375px;
+  }
+  
+  .answer .overlap-group-2 {
+    height: 705px;
+    left: 0;
+    position: absolute;
+    top: 107px;
+    width: 375px;
+  }
+  
+  .answer .feed {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    height: 617px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 375px;
+  }
+  
+  .answer .products {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    height: 130px;
+    padding: 24px 16px;
+    position: relative;
+    width: 90%;
+  }
+  
+  .answer .perfect-for-you {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 77px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .answer .vertical-card-wrapper {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    gap: 12px;
+    height: 77px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .answer .vertical-card-instance {
+    flex: 1 !important;
+    flex-grow: 1 !important;
+    height: 77px !important;
+    width: 50% !important;
+  }
+  
+  .answer .design-component-instance-node {
+    color: var(--neutraldarkdarkest) !important;
+    font-family: var(--heading-h2-font-family) !important;
+    font-size: var(--heading-h2-font-size) !important;
+    font-style: var(--heading-h2-font-style) !important;
+    font-weight: var(--heading-h2-font-weight) !important;
+    letter-spacing: var(--heading-h2-letter-spacing) !important;
+    line-height: var(--heading-h2-line-height) !important;
+    margin-top: -1px !important;
+    text-align: center !important;
+  }
+  
+  .answer .frame-2 {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    height: 487px;
+    position: relative;
+    width: 375px;
+  }
+  
+  .answer .frame-wrapper {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .answer .frame-3 {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .answer .text-wrapper-2 {
+    align-self: stretch;
+    color: var(--neutraldarkdarkest);
+    font-family: var(--heading-h2-font-family);
+    font-size: var(--heading-h2-font-size);
+    font-style: var(--heading-h2-font-style);
+    font-weight: var(--heading-h2-font-weight);
+    letter-spacing: var(--heading-h2-letter-spacing);
+    line-height: var(--heading-h2-line-height);
+    margin-top: -1px;
+    position: relative;
+  }
+  
+  .answer .p {
+    align-self: stretch;
+    color: var(--neutraldarklight);
+    font-family: var(--body-body-m-font-family);
+    font-size: var(--body-body-m-font-size);
+    font-style: var(--body-body-m-font-style);
+    font-weight: var(--body-body-m-font-weight);
+    letter-spacing: var(--body-body-m-letter-spacing);
+    line-height: var(--body-body-m-line-height);
+    position: relative;
+  }
+  
+  .answer .button-primary-instance {
+    align-self: stretch !important;
+    display: flex !important;
+    height: 48px !important;
+    width: 375px !important;
+  }
+  
+  .answer .button-primary-2 {
+    margin-top: unset !important;
+  }
+  
+  .answer .tab-bar {
+    align-items: flex-start;
+    background-color: var(--neutrallightlightest);
+    display: flex;
+    gap: 4px;
+    height: 88px;
+    left: 0;
+    padding: 16px 16px 32px;
+    position: absolute;
+    top: 617px;
+    width: 375px;
+  }
+  
+  .answer .tab {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 8px;
+    margin-bottom: -2px;
+    position: relative;
+  }
+  
+  .answer .icon-instance-node {
+    height: 20px !important;
+    position: relative !important;
+    width: 20px !important;
+  }
+  
+  .answer .img {
+    flex: 0 0 auto;
+    position: relative;
+  }
+  
+  .answer .tab-bar-item-instance {
+    flex: 1 !important;
+    flex-grow: 1 !important;
+    width: unset !important;
+  }
+  
+  .answer .tab-2 {
+    font-family: "Inter", Helvetica !important;
+    font-size: 10px !important;
+    font-style: unset !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    line-height: normal !important;
+  }
+  
+  .answer .tab-3 {
+    flex: 1 !important;
+    flex-grow: 1 !important;
+    margin-bottom: -2px !important;
+    width: unset !important;
+  }
+  
+  .answer .nav-bar-instance {
+    left: -1px !important;
+    position: absolute !important;
+    top: 44px !important;
+  }
+  
+  .answer .nav-bar-2 {
+    left: 164px !important;
+  }
+  
+  .answer .left-button-4 {
+    height: 20px !important;
+    left: 24px !important;
+    position: absolute !important;
+    top: 18px !important;
+    width: 20px !important;
+  }
+  
