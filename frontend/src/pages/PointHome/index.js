@@ -1,0 +1,1 @@
+export { PointHome } from "./PointHome";

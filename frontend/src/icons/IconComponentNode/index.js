@@ -1,0 +1,1 @@
+export { IconComponentNode } from "./IconComponentNode";

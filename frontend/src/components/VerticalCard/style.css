@@ -1,0 +1,182 @@
+.vertical-card {
+    align-items: flex-start;
+    background-color: var(--neutrallightlight);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    width: 200px;
+  }
+  
+  .vertical-card .frame {
+    position: relative;
+  }
+  
+  .vertical-card .overlap-group {
+    height: 120px;
+    position: relative;
+    width: 200px;
+  }
+  
+  .vertical-card .image-instance {
+    left: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+    width: 200px !important;
+  }
+  
+  .vertical-card .icon-instance {
+    height: 32px !important;
+    position: relative !important;
+    width: 32px !important;
+  }
+  
+  .vertical-card .tag-instance {
+    left: 144px !important;
+    position: absolute !important;
+    top: 10px !important;
+  }
+  
+  .vertical-card .heart-filled {
+    height: 20px !important;
+    position: relative !important;
+    width: 20px !important;
+  }
+  
+  .vertical-card .avatar {
+    height: 40px !important;
+    position: relative !important;
+    width: 40px !important;
+  }
+  
+  .vertical-card .content {
+    align-items: flex-start;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+  }
+  
+  .vertical-card .title {
+    align-items: flex-start;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+  }
+  
+  .vertical-card .text-wrapper {
+    align-self: stretch;
+    color: var(--neutraldarkdarkest);
+    font-family: var(--heading-h4-font-family);
+    font-size: var(--heading-h4-font-size);
+    font-style: var(--heading-h4-font-style);
+    font-weight: var(--heading-h4-font-weight);
+    letter-spacing: var(--heading-h4-letter-spacing);
+    line-height: var(--heading-h4-line-height);
+    margin-top: -1px;
+    position: relative;
+  }
+  
+  .vertical-card .subtitle {
+    align-self: stretch;
+    color: var(--neutraldarklight);
+    font-family: var(--body-body-s-font-family);
+    font-size: var(--body-body-s-font-size);
+    font-style: var(--body-body-s-font-style);
+    font-weight: var(--body-body-s-font-weight);
+    letter-spacing: var(--body-body-s-letter-spacing);
+    line-height: var(--body-body-s-line-height);
+    position: relative;
+  }
+  
+  .vertical-card .description {
+    color: var(--neutraldarkmedium);
+    font-family: var(--body-body-s-font-family);
+    font-size: var(--body-body-s-font-size);
+    font-style: var(--body-body-s-font-style);
+    font-weight: var(--body-body-s-font-weight);
+    letter-spacing: var(--body-body-s-letter-spacing);
+    line-height: var(--body-body-s-line-height);
+    position: relative;
+  }
+  
+  .vertical-card .button-secondary-instance {
+    align-self: stretch !important;
+    display: flex !important;
+    width: 100% !important;
+  }
+  
+  .vertical-card.visuals-avatar {
+    gap: 32px;
+    padding: 16px;
+  }
+  
+  .vertical-card.visuals-icon {
+    gap: 32px;
+    padding: 16px;
+  }
+  
+  .vertical-card.visuals-avatar .frame {
+    height: 120px;
+    width: 100%;
+  }
+  
+  .vertical-card.visuals-icon .frame {
+    align-items: center;
+    background-color: var(--neutrallightmedium);
+    border-radius: 20px;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+  }
+  
+  .vertical-card.visuals-image .frame {
+    align-self: stretch;
+    height: 120px;
+    width: 100%;
+  }
+  
+  .vertical-card.visuals-avatar .content {
+    display: inline-flex;
+  }
+  
+  .vertical-card.visuals-icon .content {
+    display: inline-flex;
+  }
+  
+  .vertical-card.visuals-image .content {
+    align-self: stretch;
+    display: flex;
+    padding: 16px;
+    width: 90%;
+  }
+  
+  .vertical-card.visuals-avatar .title {
+    width: 168px;
+  }
+  
+  .vertical-card.visuals-icon .title {
+    width: 168px;
+  }
+  
+  .vertical-card.visuals-image .title {
+    align-self: stretch;
+    width: 100%;
+  }
+  
+  .vertical-card.visuals-avatar .description {
+    width: 168px;
+  }
+  
+  .vertical-card.visuals-icon .description {
+    width: 168px;
+  }
+  
+  .vertical-card.visuals-image .description {
+    align-self: stretch;
+  }
+  
