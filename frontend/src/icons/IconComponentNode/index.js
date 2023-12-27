@@ -1,1 +1,0 @@
-export { IconComponentNode } from "./IconComponentNode";

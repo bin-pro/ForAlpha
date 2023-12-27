@@ -1,1 +1,0 @@
-export { ArrowRightWrapper } from "./ArrowRightWrapper";

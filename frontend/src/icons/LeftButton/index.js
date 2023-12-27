@@ -1,1 +1,0 @@
-export { LeftButton } from "./LeftButton";
